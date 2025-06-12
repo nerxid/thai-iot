@@ -23,7 +23,7 @@ const Navbar = () => {
             src={logo}
             alt="Thai IoT Logo"
             style={{
-              height: "60px",
+              height: "80px",
               width: "auto",
               transition: "all 0.3s ease",
             }}
