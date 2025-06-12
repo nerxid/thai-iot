@@ -1,4 +1,4 @@
-/* ลิงก์ยังคงเดิม */
+
 .news-card-link {
   text-decoration: none;
   color: inherit;
@@ -8,32 +8,32 @@
   color: inherit;
 }
 
-/* --- ส่วนของการ์ด (ปรับแก้ตรงนี้) --- */
+
 .news-card {
-  /* [เปลี่ยน] เอาเงาเริ่มต้นออก และใส่เส้นขอบบางๆ แทน */
-  border: 1px solid #E5E7EB; /* เส้นขอบสีเทาอ่อน جداً */
-  box-shadow: none; /* ทำให้ไม่มีเงาในสถานะปกติ */
+
+  border: 1px solid #E5E7EB; 
+  box-shadow: none; 
   
-  border-radius: 12px; /* ลดความโค้งลงเล็กน้อยให้ดูเรียบขึ้น */
+  border-radius: 12px; 
   transition: all 0.25s ease-in-out;
   overflow: hidden;
 }
 
-/* [ปรับแก้] เอฟเฟกต์ตอน hover จะดูเรียบขึ้น */
+
 .news-card:hover {
   transform: translateY(-5px);
-  /* ทำให้เส้นขอบหายไป และใช้เงาที่นุ่มนวลขึ้นแทน */
+
   border-color: transparent; 
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07); 
 }
 
-/* [เพิ่ม] ปรับสไตล์ตัวอักษรเพื่อความสบายตา */
+
 .card-title-custom {
-  color: #1F2937; /* สีเทาเข้ม (เกือบดำ) */
+  color: #1F2937; 
 }
 
 .card-summary-custom {
-  color: #4B5568; /* สีเทา */
+  color: #4B5568; 
 }
 
 .news-card-img {

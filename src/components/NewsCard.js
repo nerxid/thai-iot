@@ -6,7 +6,7 @@ import './NewsCard.css';
 const NewsCard = ({ id, title, date, summary, src }) => {
   return (
     <Link to={`/news/${id}`} className="news-card-link">
-      {/* [ปรับแก้] ลบ 'shadow-sm' ออกจาก className ตรงนี้ */}
+    
       <Card className="h-100 news-card"> 
         <Card.Img variant="top" src={src} className="news-card-img" />
         <Card.Body className="d-flex flex-column">
