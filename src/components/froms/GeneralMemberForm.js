@@ -16,11 +16,20 @@ const GeneralMemberForm = () => {
     });
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
+        const { name, value, type, checked, files } = e.target;
+
+        if (name === 'phone') {
+            const numericValue = value.replace(/\D/g, '');
+            setFormData(prev => ({
+                ...prev,
+                [name]: numericValue.slice(0, 10),
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
+            }));
+        }
     };
 
     const handleSubmit = (e) => {
@@ -68,9 +77,20 @@ const GeneralMemberForm = () => {
                             <textarea id="address" name="address" rows="3" className="form-control" value={formData.address} onChange={handleChange} required></textarea>
                         </div>
 
-                        <div className="col-md-6">
+                       <div className="col-md-6">
                             <label htmlFor="phone" className="form-label">หมายเลขโทรศัพท์*</label>
-                            <input type="tel" id="phone" name="phone" className="form-control" value={formData.phone} onChange={handleChange} required />
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone" 
+                                className="form-control" 
+                                value={formData.phone} 
+                                onChange={handleChange}
+                                maxLength="10"
+                                pattern="[0-9]{10}"
+                                title="กรุณากรอกหมายเลขโทรศัพท์ 10 หลัก"
+                                required 
+                            />
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="email" className="form-label">E-mail*</label>

@@ -22,7 +22,7 @@ const NewsListPage = () => {
   return (
     <div style={{ backgroundColor: '#F9FAFB', padding: '60px 0' }}>
       <Container>
-        <h1 className="display-4 fw-bold text-center mb-5">รายการข่าวสาร</h1>
+        <h1 className="display-4 fw-bold text-center mb-5" style={{color: "#1e3a8a"}}>รายการข่าวสาร</h1>
         
         <Row xs={1} md={2} lg={3} className="g-4">
           {currentItems.map(newsItem => (

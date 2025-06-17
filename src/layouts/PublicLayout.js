@@ -1,17 +1,31 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../components/navbar/Navbar'; 
+import Footer from '../components/Footer'; 
+import ScrollToTopButton from '../components/ScrollToTopButton';
 
 const PublicLayout = ({ children }) => {
-  return (
-    <div>
-      <Navbar />
-      <main>
-        {children} 
-      </main>
-      <Footer />
-    </div>
-  );
+    const layoutStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+    };
+
+    const mainContentStyle = {
+        flex: 1,
+    };
+
+    return (
+        <div style={layoutStyle}>
+            <Navbar />
+            <main style={mainContentStyle}>
+                {children}
+            </main>
+            <Footer />
+            
+            
+            <ScrollToTopButton /> 
+        </div>
+    );
 };
 
 export default PublicLayout;

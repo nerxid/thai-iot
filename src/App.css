@@ -45,3 +45,64 @@
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
+
+.rbc-calendar {
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  background-color: white;
+}
+
+
+.rbc-toolbar {
+  margin-bottom: 1.5rem;
+}
+.rbc-toolbar .rbc-toolbar-label {
+  color: #1e3a8a;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.rbc-btn-group button {
+  color: #3b82f6 !important;
+  border: 1px solid #dbeafe !important;
+  transition: all 0.2s ease;
+}
+.rbc-btn-group button:hover,
+.rbc-btn-group button.rbc-active {
+  background-color: #dbeafe !important;
+  color: #1e3a8a !important;
+}
+
+
+.rbc-header {
+  color: #1e3a8a;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+  padding: 0.75rem 0;
+}
+
+
+.rbc-event {
+  background-color: #3b82f6 !important; 
+  border: none !important;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
+
+.rbc-day-bg {
+  border-left: 1px solid #f3f4f6; 
+}
+.rbc-day-bg:first-child {
+  border-left: none;
+}
+.rbc-month-row {
+  border-top: 1px solid #f3f4f6;
+}
+
+
+.rbc-today {
+  background-color: #eff6ff !important;
+}

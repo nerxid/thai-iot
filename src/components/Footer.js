@@ -55,15 +55,15 @@ const Footer = () => {
           
           <div className="col-md-2 mb-4">
             <h6 className="text-dark mb-3">เกี่ยวกับสมาคม</h6>
-            <a href="#" style={linkStyle("about")} onMouseEnter={() => setHovered("about")} onMouseLeave={() => setHovered(null)}>เกี่ยวกับเรา</a>
-            <a href="#" style={linkStyle("team")} onMouseEnter={() => setHovered("team")} onMouseLeave={() => setHovered(null)}>คณะกรรมการ</a>
-            <a href="#" style={linkStyle("contact")} onMouseEnter={() => setHovered("contact")} onMouseLeave={() => setHovered(null)}>ติดต่อ</a>
-            <a href="#" style={linkStyle("news")} onMouseEnter={() => setHovered("news")} onMouseLeave={() => setHovered(null)}>ข่าวสาร</a>
+            <a href="/about" style={linkStyle("about")} onMouseEnter={() => setHovered("about")} onMouseLeave={() => setHovered(null)}>เกี่ยวกับเรา</a>
+            <a href="/committee" style={linkStyle("team")} onMouseEnter={() => setHovered("team")} onMouseLeave={() => setHovered(null)}>คณะกรรมการ</a>
+            <a href="/contact" style={linkStyle("contact")} onMouseEnter={() => setHovered("contact")} onMouseLeave={() => setHovered(null)}>ติดต่อ</a>
+            <a href="/news" style={linkStyle("news")} onMouseEnter={() => setHovered("news")} onMouseLeave={() => setHovered(null)}>ข่าวสาร</a>
           </div>
 
           <div className="col-md-3 mb-4">
             <h6 className="text-dark mb-3">โครงการและบริการ</h6>
-            <a href="#" style={linkStyle("event")} onMouseEnter={() => setHovered("event")} onMouseLeave={() => setHovered(null)}>กิจกรรม & อีเวนต์</a>
+            <a href="/events" style={linkStyle("event")} onMouseEnter={() => setHovered("event")} onMouseLeave={() => setHovered(null)}>กิจกรรม & อีเวนต์</a>
             <a href="#" style={linkStyle("support")} onMouseEnter={() => setHovered("support")} onMouseLeave={() => setHovered(null)}>ช่วยเหลือ</a>
           </div>
 
