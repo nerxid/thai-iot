@@ -1,0 +1,41 @@
+.person-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    text-align: center;
+}
+
+.person-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+}
+
+.person-card .card-body {
+    padding: 30px 20px;
+}
+
+.person-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.25rem;
+    border: 5px solid #EFF6FF;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    object-position: center top; 
+}
+
+.person-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #1F2937;
+    margin: 0;
+}
+
+.person-title {
+    color: #3B82F6;
+    font-weight: 600;
+    font-size: 0.95rem;
+}

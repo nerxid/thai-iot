@@ -1,0 +1,94 @@
+
+.register-page-container {
+    background-color: #cde4ff; 
+    min-height: 100vh;
+    padding: 80px 0;
+}
+
+.membership-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    transition: all 0.3s ease-in-out;
+    background-color: #ffffff;
+    overflow: hidden; 
+}
+
+.membership-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.membership-card.featured {
+    background: linear-gradient(135deg, #2196F3 0%, #17a2b8 100%);
+    color: #ffffff;
+}
+
+.membership-card.featured .card-title,
+.membership-card.featured .card-subtitle,
+.membership-card.featured .price-display,
+.membership-card.featured .lifetime-price,
+.membership-card.featured .benefit-text,
+.membership-card.featured .benefit-header {
+    color: #ffffff;
+}
+
+.membership-card.featured .benefit-icon-check {
+    color: #ffffff;
+}
+
+.membership-card .price-display {
+    color: #2196F3;
+}
+
+.featured-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 6px 16px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    border-radius: 0 20px 0 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-select-plan {
+    border-radius: 15px;
+    padding: 12px 24px;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.membership-card:not(.featured) .btn-select-plan {
+    background: linear-gradient(135deg, #2196F3, #17a2b8);
+    color: white;
+}
+.membership-card:not(.featured) .btn-select-plan:hover {
+    opacity: 0.9;
+}
+
+.membership-card.featured .btn-select-plan {
+    background: rgba(255, 255, 255, 0.95);
+    color: #2196F3;
+}
+.membership-card.featured .btn-select-plan:hover {
+    background: white;
+    transform: scale(1.05);
+}
+
+.benefit-icon-check {
+    color: #4CAF50;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+.benefit-icon-cross {
+    color: #FF5252;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+.benefit-text.strikethrough {
+    text-decoration: line-through;
+    opacity: 0.7;
+}

@@ -1,0 +1,154 @@
+/* === General Page Styles === */
+.about-us-page .section {
+    padding: 80px 0;
+}
+
+.about-us-page .section-title {
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 1rem;
+}
+
+.about-us-page .section-subtitle {
+    color: #3B82F6;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* === Page Header Section === */
+.about-page-header {
+    background-color: #EFF6FF;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.about-page-header .header-title {
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: #1e3a8a;
+}
+
+@media (min-width: 768px) {
+    .about-page-header .header-title {
+        font-size: 3.5rem;
+    }
+}
+
+/* === Association Info Section === */
+.info-card {
+    border: none;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    background-color: white;
+}
+
+.image-grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.grid-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+.grid-image:hover {
+    transform: scale(1.05);
+}
+
+/* === Vision Section === */
+.vision-section {
+    background-color: #EFF6FF;
+}
+
+.vision-section .lead {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.vision-image {
+    border-radius: 20px;
+}
+
+
+/* === Mission Section === */
+.mission-row {
+    margin-bottom: 5rem;
+}
+.mission-row:last-child {
+    margin-bottom: 0;
+}
+
+.mission-content {
+    padding: 1rem;
+}
+@media (min-width: 992px) {
+    .mission-content {
+        padding: 2rem;
+    }
+}
+
+.mission-icon {
+    font-size: 2.5rem;
+    color: #3B82F6;
+    margin-bottom: 1rem;
+    display: inline-block;
+    padding: 20px;
+    background-color: #EFF6FF;
+    border-radius: 20px;
+}
+
+.mission-image {
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+
+/* === Mobile Specific Styles (REVISED) === */
+@media (max-width: 991px) {
+    .mission-content, .info-card, .vision-section {
+        text-align: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .about-us-page .section {
+        padding: 60px 0;
+    }
+    
+    .about-page-header {
+        padding: 60px 20px;
+    }
+
+    .about-page-header .header-title {
+        font-size: 2rem;
+    }
+
+    .vision-section .lead {
+        font-size: 1.25rem;
+    }
+
+    .mission-row {
+        margin-bottom: 4rem;
+    }
+
+    .image-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .image-grid-container {
+        grid-template-columns: 1fr;
+    }
+}

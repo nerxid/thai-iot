@@ -1,32 +1,41 @@
-.custom-pagination .page-item .page-link {
-  
-  background-color: transparent;
-  border: none;
-  
-  border-radius: 8px; 
-  margin: 0 4px;
-  color: #6B7280;
-  font-weight: 500;
-  transition: background-color 0.2s ease-in-out;
+.news-list-page {
+    background-color: #F9FAFB;
+    padding: 80px 0;
 }
 
+.news-list-header {
+    margin-bottom: 4rem;
+}
+
+.news-list-header h1 {
+    color: #111827;
+}
+
+.custom-pagination .page-item .page-link {
+    background-color: transparent;
+    border: none;
+    border-radius: 8px; 
+    margin: 0 4px;
+    color: #6B7280;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
 
 .custom-pagination .page-item.active .page-link {
-  background-color: #3B82F6;
-  color: white;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    background-color: #3B82F6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
 }
 
-
 .custom-pagination .page-item:not(.active) .page-link:hover {
-  background-color: #F3F4F6; 
-  color: #1F2937;
+    background-color: #F3F4F6; 
+    color: #1F2937;
 }
 
 .custom-pagination .page-item.active .page-link:hover {
-  background-color: #2563EB; 
+    background-color: #2563EB; 
 }
-
 
 .custom-pagination .page-item:first-child .page-link,
 .custom-pagination .page-item:last-child .page-link {

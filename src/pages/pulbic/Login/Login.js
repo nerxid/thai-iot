@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./Login.css";
 import logo from "../../../assets/images/Logo/thaiiot.png";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [focusedField, setFocusedField] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,74 +13,67 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center min-vh-100 " style={{
-   backgroundColor: "#cde4ff"
-  }}>
-      <div className="bg-white rounded-4 shadow-lg p-5 w-100" style={{ maxWidth: "420px", position: "relative" }}>
+    <div className="login-container d-flex align-items-center justify-content-center">
+      <div className="login-card bg-white rounded-4 shadow-lg w-100 mx-3 mx-md-0 p-4 p-md-5">
         
-        {/* Logo */}
+        <div className="decorative-circle decorative-circle-1"></div>
+        <div className="decorative-circle decorative-circle-2"></div>
+        
         <div className="text-center mb-4">
-          <div className="LOGOO" >
-            <img
-              src="logo"
-              srcSet={logo}
-              alt="Logo"
-              className="img-fluid"
-              style={{ width: "80px", height: "80px" }} />
-          </div>
+          <img
+            src={logo} 
+            alt="Logo"
+            className="img-fluid mb-3"
+            style={{ width: "80px", height: "80px" }}
+          />
           <h2 className="fw-semibold text-dark">เข้าสู่ระบบ</h2>
           <p className="text-secondary">ยินดีต้อนรับกลับมา</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <input
               type="email"
-              className={`form-control rounded-3 ${focusedField === "email" ? "border-primary" : ""}`}
+              className="form-control rounded-3 py-2" 
               placeholder="อีเมล"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => setFocusedField("email")}
-              onBlur={() => setFocusedField("")}
+              required
             />
           </div>
 
-          <div className="mb-2" >
+          <div className="mb-3">
             <input
               type="password"
-              className={`form-control rounded-3 ${focusedField === "password" ? "border-primary" : ""}`}
+              className="form-control rounded-3 py-2"
               placeholder="รหัสผ่าน"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => setFocusedField("password")}
-              onBlur={() => setFocusedField("")}
+              required
             />
-          </div> 
-          <div className="d-flex justify-content-between align-items-center mb-3">
+          </div>
 
-            <div className="mb-2" style={{ marginRight: "10px" }}>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="form-check">
               <input
                 type="checkbox"
                 className="form-check-input"
-                id="rememberMe" >
-                </input>
-                <label className="form-check-label ms-2" htmlFor="rememberMe"> จดจำฉัน</label>
+                id="rememberMe"
+              />
+              <label className="form-check-label" htmlFor="rememberMe">
+                จดจำฉัน
+              </label>
             </div>
-
-          <a href="/forgotpassword" className="text-primary fw-semibold text-decoration-none">
-            ลืมรหัสผ่าน ?  
+            <a href="/forgotpassword" className="text-primary fw-semibold text-decoration-none small">
+              ลืมรหัสผ่าน?
             </a>
           </div>
 
-          <a href="/" className="btn btn-primary w-100 rounded-3 shadow-sm fw-semibold">
-           เข้าสู่ระบบ
-          </a>
+          <button type="submit" className="btn btn-primary w-100 rounded-3 shadow-sm fw-semibold py-2">
+            เข้าสู่ระบบ
+          </button>
         </form>
 
-       
-
-        {/* Footer */}
         <div className="text-center mt-4 pt-3 border-top">
           <p className="text-secondary mb-0">
             ยังไม่มีบัญชี?{" "}
@@ -90,34 +82,6 @@ const Login = () => {
             </a>
           </p>
         </div>
-
-        
-        <div
-          style={{
-            position: "absolute",
-            top: "-20px",
-            right: "-20px",
-            width: "40px",
-            height: "40px",
-            background: "linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)",
-            borderRadius: "50%",
-            opacity: "0.1",
-            zIndex: "-1",
-          }}
-        ></div>
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-30px",
-            left: "-30px",
-            width: "60px",
-            height: "60px",
-            background: "linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%)",
-            borderRadius: "50%",
-            opacity: "0.08",
-            zIndex: "-1",
-          }}
-        ></div>
       </div>
     </div>
   );

@@ -5,9 +5,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import PublicLayout from './layouts/PublicLayout';
 import AdminLayout from './layouts/AdminLayout';
+import ScrollToTop from './components/ScrollToTop';
 
 // --- Public Pages ---
-import Home from './pages/pulbic/Home';
+import Home from './pages/pulbic/home/Home';
 import Login from './pages/pulbic/Login/Login';
 import Register from './pages/pulbic/Register/Register';
 import Forgot from './pages/pulbic/Login/ForgotPassword';
@@ -15,9 +16,9 @@ import NewsListPage from './pages/pulbic/News/NewsListPage';
 import NewsDetailPage from './pages/pulbic/News/NewsDetailPage';
 import EventsPage from './pages/pulbic/Even/EventsPage';
 import EventDetailPage from './pages/pulbic/Even/EventDetailPage';
-import AboutUsPage from './pages/pulbic/AboutUsPage';
-import CommitteePage from './pages/pulbic/CommitteePage';
-import ContactPage from './pages/pulbic/ContactPage';
+import AboutUsPage from './pages/pulbic/About/AboutUsPage';
+import CommitteePage from './pages/pulbic/CommitteePage/CommitteePage';
+import ContactPage from './pages/pulbic/Contact/ContactPage';
 
 // --- Admin Pages ---
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -25,6 +26,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 function App() {
   return (
     <Router>
+      <ScrollToTop /> 
       <Routes>
 
         {/* Public Routes */}

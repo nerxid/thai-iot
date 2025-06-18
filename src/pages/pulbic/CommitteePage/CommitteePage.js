@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import PersonCard from '../../components/PersonCard';
+import PersonCard from '../../../components/PersonCard';
+import './CommitteePage.css';
 
 const CommitteePage = () => {
 
@@ -20,59 +21,47 @@ const CommitteePage = () => {
         { name: "นายธนัทเมศร์ โชติกีรติศาสตร์", title: "กรรมการบริหารและประชาสัมพันธ์", tier: 5, imageUrl: "https://www.thaiiot.org/wp-content/uploads/2024/03/S__10453048.jpg" },
     ];
 
-    const styles = {
-        pageHeader: {
-            backgroundColor: '#EFF6FF',
-            padding: '80px 0',
-            textAlign: 'center',
-            marginBottom: '60px',
-        },
-        headerTitle: {
-            fontWeight: 'bold',
-            fontSize: '3.5rem',
-            color: '#1e3a8a',
-        },
-    };
-    
+    const renderTier = (tier) => committeeData.filter(p => p.tier === tier);
 
     return (
-        <div style={{ paddingBottom: '60px' }}>
-            <div style={styles.pageHeader}>
+        <div className="committee-page-container">
+            <header className="committee-page-header">
                 <Container>
-                    <h1 style={styles.headerTitle}>คณะกรรมการสมาคมไทยไอโอที</h1>
-                    <p className="lead text-muted">
-                        วาระปี 2567 - 2569
-                    </p>
+                    <h1 className="header-title">คณะกรรมการสมาคมไทยไอโอที</h1>
+                    <p className="lead text-secondary">วาระปี 2567 - 2569</p>
                 </Container>
-            </div>
+            </header>
             
             <Container>
-                {/* --- Tier 1: นายกสมาคม --- */}
-                <Row className="justify-content-center mb-5">
-                    <Col lg={4} md={6}>
-                        <PersonCard person={committeeData.find(p => p.tier === 1)} />
-                    </Col>
-                </Row>
+                <div className="tier-group">
+                    <Row className="justify-content-center">
+                        <Col lg={4} md={6} sm={8} xs={10}>
+                            <PersonCard person={renderTier(1)[0]} />
+                        </Col>
+                    </Row>
+                </div>
                 
-                <hr className="my-5" />
+                <hr className="tier-divider" />
 
-                {/* --- Tier 2: อุปนายกสมาคม --- */}
-                <Row className="justify-content-center g-4 mb-5">
-                    {committeeData.filter(p => p.tier === 2).map((person, index) => (
-                        <Col lg={4} md={6} key={index}>
-                            <PersonCard person={person} />
-                        </Col>
-                    ))}
-                </Row>
+                <div className="tier-group">
+                    <Row className="justify-content-center g-4">
+                        {renderTier(2).map((person, index) => (
+                            <Col lg={4} md={6} key={index}>
+                                <PersonCard person={person} />
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
 
-                {/* --- Tier 3-5: กรรมการบริหาร --- */}
-                <Row className="g-4">
-                    {committeeData.filter(p => p.tier >= 3).map((person, index) => (
-                        <Col lg={4} md={6} key={index} className="mb-4">
-                            <PersonCard person={person} />
-                        </Col>
-                    ))}
-                </Row>
+                <div className="tier-group">
+                    <Row className="g-4">
+                        {committeeData.filter(p => p.tier >= 3).map((person, index) => (
+                            <Col lg={4} md={6} key={index} className="d-flex align-items-stretch">
+                                <PersonCard person={person} />
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
             </Container>
         </div>
     );

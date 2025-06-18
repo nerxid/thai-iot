@@ -1,0 +1,138 @@
+.events-page {
+    background-color: #f8f9fa;
+    padding: 60px 0;
+}
+
+.events-page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.events-page-header h1 {
+    font-weight: 700;
+    color: #111827;
+}
+
+.calendar-container {
+    height: 85vh;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+@media (min-width: 768px) {
+    .calendar-container {
+        padding: 1.5rem;
+    }
+}
+
+.event-list-container {
+    padding-top: 4rem;
+    margin-top: 4rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.rbc-toolbar {
+    margin-bottom: 1.5rem !important;
+}
+
+.rbc-toolbar .rbc-btn-group button {
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.rbc-toolbar .rbc-btn-group button:hover,
+.rbc-toolbar .rbc-btn-group button:focus {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+    box-shadow: none;
+}
+
+.rbc-toolbar button.rbc-active {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: white;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.rbc-event, .rbc-day-slot .rbc-background-event {
+    background-color: #3b82f6 !important;
+    border-color: #2563eb !important;
+    border-radius: 4px;
+}
+
+.rbc-day-bg.rbc-today {
+    background-color: #e3f2fd;
+}
+
+.rbc-header {
+    padding: 0.75rem 0;
+    font-weight: 500;
+}
+
+.custom-pagination .page-item .page-link {
+    background-color: transparent;
+    border: none;
+    border-radius: 8px; 
+    margin: 0 4px;
+    color: #6B7280;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: #3B82F6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+.custom-pagination .page-item:not(.active) .page-link:hover {
+    background-color: #F3F4F6; 
+    color: #1F2937;
+}
+
+/* === Mobile Calendar Styles (REVISED) === */
+@media (max-width: 767px) {
+    .calendar-container {
+        padding: 0.5rem;
+    }
+
+    .rbc-toolbar {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .rbc-toolbar .rbc-toolbar-label {
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .rbc-toolbar .rbc-btn-group {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .rbc-toolbar .rbc-btn-group button {
+        flex-basis: 0;
+        flex-grow: 1;
+        font-size: 0.75rem;
+        padding: 0.5rem 0.25rem;
+    }
+    
+    .rbc-header {
+        font-size: 0.75rem;
+    }
+
+    .rbc-month-view, .rbc-time-view, .rbc-agenda-view {
+        font-size: 0.8rem;
+    }
+
+    .rbc-agenda-table a {
+        font-size: 0.9rem;
+    }
+}
