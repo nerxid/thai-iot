@@ -1,0 +1,56 @@
+.my-events-page {
+    background-color: #f8f9fa;
+    padding: 60px 0 80px 0;
+}
+
+.page-header-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-header-section h1 {
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.section-title {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.upcoming-events-section,
+.past-events-section {
+    margin-bottom: 4rem;
+}
+
+.calendar-wrapper {
+    height: 80vh;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+.calendar-wrapper .rbc-toolbar button {
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+.calendar-wrapper .rbc-toolbar button.rbc-active {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: white;
+}
+.calendar-wrapper .rbc-event {
+    background-color: #198754 !important; 
+    border-color: #146c43 !important;
+}
+
+@media (max-width: 767px) {
+    .calendar-wrapper {
+        height: 70vh;
+        padding: 0.75rem;
+    }
+}

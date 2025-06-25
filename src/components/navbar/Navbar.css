@@ -33,6 +33,8 @@
     padding: 0.5rem 1.25rem !important;
     transition: all 0.3s ease;
     margin-left: 2rem;
+    white-space: nowrap;
+    cursor: pointer;
 }
 
 .btn-login {
@@ -48,6 +50,114 @@
     background-color: #1d4ed8 !important;
 }
 
+.user-menu-dropdown .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    color: #1e3a8a !important;
+    font-weight: 600;
+    background-color: #e0f2fe;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-left: 2rem;
+}
+.user-menu-dropdown .dropdown-toggle::after {
+    margin-left: 0.5rem;
+}
+.user-menu-dropdown .dropdown-menu {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+}
+
+/* === Notification Bell Styles (Desktop & Mobile) === */
+.notification-dropdown .dropdown-toggle {
+    background: none !important;
+    border: none !important;
+    color: #1e3a8a !important;
+    padding: 0.5rem;
+    position: relative;
+}
+
+.notification-dropdown .dropdown-toggle::after {
+    display: none; /* Hide default arrow */
+}
+
+.notification-bell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-dot {
+    position: absolute;
+    font-size: 0.65em;
+    padding: 0.3em 0.5em;
+    border: 2px solid white;
+}
+
+.notification-dot:not(.mobile) {
+    top: -5px;
+    right: -8px;
+}
+.notification-dot.mobile {
+    top: 0px;
+    right: 0px;
+}
+
+.notification-dropdown .dropdown-menu {
+    width: 320px;
+    padding: 0;
+    margin-top: 15px !important;
+}
+
+.notification-header, .notification-footer {
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    color: #333;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.notification-footer {
+    font-weight: 500;
+    color: #1e3a8a;
+}
+.notification-footer:hover {
+    background-color: #e9ecef;
+}
+
+/* === NEW NOTIFICATION ITEM STYLE === */
+.notification-item {
+    padding: 0.75rem 1.25rem;
+    white-space: normal;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f1f1f1;
+    transition: background-color 0.2s ease;
+}
+.notification-item:last-of-type {
+    border-bottom: none;
+}
+
+/* UNREAD: Light blue background */
+.notification-item.unread {
+    background-color: #F0F8FF; /* AliceBlue - สีฟ้าอ่อน */
+    font-weight: 500;
+    color: #1e3a8a;
+}
+
+/* READ: White/Transparent background */
+.notification-item.read {
+    background-color: #ffffff;
+    color: #6c757d; /* สีเทา */
+}
+
+.notification-item:hover {
+    background-color: #e9ecef; /* สีเทาเข้มขึ้นเล็กน้อยตอน Hover */
+}
+
+
+/* === Responsive Mobile Menu Styles === */
 @media (max-width: 991.98px) {
     .navbar-collapse.show, .navbar-collapse.collapsing {
         background-color: #ffffff;
@@ -62,5 +172,37 @@
         margin-top: 0.5rem;
         width: 100%;
         text-align: center;
+    }
+
+    .user-menu-dropdown {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .user-menu-dropdown .dropdown-toggle {
+        margin-left: 0;
+        justify-content: center;
+    }
+    
+    .mobile-menu-divider {
+        margin: 0.75rem 0;
+        border-color: rgba(0,0,0,0.08);
+    }
+
+    .mobile-user-link {
+        display: flex !important;
+        align-items: center;
+        padding: 0.75rem 0.5rem !important;
+        font-size: 1rem !important;
+        font-weight: 500;
+    }
+    
+    .mobile-user-link .badge {
+        margin-left: auto;
+    }
+
+    .mobile-user-link.text-danger, .mobile-user-link.text-danger:hover {
+        color: #dc3545 !important;
+        font-weight: bold;
     }
 }

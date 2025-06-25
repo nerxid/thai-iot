@@ -1,28 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Pagination } from 'react-bootstrap';
-import { Calendar, momentLocalizer, Views } from 'react-big-calendar'; 
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/th';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { rawEventsData } from '../../../data/mock-events';
+import { useAuth } from '../../../context/AuthContext';
 import EventCard from '../../../components/EventCard';
 import './EventsPage.css';
 
 moment.locale('th');
 const localizer = momentLocalizer(moment);
 
-const eventsForCalendar = rawEventsData.map(event => ({
-    ...event,
-    start: new Date(event.start),
-    end: new Date(event.end), 
-}));
-
 const EventsPage = () => {
     const navigate = useNavigate();
-    
+    const { user } = useAuth(); 
+
+    const filteredEvents = useMemo(() => {
+        return rawEventsData.filter(event => {
+            if (event.type === 'booth') {
+                // ถ้าเป็นงาน Booth ต้อง login และเป็น corporate เท่านั้น
+                return user && user.memberType === 'corporate';
+            }
+            return true; // กิจกรรมอื่นแสดงทั้งหมด
+        });
+    }, [user]);
+
+    const eventsForCalendar = filteredEvents.map(event => ({
+        ...event,
+        start: new Date(event.start),
+        end: new Date(event.end),
+    }));
+
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [currentView, setCurrentView] = useState(Views.MONTH); 
+    const [currentView, setCurrentView] = useState(Views.MONTH);
 
     useEffect(() => {
         const handleResize = () => {
@@ -40,7 +52,7 @@ const EventsPage = () => {
     const handleSelectEvent = (event) => {
         navigate(`/events/${event.id}`);
     };
-    
+
     const handleNavigate = (newDate) => {
         setCurrentDate(newDate);
     };
@@ -53,8 +65,8 @@ const EventsPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-    const currentCardItems = rawEventsData.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(rawEventsData.length / ITEMS_PER_PAGE);
+    const currentCardItems = filteredEvents.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredEvents.length / ITEMS_PER_PAGE);
 
     const handlePageChange = (pageNumber) => {
         if (pageNumber < 1 || pageNumber > totalPages) return;
@@ -95,8 +107,8 @@ const EventsPage = () => {
                         onSelectEvent={handleSelectEvent}
                         date={currentDate}
                         onNavigate={handleNavigate}
-                        view={currentView}          
-                        onView={handleViewChange}  
+                        view={currentView}
+                        onView={handleViewChange}
                     />
                 </div>
 
@@ -105,7 +117,7 @@ const EventsPage = () => {
                         <h2>รายการกิจกรรมทั้งหมด</h2>
                     </div>
                     <Row xs={1} md={2} lg={3} className="g-4 g-lg-5">
-                        {currentCardItems.map(event => (
+                        {currentCardItems.map(event => ( 
                             <Col key={event.id}>
                                 <EventCard
                                     id={event.id}

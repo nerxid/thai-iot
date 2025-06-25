@@ -1,0 +1,76 @@
+.event-reg-page-container {
+    background-color: #f0f4f8; 
+    padding: 40px 0 80px 0;
+}
+
+.event-reg-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    max-width: 900px;
+    margin: 1rem auto;
+}
+
+@media (min-width: 768px) {
+    .event-reg-card {
+        padding: 2.5rem;
+    }
+}
+
+.event-reg-title {
+    text-align: center;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 2rem;
+}
+
+.form-section {
+    padding: 2rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+.form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.form-section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+}
+
+.event-details-content ul {
+    padding-left: 1.5rem;
+}
+.event-details-content p, .event-details-content li {
+    color: #495057;
+}
+
+.poster-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; 
+}
+
+.poster-image {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    padding-top: 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}

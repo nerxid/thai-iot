@@ -5,16 +5,6 @@
     overflow: hidden;
 }
 
-.modal-header {
-    border-bottom: none;
-}
-
-.modal-footer {
-    border-top: none;
-    background-color: #ffffff; 
-}
-
-
 .confirmation-modal-body {
     padding: 2.5rem;
     background-color: #fff;
@@ -42,11 +32,17 @@
 }
 
 .confirmation-next-steps {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: #fff9e6; 
+    border: 1px solid #ffeeba; 
     border-radius: 10px;
     padding: 1rem;
     font-size: 0.95rem;
-    text-align: left;
-    color: #212529;
+    text-align: center;
+    color: #664d03;
+}
+
+.confirmation-btn {
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 8px;
 }

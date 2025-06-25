@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import './MembershipForm.css';
 
 const StudentMemberForm = () => {
+    const navigate = useNavigate(); 
     const [formData, setFormData] = useState({ prefix: '', firstName: '', lastName: '', unitName: '', phone: '', email: '', lineId: '', acceptNews: false, });
-    const handleChange = (e) => { const { name, value, type, checked } = e.target; if (name === 'phone') { const numericValue = value.replace(/\D/g, ''); setFormData(prev => ({ ...prev, [name]: numericValue.slice(0, 10), })); } else { setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value, })); } };
-    const handleSubmit = (e) => { e.preventDefault(); console.log('Submitting Student Member Data:', formData); alert('ส่งข้อมูลการสมัครสมาชิกเรียบร้อย!'); };
+    const [customPrefix, setCustomPrefix] = useState(''); 
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        if (name === 'phone') {
+            const numericValue = value.replace(/\D/g, '');
+            setFormData(prev => ({ ...prev, [name]: numericValue.slice(0, 10) }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const dataToSend = { ...formData };
+        if (formData.prefix === 'อื่นๆ') {
+            dataToSend.prefix = customPrefix;
+        }
+        console.log('Submitting Student Member Data:', dataToSend);
+        alert('ส่งข้อมูลการสมัครสมาชิกเรียบร้อย!');
+        navigate('/');
+    };
 
     return (
         <div className="card p-4 p-md-5 border-0 shadow-lg membership-form-card">
@@ -14,7 +35,22 @@ const StudentMemberForm = () => {
                 <p className="card-subtitle text-center text-muted mb-5">กรุณากรอกข้อมูลให้ครบถ้วน</p>
                 <form onSubmit={handleSubmit}>
                     <div className="row g-4">
-                        <div className="col-md-4"> <label htmlFor="prefix" className="form-label">คำนำหน้า*</label> <select id="prefix" name="prefix" className="form-select" value={formData.prefix} onChange={handleChange} required> <option value="">เลือก...</option> <option value="นาย">นาย</option> <option value="นาง">นาง</option> <option value="นางสาว">นางสาว</option> </select> </div>
+                        <div className="col-md-4">
+                            <label htmlFor="prefix-stu" className="form-label">คำนำหน้า*</label>
+                            <select id="prefix-stu" name="prefix" className="form-select" value={formData.prefix} onChange={handleChange} required>
+                                <option value="">เลือก...</option>
+                                <option value="นาย">นาย</option>
+                                <option value="นาง">นาง</option>
+                                <option value="นางสาว">นางสาว</option>
+                                <option value="อื่นๆ">อื่นๆ...</option>
+                            </select>
+                        </div>
+                        {formData.prefix === 'อื่นๆ' && (
+                            <div className="col-md-4">
+                                <label htmlFor="custom-prefix-stu" className="form-label">ระบุคำนำหน้า*</label>
+                                <input type="text" id="custom-prefix-stu" className="form-control" value={customPrefix} onChange={(e) => setCustomPrefix(e.target.value)} placeholder="เช่น ดร., ผศ." required />
+                            </div>
+                        )}
                         <div className="col-md-4"> <label htmlFor="firstName" className="form-label">ชื่อ*</label> <input type="text" id="firstName" name="firstName" className="form-control" value={formData.firstName} onChange={handleChange} required /> </div>
                         <div className="col-md-4"> <label htmlFor="lastName" className="form-label">นามสกุล*</label> <input type="text" id="lastName" name="lastName" className="form-control" value={formData.lastName} onChange={handleChange} required /> </div>
                         <div className="col-12"> <label htmlFor="unitName" className="form-label">ชื่อหน่วยงาน/สถาบันการศึกษา*</label> <input type="text" id="unitName" name="unitName" className="form-control" placeholder="เช่น คณะวิศวกรรมศาสตร์, โรงเรียน..." value={formData.unitName} onChange={handleChange} required /> </div>

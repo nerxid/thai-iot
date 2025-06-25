@@ -1,13 +1,29 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Container, Row, Col, Image, Breadcrumb, Card } from 'react-bootstrap';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { Container, Row, Col, Image, Breadcrumb, Card, Button } from 'react-bootstrap';
+import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
+import { useAuth } from '../../../context/AuthContext';
 import { rawEventsData } from '../../../data/mock-events';
 import './EventDetailPage.css';
 
 const EventDetailPage = () => {
     const { eventId } = useParams();
-    const event = rawEventsData.find(item => item.id.toString() === eventId);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { user, isLoggedIn, isRegisteredForEvent, unregisterFromEvent } = useAuth();
 
+    const event = rawEventsData.find(item => item.id.toString() === eventId);
+    
+    if (event && event.type === 'booth' && (!user || user.memberType !== 'corporate')) {
+        return (
+            <Container className="my-5 text-center">
+                <h2>403 - ไม่มีสิทธิ์เข้าถึง</h2>
+                <p>ขออภัย กิจกรรมนี้สงวนสิทธิ์สำหรับสมาชิกประเภทนิติบุคคลเท่านั้น</p>
+                <Link to="/events" className="btn btn-primary">กลับสู่หน้ารวมกิจกรรม</Link>
+            </Container>
+        );
+    }
+    
     if (!event) {
         return (
             <Container className="my-5 text-center">
@@ -18,8 +34,71 @@ const EventDetailPage = () => {
         );
     }
 
-    const otherEvents = rawEventsData.filter(item => item.id.toString() !== eventId).slice(0, 3);
+    const eventEndDate = new Date(event.end).setHours(23, 59, 59, 999);
+    const isPastEvent = eventEndDate < new Date();
+    const isRegistered = isRegisteredForEvent(event.id);
+
+    const handleRegisterClick = () => {
+        if (!isLoggedIn) {
+            navigate('/login', { state: { from: location } });
+            return;
+        }
+        navigate(`/events/${event.id}/register`);
+    };
+
+    const handleUnregisterClick = () => {
+        if (window.confirm(`คุณต้องการยกเลิกการลงทะเบียนกิจกรรม "${event.title}" ใช่หรือไม่?`)) {
+            unregisterFromEvent(event.id);
+            alert('คุณได้ยกเลิกการลงทะเบียนเรียบร้อยแล้ว');
+        }
+    };
+
+    const otherEvents = rawEventsData.filter(item => 
+        item.id.toString() !== eventId && 
+        (item.type !== 'booth' || (user && user.memberType === 'corporate'))
+    ).slice(0, 3);
+    
     const eventStartDate = new Date(event.start);
+
+    const renderActionButton = () => {
+        if (isPastEvent) {
+            return (
+                <div className="registration-status-badge past-event">
+                    <XCircleFill size={20} className="me-2" />
+                    กิจกรรมนี้สิ้นสุดแล้ว
+                </div>
+            );
+        }
+
+        if (isRegistered) {
+            return (
+                <div className="registration-actions">
+                    <div className="registration-status-badge registered">
+                        <CheckCircleFill size={20} className="me-2" />
+                        คุณได้ลงทะเบียนแล้ว
+                    </div>
+                    <Button variant="outline-danger" className="cancel-button" onClick={handleUnregisterClick}>
+                        ยกเลิกการลงทะเบียน
+                    </Button>
+                </div>
+            );
+        }
+
+        const isBoothEvent = event.type === 'booth';
+        let buttonText = 'เข้าร่วมกิจกรรม';
+        if (isBoothEvent) {
+            buttonText = 'เข้าร่วมออกบูธ';
+        }
+        if (!isLoggedIn) {
+            buttonText = 'เข้าสู่ระบบเพื่อเข้าร่วม';
+        }
+        
+        return (
+            <Button variant="primary" size="lg" className="w-100 action-button" onClick={handleRegisterClick}>
+                {buttonText}
+            </Button>
+        );
+    };
 
     return (
         <div className="event-detail-page">
@@ -41,7 +120,11 @@ const EventDetailPage = () => {
                             </header>
 
                             <Image src={event.fullImageUrl} fluid rounded className="mb-4 shadow-sm event-image" />
-                            <div className="event-content-body" dangerouslySetInnerHTML={{ __html: event.content }} />
+                            <div className="event-content-body" dangerouslySetInnerHTML={{ __html: event.content || event.details }} />
+
+                            <div className="action-button-container">
+                                {renderActionButton()}
+                            </div>
                         </div>
 
                         {otherEvents.length > 0 && (

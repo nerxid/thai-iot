@@ -1,0 +1,26 @@
+.modal-content {
+    border-radius: 20px !important;
+    border: none;
+}
+.confirmation-modal-body {
+    padding: 2.5rem;
+}
+.confirmation-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+.icon-success {
+    color: #198754;
+}
+.icon-warning {
+    color: #ffc107;
+}
+.confirmation-title {
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 0.75rem;
+}
+.confirmation-text {
+    font-size: 1.1rem;
+    color: #495057;
+}

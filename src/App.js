@@ -1,11 +1,13 @@
-
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext'; 
+
 
 import PublicLayout from './layouts/PublicLayout';
 import AdminLayout from './layouts/AdminLayout';
 import ScrollToTop from './components/ScrollToTop';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // --- Public Pages ---
 import Home from './pages/pulbic/home/Home';
@@ -19,39 +21,49 @@ import EventDetailPage from './pages/pulbic/Even/EventDetailPage';
 import AboutUsPage from './pages/pulbic/About/AboutUsPage';
 import CommitteePage from './pages/pulbic/CommitteePage/CommitteePage';
 import ContactPage from './pages/pulbic/Contact/ContactPage';
+import ProfilePage from './pages/pulbic/ProfilePage/ProfilePage';
+import ChangePlanPage from './pages/pulbic/ProfilePage/ChangePlanPage/ChangePlanPage';
+import MyEventsPage from './pages/pulbic/MyEventsPage/MyEventsPage'
+import EventRegistrationPage from './pages/pulbic/EventRegistrationPage/EventRegistrationPage';
+import ChangePasswordPage from './pages/pulbic/ProfilePage/ChangePasswordPage/ChangePasswordPage';
 
 // --- Admin Pages ---
 import AdminDashboard from './pages/admin/AdminDashboard';
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop /> 
-      <Routes>
+    <AuthProvider>
+      <Router>
+        <ScrollToTop /> 
+        <Routes>
 
-        {/* Public Routes */}
-        <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />     
-        <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
-        <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
-        <Route path="/register/:memberType" element={<PublicLayout><Register /></PublicLayout>} />
-        <Route path="/ForgotPassword" element={<PublicLayout><Forgot /></PublicLayout>} />
-        <Route path="/news" element={<PublicLayout><NewsListPage /></PublicLayout>} />
-        <Route path="/news/:newsId" element={<PublicLayout><NewsDetailPage /></PublicLayout>} />
-        <Route path="/events" element={<PublicLayout><EventsPage /></PublicLayout>} />
-        <Route path="/events/:eventId" element={<PublicLayout><EventDetailPage /></PublicLayout>} />
-        <Route path="/about" element={<PublicLayout><AboutUsPage /></PublicLayout>} />
-        <Route path="/committee" element={<PublicLayout><CommitteePage /></PublicLayout>} />
-        <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
-        
-        
+          {/* Public Routes with PublicLayout */}
+          <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+          <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
+          <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
+          <Route path="/register/:memberType" element={<PublicLayout><Register /></PublicLayout>} />
+          <Route path="/ForgotPassword" element={<PublicLayout><Forgot /></PublicLayout>} />
+          <Route path="/news" element={<PublicLayout><NewsListPage /></PublicLayout>} />
+          <Route path="/news/:newsId" element={<PublicLayout><NewsDetailPage /></PublicLayout>} />
+          <Route path="/events" element={<PublicLayout><EventsPage /></PublicLayout>} />
+          <Route path="/events/:eventId" element={<PublicLayout><ProtectedRoute><EventDetailPage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/about" element={<PublicLayout><AboutUsPage /></PublicLayout>} />
+          <Route path="/committee" element={<PublicLayout><CommitteePage /></PublicLayout>} />
+          <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
+          <Route path="/events/:eventId/register" element={<PublicLayout><ProtectedRoute><EventRegistrationPage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/profile" element={<PublicLayout><ProtectedRoute><ProfilePage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/my-events" element={<PublicLayout><ProtectedRoute><MyEventsPage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/change-password" element={<PublicLayout><ProtectedRoute><ChangePasswordPage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/change-plan/:memberType" element={<PublicLayout><ProtectedRoute><ChangePlanPage /></ProtectedRoute></PublicLayout>} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        
 
-      </Routes>
-    </Router>
+          {/* Admin Routes with AdminLayout */}
+          <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+          <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+          
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

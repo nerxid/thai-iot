@@ -1,0 +1,49 @@
+
+.membership-form-card {
+    border-radius: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.membership-form-card .form-label {
+    font-weight: 500;
+    color: #343a40;
+}
+
+.membership-form-card .form-control,
+.membership-form-card .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.membership-form-card .form-control:focus,
+.membership-form-card .form-select:focus {
+    border-color: #17a2b8;
+    box-shadow: 0 0 0 0.25rem rgba(23, 162, 184, 0.25);
+}
+
+.membership-form-card .btn-lg {
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+}
+
+.membership-duration-option .form-check-input {
+    display: none;
+}
+
+.membership-duration-option .form-check-label {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.membership-duration-option .form-check-input:checked + .form-check-label {
+    background-color: #e3f2fd;
+    border-color: #17a2b8;
+    color: #0d6efd;
+    box-shadow: 0 4px 15px rgba(23, 162, 184, 0.1);
+}
