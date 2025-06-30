@@ -26,9 +26,11 @@ import ChangePlanPage from './pages/pulbic/ProfilePage/ChangePlanPage/ChangePlan
 import MyEventsPage from './pages/pulbic/MyEventsPage/MyEventsPage'
 import EventRegistrationPage from './pages/pulbic/EventRegistrationPage/EventRegistrationPage';
 import ChangePasswordPage from './pages/pulbic/ProfilePage/ChangePasswordPage/ChangePasswordPage';
+import NotificationsPage from './pages/pulbic/NotificationsPage/NotificationsPage';
+
 
 // --- Admin Pages ---
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDashboard from './pages/admin/Dashboard/AdminDashboard';
 
 function App() {
   return (
@@ -55,6 +57,7 @@ function App() {
           <Route path="/my-events" element={<PublicLayout><ProtectedRoute><MyEventsPage /></ProtectedRoute></PublicLayout>} />
           <Route path="/change-password" element={<PublicLayout><ProtectedRoute><ChangePasswordPage /></ProtectedRoute></PublicLayout>} />
           <Route path="/change-plan/:memberType" element={<PublicLayout><ProtectedRoute><ChangePlanPage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
 
 
           {/* Admin Routes with AdminLayout */}

@@ -1,6 +1,6 @@
 import React from 'react';
-import AdminSidebar from '../components/AdminSidebar';
-import AdminHeader from '../components/AdminHeader';
+import AdminSidebar from '../components/admin/navbar/AdminSidebar';
+import AdminHeader from '../components/admin/navbar/AdminHeader';
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {

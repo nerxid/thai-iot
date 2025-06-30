@@ -46,7 +46,7 @@ const AssociationHomePage = () => {
     const PosterCarousel = () => (
         <section id="poster" className="section">
             <Container>
-                <h2 className="section-title" style={{ justifyContent: 'center', borderBottom: 'none' }}>POSTER</h2>
+                <h2 className="section-title" style={{ justifyContent: 'center', borderBottom: 'none' }}>ประชาสัมพันธ์</h2>
                 <div className="carousel-container">
                     <Carousel indicators={false}>
                         <Carousel.Item><img className="carousel-image" src={P1} alt="First slide" /></Carousel.Item>

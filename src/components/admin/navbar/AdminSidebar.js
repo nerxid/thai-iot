@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './AdminSidebar.css'; 
-import logo from "../assets/images/Logo/thaiiot.png";
+import logo from "../../../assets/images/Logo/thaiiot.png";
 
 
 const AdminSidebar = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
-import { PersonCircle, Bell, BellFill, BoxArrowRight, PersonBadge, Calendar2Check } from 'react-bootstrap-icons';
+import {Bell, BellFill, BoxArrowRight, PersonBadge, Calendar2Check } from 'react-bootstrap-icons';
 import { useAuth } from '../../context/AuthContext';
 import logo from '../../assets/images/Logo/thaiiot.png';
 import './Navbar.css';
@@ -112,7 +112,7 @@ const CustomNavbar = () => {
              <NavDropdown
                 title={
                     <>
-                        <PersonCircle size={22} className="me-2" />
+                        
                         <span>{user.name}</span>
                     </>
                 }

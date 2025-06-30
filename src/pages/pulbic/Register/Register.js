@@ -2,14 +2,14 @@ import React from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Register.css"; 
+import "./Register.css";
 import RegistrationForm from "./RegistrationForm";
 
 const membershipTypes = [
-    { key: "student", title: "สมาชิกวิสามัญ", subtitle: "นักเรียน นิสิต นักศึกษา ครู อาจารย์", price: "ฟรี", lifetimePrice: "", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "ได้สิทธิเข้าร่วมประชาสัมพันธ์กิจการ สินค้า และบริการ", "ลงมติได้ต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา 1 ท่าน"], featured: false, },
-    { key: "general", title: "สมาชิกผู้สนใจทั่วไป", subtitle: "", price: "ฟรี", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "ได้สิทธิเข้าร่วมประชาสัมพันธ์กิจการ สินค้า และบริการ", "✘ ลงมติได้ต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา 1 ท่าน"], featured: false, },
-    { key: "corporate", title: "สมาชิกสามัญ นิติบุคคล", subtitle: "(สำหรับผู้ประกอบการ IoT)", price: "6,420 บาท", unit: "ต่อปี", lifetimePrice: "54,570 บาท ตลอดชีพ", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "ได้สิทธิเข้าร่วมประชาสัมพันธ์กิจการ สินค้า และบริการ", "ลงมติได้ต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา สูงสุด 3 ท่าน"], featured: true, },
-    { key: "individual", title: "สมาชิกสามัญ บุคคลธรรมดา", subtitle: "", price: "2,140 บาท", unit: "ต่อปี", lifetimePrice: "11,770 บาท ตลอดชีพ", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "✘ ได้สิทธิเข้าร่วมประชาสัมพันธ์กิจการ สินค้า และบริการ", "ลงมติได้ต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา 1 ท่าน"], featured: false, },
+    { key: "student", title: "สมาชิกวิสามัญ", subtitle: "นักเรียน นิสิต นักศึกษา ครู อาจารย์", price: "ฟรี", lifetimePrice: "", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "✘ ได้สิทธิ์ประชาสัมพันธ์กิจการ สินค้า และบริการ", "✘ ลงมติต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา 1 ท่าน"], featured: false, },
+    { key: "general", title: "สมาชิกผู้สนใจทั่วไป", subtitle: "", price: "ฟรี", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "✘ ได้สิทธิ์ประชาสัมพันธ์กิจการ สินค้า และบริการ", "✘ ลงมติต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา 1 ท่าน"], featured: false, },
+    { key: "corporate", title: "สมาชิกสามัญ นิติบุคคล", subtitle: "(สำหรับผู้ประกอบการ IoT)", price: "6,420 บาท", unit: "ต่อปี", lifetimePrice: "54,570 บาท ตลอดชีพ", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "ได้สิทธิ์ประชาสัมพันธ์กิจการ สินค้า และบริการ", "ลงมติต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา สูงสุด 3 ท่าน"], featured: false, },
+    { key: "individual", title: "สมาชิกสามัญ บุคคลธรรมดา", subtitle: "", price: "2,140 บาท", unit: "ต่อปี", lifetimePrice: "11,770 บาท ตลอดชีพ", benefits: ["ได้รับข้อมูลข่าวสารเกี่ยวกับ IoT", "✘ ได้สิทธิ์ประชาสัมพันธ์กิจการ สินค้า และบริการ", "ลงมติต่างๆในสมาคม", "เข้าร่วมประชุมสัมมนา 1 ท่าน"], featured: true, },
 ];
 
 const Register = () => {

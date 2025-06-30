@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminHeader.css';
-import user from '../assets/images/Logo/user.png';
+import user from '../../../assets/images/Logo/thaiiot.png';
 
 
 import { BsFillBellFill, BsEnvelopeFill } from 'react-icons/bs';

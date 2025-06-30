@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = (userData) => {
         setIsLoggedIn(true);
-        setUser({ ...userData, currentPlan: 'individual', memberType: 'corporate' }); 
+        setUser({ ...userData, currentPlan: 'corporate', memberType: 'corporate' }); 
         setRegisteredEvents([1, 5]); 
     };
 
