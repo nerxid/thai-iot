@@ -31,6 +31,9 @@ import NotificationsPage from './pages/pulbic/NotificationsPage/NotificationsPag
 
 // --- Admin Pages ---
 import AdminDashboard from './pages/admin/Dashboard/AdminDashboard';
+import ManageHomePage from './pages/admin/ManageHomePage/ManageHomePage';
+import ManageNewsPage from './pages/admin/ManageNews/ManageNewsPage';
+import NewsFormPage from './pages/admin/ManageNews/NewsFormPage';
 
 function App() {
   return (
@@ -63,6 +66,12 @@ function App() {
           {/* Admin Routes with AdminLayout */}
           <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
           <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+          <Route path="/admin/manage-home" element={<AdminLayout><ManageHomePage /></AdminLayout>} />
+          <Route path="/admin/manage-news" element={<AdminLayout><ManageNewsPage /></AdminLayout>} />
+        <Route path="/admin/manage-news/add" element={<AdminLayout><NewsFormPage /></AdminLayout>} />
+        <Route path="/admin/manage-news/edit/:newsId" element={<AdminLayout><NewsFormPage /></AdminLayout>} />
+          
+          {/* Fallback Route */}
           
         </Routes>
       </Router>

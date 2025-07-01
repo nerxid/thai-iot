@@ -1,11 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminHeader.css';
 import user from '../../../assets/images/Logo/thaiiot.png';
 
-
-import { BsFillBellFill, BsEnvelopeFill } from 'react-icons/bs';
+import { BsFillBellFill, BsFillEnvelopeFill, BsSearch, BsChevronDown } from 'react-icons/bs';
 
 const AdminHeader = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -13,25 +11,25 @@ const AdminHeader = () => {
   return (
     <header className="admin-header">
       <div className="header-left">
-        <div className="search-bar">
+        { <div className="search-bar">
+          <BsSearch className="search-icon" />
           <input type="text" placeholder="ค้นหา..." />
-          <button type="submit">🔍</button>
-        </div>
+        </div> }
       </div>
+
       <div className="header-right">
-        
-        <div className="icon-button">
-          <BsEnvelopeFill />
-        </div>
-        <div className="icon-button">
+        <button className="icon-button">
+          <BsFillEnvelopeFill />
+        </button>
+        <button className="icon-button">
           <BsFillBellFill />
-        </div>
+        </button>
 
         <div className="profile-dropdown">
           <div className="header-profile" onClick={() => setDropdownOpen(!isDropdownOpen)}>
-            <img src={user} alt="User" />
-            <span>ชื่อผู้ใช้ (Admin)</span>
-            <span className="arrow">▼</span>
+            <img src={user} alt="User" className="profile-avatar" />
+            <span className="profile-name">ชื่อผู้ใช้ (Admin)</span>
+            <BsChevronDown className={`arrow ${isDropdownOpen ? 'open' : ''}`} />
           </div>
 
           {isDropdownOpen && (

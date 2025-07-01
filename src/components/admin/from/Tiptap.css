@@ -1,0 +1,63 @@
+/* src/components/Tiptap.css */
+.tiptap-container {
+    border: 1px solid #d1d5db; /* สีเส้นขอบเดียวกับ input */
+    border-radius: 8px; /* ความมนเท่ากับ input */
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tiptap-container:focus-within {
+    border-color: #1c64f2;
+    box-shadow: 0 0 0 0.25rem rgba(28, 100, 242, 0.25);
+}
+
+.tiptap-menu-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    background-color: #f9fafb;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.tiptap-menu-bar button {
+    border: none;
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 500;
+    color: #374151;
+}
+
+.tiptap-menu-bar button:hover {
+    background-color: #e5e7eb;
+}
+
+.tiptap-menu-bar button.is-active {
+    background-color: #374151;
+    color: white;
+}
+
+/* ProseMirror is the core editor, this targets its content area */
+.tiptap-prose {
+    padding: 1rem;
+    min-height: 250px;
+    outline: none;
+    line-height: 1.6;
+}
+.tiptap-prose > div:focus {
+    outline: none;
+}
+.tiptap-prose p {
+    margin: 0 0 1rem 0;
+}
+.tiptap-prose p:last-child {
+    margin-bottom: 0;
+}
+
+.tiptap-prose h1, .tiptap-prose h2, .tiptap-prose h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+    font-weight: 600;
+}

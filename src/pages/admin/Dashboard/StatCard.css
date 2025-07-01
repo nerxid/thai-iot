@@ -1,3 +1,4 @@
+
 .stat-card-item {
   border-radius: 16px;
   padding: 1.5rem;
@@ -62,4 +63,4 @@
 }
 
 .stat-card-trend.up .icon { color: #276749; }
-.stat-card-trend.down .icon { color: #9b2c2c; } 
+.stat-card-trend.down .icon { color: #9b2c2c; }

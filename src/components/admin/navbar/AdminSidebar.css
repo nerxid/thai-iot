@@ -1,3 +1,4 @@
+
 .admin-sidebar {
     width: 260px;
     background-color: #ffffff;
@@ -5,38 +6,42 @@
     position: fixed;
     left: 0;
     top: 0;
-    border-right: 1px solid #eef2f7;
+    border-right: 1px solid #f0f2f5; 
     display: flex;
     flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 1rem;
 }
 
 .sidebar-header {
-    padding: 1.2rem;
-    border-bottom: 1px solid #eef2f7;
+    padding: 1rem 0.5rem 1.5rem 0.5rem;
+    border-bottom: 1px solid #f0f2f5;
+    display: flex;
+    align-items: center;
 }
 
 .logo {
     display: flex;
     align-items: center;
+    gap: 12px;
 }
 
 .logo img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
 }
 
 .logo h4 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 600;
-    color: #0d6efd; 
+    color: #344767;
 }
 
 .logo span {
     font-size: 0.75rem;
-    color: #6c757d;
+    color: #67748e; 
 }
 
 .sidebar-menu {
@@ -46,32 +51,125 @@
     flex-grow: 1;
 }
 
+.sidebar-item {
+    margin-bottom: 0.25rem;
+}
+
 .sidebar-link {
     display: flex;
     align-items: center;
-    padding: 0.9rem 1.5rem; 
-    color: #495057; 
+    padding: 0.8rem 1rem; 
+    color: #67748e; 
     text-decoration: none;
     transition: all 0.2s ease-in-out;
     font-weight: 500;
-    font-size: 0.95rem; 
+    font-size: 0.9rem; 
+    border-radius: 8px;
 }
 
 .sidebar-link:hover {
-    background-color: #e7f3ff; 
-    color: #0d6efd; 
+    background-color: #f6f9fc;
 }
 
 .sidebar-link.active {
-    background-color: #e7f3ff;
-    color: #0d6efd;
-    border-right: 4px solid #0d6efd;
+    background-color: #f6f9fc; 
+    color: #344767; 
     font-weight: 600;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
 }
 
+.sidebar-link.active .icon {
+    background-image: linear-gradient(310deg, #5e72e4 0%, #825ee4 100%);
+    color: #ffffff; 
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+
 .sidebar-link .icon {
-    margin-right: 15px;
-    font-size: 1.2rem;
-    width: 20px;
-    text-align: center;
+    margin-right: 12px;
+    font-size: 0.9rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #344767;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar-link-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+.sidebar-link-dropdown:hover {
+    background-color: #f6f9fc;
+}
+
+.sidebar-link-dropdown .menu-title {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #67748e;
+}
+
+.sidebar-link-dropdown .icon {
+    margin-right: 12px; 
+}
+
+.sidebar-link-dropdown .arrow {
+    font-size: 0.8rem;
+    color: #a0aec0;
+    transition: transform 0.3s ease;
+}
+.sidebar-link-dropdown .arrow.open {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    list-style: none;
+    padding: 0.25rem 0 0.25rem 0.5rem; 
+    margin: 0;
+    overflow: hidden;
+}
+
+.submenu .sidebar-link {
+    padding: 0.6rem 1rem;
+    padding-left: 0.8rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+.submenu .sidebar-link .icon {
+    background: none;
+    box-shadow: none;
+    color: #67748e;
+    width: 32px;
+    height: 32px;
+}
+.submenu .sidebar-link.active {
+    background-color: #f6f9fc; 
+    color: #344767;
+    font-weight: 600;
+}
+.submenu .sidebar-link.active .icon {
+    color: #5e72e4; 
+    background: none;
+    box-shadow: none;
+}
+
+.menu-header {
+    padding: 1.5rem 1rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8898aa; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }

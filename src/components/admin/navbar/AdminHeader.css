@@ -1,53 +1,87 @@
+
 .admin-header {
-    height: 109px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eef2f7;
+    background-color: #ffffff; 
+    padding: 2rem 2rem;
+    border-bottom: 1px solid #f0f2f5;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
+    height: auto; 
 }
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.5rem; 
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #f6f9fc;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+}
+
+.search-bar .search-icon {
+    color: #8898aa;
+    margin-right: 0.5rem;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    color: #525f7f;
+}
+.search-bar input::placeholder {
+    color: #adb5bd;
 }
 
 .icon-button {
-    font-size: 1.5rem;
-    color: #6c757d; 
+    font-size: 1.1rem;
+    color: #67748e; 
     cursor: pointer;
     transition: color 0.2s ease;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .icon-button:hover {
-    color: #0d6efd; 
+    color: #5e72e4; 
 }
 
 .header-profile {
     display: flex;
     align-items: center;
     cursor: pointer;
+    gap: 0.75rem;
 }
 
-.header-profile img {
+.profile-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
+    object-fit: cover;
 }
 
-.header-profile span {
-    font-weight: 500;
-    color: #343a40;
+.profile-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #525f7f;
 }
 
 .header-profile .arrow {
     font-size: 0.7rem;
-    margin-left: 5px;
-    color: #6c757d;
+    color: #8898aa;
+    transition: transform 0.3s ease;
 }
+.header-profile .arrow.open {
+    transform: rotate(180deg);
+}
+
 
 .profile-dropdown {
     position: relative;
@@ -55,14 +89,14 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 120%;
+    top: 140%; 
     right: 0;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid #eef2f7;
-    width: 160px;
-    z-index: 100;
+    border-radius: 12px; 
+    box-shadow: 0 8px 24px -4px rgba(50, 50, 93, 0.15), 0 5px 15px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f2f5;
+    width: 180px; 
+    z-index: 1000;
     overflow: hidden;
     padding: 0.5rem 0;
 }
@@ -70,13 +104,14 @@
 .dropdown-item {
     display: block;
     padding: 0.75rem 1.25rem;
-    color: #343a40;
+    color: #525f7f;
     text-decoration: none;
     font-size: 0.9rem;
+    font-weight: 500;
     transition: all 0.2s ease;
 }
 
 .dropdown-item:hover {
-    background-color: #e7f3ff;
-    color: #0d6efd;
+    background-color: #f6f9fc; 
+    color: #5e72e4; 
 }
