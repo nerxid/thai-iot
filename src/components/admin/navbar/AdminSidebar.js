@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import './AdminSidebar.css'; 
 import logo from "../../../assets/images/Logo/thaiiot.png";
 
@@ -22,6 +23,7 @@ import {
 
 const AdminSidebar = () => {
     const [isContentMenuOpen, setContentMenuOpen] = useState(true);
+    const location = useLocation();
 
     return (
         <div className="admin-sidebar">
@@ -45,7 +47,7 @@ const AdminSidebar = () => {
                     <div className="sidebar-link-dropdown" onClick={() => setContentMenuOpen(!isContentMenuOpen)}>
                         <div className="menu-title">
                             <span className="icon"><BsFolderFill /></span>
-                            <span>สารบัญเว็บ</span>
+                            <span>การจัดการ</span>
                         </div>
                         <span className={`arrow ${isContentMenuOpen ? 'open' : ''}`}><BsChevronDown /></span>
                     </div>
@@ -56,7 +58,20 @@ const AdminSidebar = () => {
                             <li><NavLink to="/admin/manage-about" className="sidebar-link"><span className="icon"><BsInfoCircleFill /></span>เนื้อหาสมาคม</NavLink></li>
                             <li><NavLink to="/admin/manage-committee" className="sidebar-link"><span className="icon"><BsPeopleFill /></span>คณะกรรมการ</NavLink></li>
                             <li><NavLink to="/admin/manage-contact" className="sidebar-link"><span className="icon"><BsHeadset /></span>ข้อมูลติดต่อ</NavLink></li>
-                            <li><NavLink to="/admin/manage-news" className="sidebar-link"><span className="icon"><BsNewspaper /></span>ข่าว/กิจกรรม</NavLink></li>
+                            
+                            <li>
+                                <NavLink 
+                                    to="/admin/manage-news" 
+                                    className={({ isActive }) => 
+                                        isActive || location.pathname.startsWith('/admin/manage-events') 
+                                        ? "sidebar-link active" 
+                                        : "sidebar-link"
+                                    }
+                                >
+                                    <span className="icon"><BsNewspaper /></span>ข่าว/กิจกรรม
+                                </NavLink>
+                            </li>
+
                             <li><NavLink to="/admin/manage-members" className="sidebar-link"><span className="icon"><BsPersonBadgeFill /></span>สมาชิก</NavLink></li>
                             <li><NavLink to="/admin/manage-inbox" className="sidebar-link"><span className="icon"><BsInboxFill /></span>จดหมาย</NavLink></li>
                         </ul>

@@ -34,6 +34,11 @@ import AdminDashboard from './pages/admin/Dashboard/AdminDashboard';
 import ManageHomePage from './pages/admin/ManageHomePage/ManageHomePage';
 import ManageNewsPage from './pages/admin/ManageNews/ManageNewsPage';
 import NewsFormPage from './pages/admin/ManageNews/NewsFormPage';
+import ManageEventsPage from './pages/admin/ManageEvents/ManageEventsPage';
+import EventFormPage from './pages/admin/ManageEvents/EventFormPage';
+import EventRegistrationFormBuilder from './pages/admin/ManageEvents/EventRegistrationFormBuilder';
+import EventRegistrantsPage from './pages/admin/ManageEvents/EventRegistrantsPage';
+import EventSubmissionDetailPage from './pages/admin/ManageEvents/EventSubmissionDetailPage';
 
 function App() {
   return (
@@ -68,11 +73,16 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
           <Route path="/admin/manage-home" element={<AdminLayout><ManageHomePage /></AdminLayout>} />
           <Route path="/admin/manage-news" element={<AdminLayout><ManageNewsPage /></AdminLayout>} />
-        <Route path="/admin/manage-news/add" element={<AdminLayout><NewsFormPage /></AdminLayout>} />
-        <Route path="/admin/manage-news/edit/:newsId" element={<AdminLayout><NewsFormPage /></AdminLayout>} />
-          
-          {/* Fallback Route */}
-          
+          <Route path="/admin/manage-news/add" element={<AdminLayout><NewsFormPage /></AdminLayout>} />
+          <Route path="/admin/manage-news/edit/:newsId" element={<AdminLayout><NewsFormPage /></AdminLayout>} />
+          <Route path="/admin/manage-events" element={<AdminLayout><ManageEventsPage /></AdminLayout>} />
+          <Route path="/admin/manage-events/add" element={<AdminLayout><EventFormPage /></AdminLayout>} />
+          <Route path="/admin/manage-events/edit/:eventId" element={<AdminLayout><EventFormPage /></AdminLayout>} />
+          <Route path="/admin/manage-events/add/step2" element={<AdminLayout><EventRegistrationFormBuilder /></AdminLayout>} />
+          <Route path="/admin/manage-events/:eventId/registrants" element={<AdminLayout><EventRegistrantsPage /></AdminLayout>} />
+          <Route path="/admin/manage-events/:eventId/registrants/:registrantId" element={<AdminLayout><EventSubmissionDetailPage /></AdminLayout>} />
+        
+        
         </Routes>
       </Router>
     </AuthProvider>
