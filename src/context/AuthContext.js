@@ -1,21 +1,34 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
+
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+        return !!localStorage.getItem('user'); 
+    });
+
     const [registeredEvents, setRegisteredEvents] = useState([]);
 
     const login = (userData) => {
+        const fullUserData = { ...userData, currentPlan: 'corporate', memberType: 'corporate',role: 'admin' };
+        
+        localStorage.setItem('user', JSON.stringify(fullUserData)); 
+
+        setUser(fullUserData);
         setIsLoggedIn(true);
-        setUser({ ...userData, currentPlan: 'corporate', memberType: 'corporate' }); 
         setRegisteredEvents([1, 5]); 
     };
 
     const logout = () => {
-        setIsLoggedIn(false);
+        localStorage.removeItem('user');
+
         setUser(null);
+        setIsLoggedIn(false);
         setRegisteredEvents([]);
     };
 

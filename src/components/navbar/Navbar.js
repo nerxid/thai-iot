@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
-import {Bell, BellFill, BoxArrowRight, PersonBadge, Calendar2Check } from 'react-bootstrap-icons';
+import { Bell, BellFill, BoxArrowRight, PersonBadge, Calendar2Check, Speedometer2 } from 'react-bootstrap-icons'; 
 import { useAuth } from '../../context/AuthContext';
 import logo from '../../assets/images/Logo/thaiiot.png';
 import './Navbar.css';
@@ -99,7 +99,12 @@ const CustomNavbar = () => {
         if (isMobile) {
             return (
                 <>
-                    <hr className="mobile-menu-divider" />
+                     <hr className="mobile-menu-divider" />
+                    {user?.role === 'admin' && (
+                        <Nav.Link as={NavLink} to="/admin/dashboard" className="mobile-user-link admin-link-mobile">
+                            <Speedometer2 className="me-2" /> เมนูผู้ดูแลระบบ
+                        </Nav.Link>
+                    )}
                     <Nav.Link as={NavLink} to="/profile" className="mobile-user-link"><PersonBadge className="me-2" /> โปรไฟล์</Nav.Link>
                     <Nav.Link as={NavLink} to="/my-events" className="mobile-user-link"><Calendar2Check className="me-2" /> กิจกรรมของฉัน</Nav.Link>
                     <hr className="mobile-menu-divider" />
@@ -120,6 +125,7 @@ const CustomNavbar = () => {
                 className="user-menu-dropdown"
                 align="end"
             >
+                 
                 <NavDropdown.Item as={NavLink} to="/profile" end>โปรไฟล์</NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/my-events" end>กิจกรรมของฉัน</NavDropdown.Item>
                 <NavDropdown.Divider />
@@ -152,7 +158,15 @@ const CustomNavbar = () => {
 
                             {isLoggedIn ? (
                                 <div className="d-none d-lg-flex align-items-center">
+
                                     {renderNotificationDropdown(false)}
+                                    {user?.role === 'admin' && ( 
+                                        <Nav.Link as={NavLink} to="/admin/dashboard" className="btn-admin-panel">
+                                            <Speedometer2 className="me-2" />
+                                            เมนูผู้ดูแลระบบ
+                                        </Nav.Link>
+                                    )}
+                                    
                                     {renderLoggedInUserMenu()}
                                 </div>
                             ) : (

@@ -106,3 +106,7 @@
 .rbc-today {
   background-color: #eff6ff !important;
 }
+
+.admin-main-content {
+    overflow: visible !important;
+}

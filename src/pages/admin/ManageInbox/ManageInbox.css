@@ -1,0 +1,46 @@
+.manage-inbox-page .list-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.manage-inbox-page .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inbox-table .message-row {
+    cursor: pointer;
+}
+
+.expanded-row td {
+    background-color: #f8f9fa;
+    padding: 1.5rem !important;
+}
+
+.expanded-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.expanded-content .message-body {
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    white-space: pre-wrap; 
+}
+
+.reply-modal-body .message-details {
+    background-color: #f1f3f5;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

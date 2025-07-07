@@ -1,0 +1,48 @@
+.admin-profile-page {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    min-height: calc(100vh - 60px);
+}
+
+.profile-page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #212529;
+}
+
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: none;
+}
+
+.avatar-section {
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.form-section .form-label {
+    font-weight: 600;
+}
+
+.form-section .form-control[readonly] {
+    background-color: #e9ecef;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}

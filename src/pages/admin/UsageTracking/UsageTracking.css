@@ -1,0 +1,46 @@
+.usage-tracking-page .page-header {
+    margin-bottom: 2rem;
+}
+
+.usage-tracking-page .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.usage-tracking-page .list-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.usage-tracking-page .list-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap; 
+    gap: 1.5rem;
+}
+
+.usage-tracking-page .list-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0; 
+}
+
+.filter-buttons .btn {
+    margin-left: 0.5rem;
+}
+
+.usage-table {
+    vertical-align: middle;
+}
+
+.usage-table th {
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.list-header{
+    margin-top: 20px;
+}

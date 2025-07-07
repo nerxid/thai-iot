@@ -1,0 +1,66 @@
+.manage-admins-page .page-header {
+    margin-bottom: 2rem;
+}
+.manage-admins-page .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+.manage-admins-page .list-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+.manage-admins-page .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.admin-table {
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+.admin-table th {
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.admin-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.admin-actions .status-toggle-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.admin-actions .status-toggle-icon.active {
+    color: #198754;
+}
+.admin-actions .status-toggle-icon.inactive {
+    color: #adb5bd;
+}
+
+.admin-actions .edit-icon,
+.admin-actions .delete-icon {
+    font-size: 1.2rem !important; 
+    color: #6f7883 !important;   
+    transition: color 0.2s ease-in-out !important;
+    cursor: pointer;
+}
+
+.admin-actions .edit-icon:hover {
+    color: #0d6efd !important; 
+}
+.admin-actions .delete-icon:hover {
+    color: #dc3545 !important; 
+}

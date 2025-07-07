@@ -18,7 +18,8 @@ import {
     BsHeadset,
     BsNewspaper,
     BsPersonBadgeFill,
-    BsInboxFill
+    BsInboxFill,
+    BsDatabaseFillCheck
 } from "react-icons/bs";
 
 const AdminSidebar = () => {
@@ -91,6 +92,13 @@ const AdminSidebar = () => {
                         <span className="icon"><BsFillGearFill /></span> จัดการการใช้งานระบบ
                     </NavLink>
                 </li>
+
+                <li>
+                    <NavLink to="/admin/data-backup" className="sidebar-link">
+                        <span className="icon"><BsDatabaseFillCheck /></span> การสำรองข้อมูล
+                    </NavLink>
+                </li>
+
             </ul>
         </div>
     );

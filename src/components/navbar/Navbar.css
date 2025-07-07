@@ -58,7 +58,7 @@
     background-color: #e0f2fe;
     border-radius: 8px;
     padding: 0.5rem 1rem;
-    margin-left: 2rem;
+    margin-left: 1rem;
 }
 .user-menu-dropdown .dropdown-toggle::after {
     margin-left: 0.5rem;
@@ -69,7 +69,6 @@
     border: 1px solid #e5e7eb;
 }
 
-/* === Notification Bell Styles (Desktop & Mobile) === */
 .notification-dropdown .dropdown-toggle {
     background: none !important;
     border: none !important;
@@ -79,7 +78,7 @@
 }
 
 .notification-dropdown .dropdown-toggle::after {
-    display: none; /* Hide default arrow */
+    display: none; 
 }
 
 .notification-bell {
@@ -127,7 +126,6 @@
     background-color: #e9ecef;
 }
 
-/* === NEW NOTIFICATION ITEM STYLE === */
 .notification-item {
     padding: 0.75rem 1.25rem;
     white-space: normal;
@@ -139,25 +137,22 @@
     border-bottom: none;
 }
 
-/* UNREAD: Light blue background */
 .notification-item.unread {
-    background-color: #F0F8FF; /* AliceBlue - สีฟ้าอ่อน */
+    background-color: #F0F8FF; 
     font-weight: 500;
     color: #1e3a8a;
 }
 
-/* READ: White/Transparent background */
 .notification-item.read {
     background-color: #ffffff;
-    color: #6c757d; /* สีเทา */
+    color: #6c757d; 
 }
 
 .notification-item:hover {
-    background-color: #e9ecef; /* สีเทาเข้มขึ้นเล็กน้อยตอน Hover */
+    background-color: #e9ecef; 
 }
 
 
-/* === Responsive Mobile Menu Styles === */
 @media (max-width: 991.98px) {
     .navbar-collapse.show, .navbar-collapse.collapsing {
         background-color: #ffffff;
@@ -205,4 +200,63 @@
         color: #dc3545 !important;
         font-weight: bold;
     }
+}
+
+.user-menu-dropdown .dropdown-item, 
+.mobile-user-link {
+    display: flex;
+    align-items: center;
+}
+
+.user-menu-dropdown .dropdown-item svg,
+.mobile-user-link svg {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.admin-link-mobile {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-weight: bold !important;
+    color: #212529 !important;
+}
+
+.btn-admin-panel {
+    display: flex;
+    align-items: center;
+    background-color: #e0f2fe !important;
+    color: #1e3a8a !important;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    white-space: nowrap;
+    text-decoration: none;
+
+}
+
+.btn-admin-panel:hover {
+    background-color: #dbeafe !important;
+    color: #1e3a8a !important;
+}
+
+.user-menu-dropdown .dropdown-item, 
+.mobile-user-link {
+    display: flex;
+    align-items: center;
+}
+
+.user-menu-dropdown .dropdown-item svg,
+.mobile-user-link svg {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.admin-link-mobile {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-weight: bold !important;
+    color: #212529 !important;
 }

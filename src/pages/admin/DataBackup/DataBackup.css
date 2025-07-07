@@ -1,0 +1,94 @@
+.data-backup-page {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 60px);
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+.data-backup-page .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #212529;
+}
+
+.backup-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.backup-section {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+.backup-section:last-child,
+.col-lg-5 .backup-section {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.data-backup-page .form-check-input {
+    cursor: pointer;
+}
+.data-backup-page .form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+.data-backup-page .form-check-label {
+    cursor: pointer;
+    font-weight: 500;
+    color: #495057;
+}
+
+.backup-actions .btn {
+    font-weight: 500;
+}
+.restore-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.backup-actions .input-group .form-control {
+    background-color: #e9ecef;
+    cursor: default;
+}
+.backup-actions .choose-file-btn {
+    font-weight: 500;
+}
+
+
+.backup-history-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+}
+
+.backup-history-table th {
+    font-weight: 600;
+    color: #6c757d;
+    border: none;
+}
+
+.backup-history-table td {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    vertical-align: middle;
+}
+
+.status-badge {
+    padding: 0.4em 0.8em;
+    font-size: 0.75rem;
+    font-weight: 600;
+}

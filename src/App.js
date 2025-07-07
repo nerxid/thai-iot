@@ -44,6 +44,17 @@ import ManageMembersPage from './pages/admin/ManageMembers/ManageMembersPage';
 import MemberDetailPage from './pages/admin/ManageMembers/MemberDetailPage';
 import ManageAboutPage from './pages/admin/ManageAbout/ManageAboutPage';
 import ManageContactPage from './pages/admin/ManageContact/ManageContactPage';
+import ManageInboxPage from './pages/admin/ManageInbox/ManageInboxPage'; 
+import ManageAdminsPage from './pages/admin/ManageAdmins/ManageAdminsPage';
+import UsageTrackingPage from './pages/admin/UsageTracking/UsageTrackingPage';
+import DataBackupPage from './pages/admin/DataBackup/DataBackupPage';
+import AdminProfilePage from './pages/admin/AdminProfile/AdminProfilePage';
+
+
+
+
+import Logout from './pages/pulbic/Login/Logout';
+
 
 function App() {
   return (
@@ -91,7 +102,15 @@ function App() {
           <Route path="/admin/manage-members/:memberId" element={<AdminLayout><MemberDetailPage /></AdminLayout>} />
           <Route path="/admin/manage-about" element={<AdminLayout><ManageAboutPage /></AdminLayout>} /> 
           <Route path="/admin/manage-contact" element={<AdminLayout><ManageContactPage /></AdminLayout>} />
-        
+          <Route path="/admin/manage-inbox" element={<AdminLayout><ManageInboxPage /></AdminLayout>} />
+          <Route path="/admin/manage-admins" element={<AdminLayout><ManageAdminsPage /></AdminLayout>} />
+          <Route path="/admin/system-settings" element={<AdminLayout><UsageTrackingPage /></AdminLayout>} />
+          <Route path="/admin/data-backup" element={<AdminLayout><DataBackupPage /></AdminLayout>} />
+          <Route path="/admin/profile" element={<AdminLayout><AdminProfilePage /></AdminLayout>} />
+
+
+          <Route path="/logout" element={<Logout />} />
+
         </Routes>
       </Router>
     </AuthProvider>
