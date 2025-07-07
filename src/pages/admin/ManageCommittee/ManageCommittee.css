@@ -1,0 +1,193 @@
+
+.manage-committee-page .list-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.committee-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.committee-member-card {
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: box-shadow 0.2s ease;
+    position: relative;
+}
+.committee-member-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.member-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem auto;
+    border: 4px solid #f0f2f5;
+    object-position: center 20%;
+}
+
+.committee-member-card .form-control {
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+.committee-member-card .name-input {
+    font-weight: 600;
+}
+.committee-member-card .title-input {
+    font-size: 0.9rem;
+    color: #5e72e4;
+}
+
+.delete-member-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    color: #dc3545;
+}
+
+.add-member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    padding: 1.5rem;
+    min-height: 350px;
+    transition: border-color 0.2s ease;
+}
+.add-member-card:hover {
+    border-color: #1c64f2;
+}
+
+.add-member-card .upload-box {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.form-actions-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+
+.tier-group-container {
+    margin-bottom: 2.5rem;
+}
+
+.tier-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #344767;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.tier-input-group {
+    max-width: 150px;
+    margin: 0.5rem auto 0 auto;
+}
+
+
+.edit-icon-group .input-group-text {
+    background-color: transparent;
+    border-left: none;
+}
+.edit-icon-group .form-control {
+    border-right: none;
+}
+
+.image-upload-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.image-upload-container .member-image {
+    display: block; 
+}
+
+.image-upload-container .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-upload-container:hover .overlay {
+    opacity: 1;
+}
+
+
+.committee-member-card {
+    position: relative; 
+}
+
+.drag-handle {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    cursor: grab;
+    color: #9ca3af;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+}
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+
+.tier-management-section {
+    max-width: 400px;
+    margin-bottom: 1.5rem;
+}
+
+
+.tier-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 1.5rem;
+}
+
+.tier-title {
+    margin-bottom: 0;
+    padding-bottom: 0.75rem;
+    border-bottom: none; 
+}

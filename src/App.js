@@ -39,6 +39,11 @@ import EventFormPage from './pages/admin/ManageEvents/EventFormPage';
 import EventRegistrationFormBuilder from './pages/admin/ManageEvents/EventRegistrationFormBuilder';
 import EventRegistrantsPage from './pages/admin/ManageEvents/EventRegistrantsPage';
 import EventSubmissionDetailPage from './pages/admin/ManageEvents/EventSubmissionDetailPage';
+import ManageCommitteePage from './pages/admin/ManageCommittee/ManageCommitteePage';
+import ManageMembersPage from './pages/admin/ManageMembers/ManageMembersPage';
+import MemberDetailPage from './pages/admin/ManageMembers/MemberDetailPage';
+import ManageAboutPage from './pages/admin/ManageAbout/ManageAboutPage';
+import ManageContactPage from './pages/admin/ManageContact/ManageContactPage';
 
 function App() {
   return (
@@ -81,7 +86,11 @@ function App() {
           <Route path="/admin/manage-events/add/step2" element={<AdminLayout><EventRegistrationFormBuilder /></AdminLayout>} />
           <Route path="/admin/manage-events/:eventId/registrants" element={<AdminLayout><EventRegistrantsPage /></AdminLayout>} />
           <Route path="/admin/manage-events/:eventId/registrants/:registrantId" element={<AdminLayout><EventSubmissionDetailPage /></AdminLayout>} />
-        
+          <Route path="/admin/manage-committee" element={<AdminLayout><ManageCommitteePage /></AdminLayout>} />
+          <Route path="/admin/manage-members" element={<AdminLayout><ManageMembersPage /></AdminLayout>} />
+          <Route path="/admin/manage-members/:memberId" element={<AdminLayout><MemberDetailPage /></AdminLayout>} />
+          <Route path="/admin/manage-about" element={<AdminLayout><ManageAboutPage /></AdminLayout>} /> 
+          <Route path="/admin/manage-contact" element={<AdminLayout><ManageContactPage /></AdminLayout>} />
         
         </Routes>
       </Router>
