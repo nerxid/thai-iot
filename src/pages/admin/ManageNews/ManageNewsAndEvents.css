@@ -1,0 +1,160 @@
+.manage-news-page,
+.manage-events-page {
+    padding: 2rem;
+    background-color: #f8f9fa;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.list-container,
+.news-form,
+.data-form,
+.form-builder-section,
+.card.data-form { 
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem; 
+}
+
+.filter-buttons, .action-buttons, .filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.news-table th, .data-table th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.news-table td, .data-table td { vertical-align: middle; }
+.cover-thumbnail { width: 90px; height: 60px; object-fit: cover; border-radius: 4px; }
+.news-title-cell, .title-cell { max-width: 350px; font-weight: 600; }
+.action-icon { background: none; border: none; cursor: pointer; font-size: 1rem; margin: 0 0.3rem; padding: 0.5rem; border-radius: 50%; color: #9ca3af; transition: all 0.2s ease; }
+.action-icon:hover { background-color: #f3f4f6; }
+.view-icon { color: #6b7280; }
+.edit-icon { color: #3b82f6; }
+.delete-icon { color: #ef4444; }
+
+.upload-box-square { 
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 16 / 9;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f9fafb;
+    overflow: hidden;
+}
+.upload-box-square:hover { border-color: #3b82f6; }
+.thumbnail-container { display: flex; flex-wrap: wrap; gap: 1rem; }
+.thumbnail-item { position: relative; }
+.thumbnail-item .img-thumbnail { width: 120px; height: 80px; object-fit: cover; }
+.thumbnail-delete-btn { position: absolute; top: -8px; right: -8px; border-radius: 50%; }
+.thumbnail-upload-box { width: 120px; height: 80px;  }
+
+.form-builder-question-card { border: 1px solid #e9ecef; }
+.field-preview-container { padding: 1.5rem; background-color: #f8f9fa; border-radius: 8px; margin-top: 1rem; border: 1px solid #e9ecef; }
+.option-item { display: flex; align-items: center; gap: 0.75rem; }
+
+
+
+@media (max-width: 992px) {
+    .manage-news-page .nav-tabs,
+    .manage-events-page .nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .manage-news-page .nav-tabs::-webkit-scrollbar,
+    .manage-events-page .nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .manage-news-page,
+    .manage-events-page {
+        padding: 1rem;
+    }
+    .list-container,
+    .news-form,
+    .data-form,
+    .form-builder-section,
+    .card.data-form {
+        padding: 1.5rem;
+    }
+    .page-title {
+        font-size: 1.5rem;
+    }
+    .list-header {
+        flex-direction: column;
+        align-items: stretch; 
+    }
+    .list-header .action-buttons {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 576px) {
+    .manage-news-page,
+    .manage-events-page {
+        padding: 0;
+    }
+    .list-container,
+    .news-form,
+    .data-form,
+    .form-builder-section,
+    .card.data-form {
+        padding: 1rem;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+    }
+    .form-actions .btn {
+        width: 100%;
+    }
+    .filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-controls .form-group {
+        width: 100%;
+    }
+}

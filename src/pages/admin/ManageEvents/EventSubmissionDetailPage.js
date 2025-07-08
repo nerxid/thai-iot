@@ -4,7 +4,7 @@ import { Container, Card, Button, Form, Breadcrumb } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import { rawEventsData } from '../../../data/mock-events';
 import { mockRegistrants } from '../../../data/mock-registrants';
-import './ManageEvents.css';
+import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
 
 const SubmissionFieldRenderer = ({ field, submissionData }) => {
     const answer = submissionData[field.label] || '';
@@ -75,6 +75,8 @@ const EventSubmissionDetailPage = () => {
     }
 
     return (
+        <Container fluid className="manage-news-page p-0">
+            <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-events-page">
             <Breadcrumb>
                 <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/admin/manage-events" }}>จัดการกิจกรรม</Breadcrumb.Item>
@@ -96,6 +98,8 @@ const EventSubmissionDetailPage = () => {
                     </div>
                 </Card.Body>
             </Card>
+        </Container>
+        </div>
         </Container>
     );
 };

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Nav, Tab, Button, Table, Badge, Pagination, Image } from 'react-bootstrap';
 import { BsPencilFill, BsTrashFill, BsPlusLg, BsDownload } from 'react-icons/bs';
-import './ManageNews.css';
+import './ManageNewsAndEvents.css';
 import { newsData } from '../../../data/mock-news'; 
 
 const ManageNewsPage = () => {
@@ -42,6 +42,8 @@ const ManageNewsPage = () => {
     };
     
     return (
+        <Container fluid className="manage-news-page p-0">
+        <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-news-page">
             <div className="page-header">
                 <h2 className="page-title">จัดการข่าว/กิจกรรม</h2>
@@ -111,6 +113,8 @@ const ManageNewsPage = () => {
                     )}
                 </div>
             </div>
+        </Container>
+        </div>
         </Container>
     );
 };

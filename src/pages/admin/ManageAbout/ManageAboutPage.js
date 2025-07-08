@@ -20,9 +20,15 @@ const ManageAboutPage = () => {
     const [missionImages, setMissionImages] = useState([]);
 
     useEffect(() => {
-        setVisionImage({ file: null, preview: visionData.imageUrl });
-        setAboutImages(aboutData.imageUrls.map(url => ({ file: null, preview: url })));
-        setMissionImages(missionsData.map(mission => ({ file: null, preview: mission.imageUrl })));
+        if (visionData && visionData.imageUrl) {
+            setVisionImage({ file: null, preview: visionData.imageUrl });
+        }
+        if (aboutData && aboutData.imageUrls && Array.isArray(aboutData.imageUrls)) {
+            setAboutImages(aboutData.imageUrls.map(url => ({ file: null, preview: url })));
+        }
+        if (missionsData && Array.isArray(missionsData)) {
+            setMissionImages(missionsData.map(mission => ({ file: null, preview: mission.imageUrl })));
+        }
     }, []);
 
     const handleFormSubmit = (e, section) => {
@@ -65,17 +71,27 @@ const ManageAboutPage = () => {
     const renderAboutForm = () => (
         <Form onSubmit={(e) => handleFormSubmit(e, 'เกี่ยวกับสมาคม')}>
             <Form.Group className="mb-4">
-                <Form.Label>อัปโหลดรูปภาพ (ใช้รูปภาพทั้งหมด 4 รูป)</Form.Label>
+                <Form.Label>อัปโหลดรูปภาพ (คลิกที่รูปเพื่อเปลี่ยน หรือกด + เพื่อเพิ่ม)</Form.Label>
                 <div className="thumbnail-container">
                     {aboutImages.map((img, index) => (
                         <div key={index} className="thumbnail-item">
-                            <Image src={img.preview} thumbnail />
+                            <Form.Label htmlFor={`about-image-update-${index}`} className="mb-0">
+                                <Image src={img.preview} thumbnail />
+                            </Form.Label>
+                            <Form.Control 
+                                id={`about-image-update-${index}`}
+                                type="file"
+                                hidden
+                                accept=".jpg,.png,.jpeg"
+                                onChange={(e) => handleImageChange(e, setAboutImages, true, index)}
+                            />
                         </div>
                     ))}
+                    
                     {aboutImages.length < 4 && (
-                        <Form.Label htmlFor="about-upload" className="thumbnail-upload-box"><Plus size={24} /></Form.Label>
+                        <Form.Label htmlFor="about-image-add" className="thumbnail-upload-box"><Plus size={24} /></Form.Label>
                     )}
-                    <Form.Control id="about-upload" type="file" onChange={(e) => handleImageChange(e, setAboutImages, true)} hidden multiple={false} accept=".jpg,.png,.jpeg" />
+                    <Form.Control id="about-image-add" type="file" onChange={(e) => handleImageChange(e, setAboutImages, true)} hidden multiple={false} accept=".jpg,.png,.jpeg" />
                 </div>
             </Form.Group>
             <Form.Group className="mb-3"><Form.Label>หัวข้อ*</Form.Label><Form.Control type="text" value={aboutData.title} onChange={(e) => setAboutData({...aboutData, title: e.target.value})} required /></Form.Group>

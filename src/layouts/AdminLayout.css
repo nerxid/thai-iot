@@ -1,20 +1,22 @@
-
 .admin-layout {
   display: flex;
-  background-color: #f4f5f7; 
+  background-color: #ffffff; 
 }
-
 .admin-main-content {
   flex-grow: 1;
- 
   margin-left: 260px; 
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: margin-left 0.3s ease-in-out;
 }
-
-
 .admin-page-content {
-  padding: 2rem;
   flex-grow: 1;
+}
+@media (max-width: 992px) {
+  .admin-main-content {
+    margin-left: 0;
+  }
+  .admin-page-content {
+  }
 }

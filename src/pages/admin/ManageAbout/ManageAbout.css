@@ -20,6 +20,7 @@
     border: none;
     color: #6b7280;
     font-weight: 500;
+    white-space: nowrap; 
 }
 
 .manage-about-page .nav-tabs .nav-link.active {
@@ -81,4 +82,59 @@
 .mission-card {
     border: 1px solid #e5e7eb;
     margin-bottom: 1.5rem;
+}
+
+
+
+@media (max-width: 992px) {
+    .manage-about-page .nav-tabs {
+        flex-wrap: nowrap; 
+        overflow-x: auto;  
+        
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .manage-about-page .nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .manage-about-page {
+        padding: 1.5rem;
+    }
+    .form-container {
+        padding: 1.5rem;
+    }
+    .page-title {
+        font-size: 1.5rem;
+    }
+    .thumbnail-item .img-thumbnail,
+    .thumbnail-upload-box {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .manage-about-page {
+        padding: 1rem;
+    }
+    .form-container {
+        padding: 1rem;
+    }
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+    }
+    .form-actions .btn {
+        width: 100%;
+    }
+    .thumbnail-item .img-thumbnail,
+    .thumbnail-upload-box {
+        width: 100px;
+        height: 100px;
+    }
 }

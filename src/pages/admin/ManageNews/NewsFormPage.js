@@ -5,7 +5,7 @@ import { Plus, X } from 'react-bootstrap-icons';
 import TiptapEditor from '../../../components/admin/from/TiptapEditor.js';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './ManageNews.css';
+import './ManageNewsAndEvents.css';
 import { newsData } from '../../../data/mock-news';
 
 const NewsFormPage = () => {
@@ -108,6 +108,8 @@ const NewsFormPage = () => {
     };
 
     return (
+        <Container fluid className="manage-news-page p-0">
+             <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-news-page">
              <div className="page-header">
                  <h2 className="page-title">{isEditMode ? 'แก้ไขข่าว' : 'เพิ่มข่าว'}</h2>
@@ -192,6 +194,8 @@ const NewsFormPage = () => {
                  </div>
 
              </Form>
+        </Container>
+        </div>
         </Container>
     );
 };

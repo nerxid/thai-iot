@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import user from '../../../assets/images/Logo/thaiiot.png';
-import { BsFillBellFill, BsFillEnvelopeFill, BsSearch, BsChevronDown, BsPersonFill, BsBoxArrowRight } from 'react-icons/bs';
+import { 
+    BsFillBellFill, 
+    BsFillEnvelopeFill, 
+    BsSearch, 
+    BsChevronDown, 
+    BsPersonFill, 
+    BsBoxArrowRight, 
+    BsList, 
+    BsCalendarEvent, 
+    BsPersonPlusFill 
+} from 'react-icons/bs';
 
 const headerStyle = {
     backgroundColor: '#ffffff',
@@ -69,7 +79,6 @@ const searchInputStyle = {
     color: '#525f7f'
 };
 
-
 const DropdownMenu = ({ onClose, triggerRef }) => {
     const dropdownRef = useRef(null);
     const [style, setStyle] = useState({});
@@ -80,7 +89,7 @@ const DropdownMenu = ({ onClose, triggerRef }) => {
             setStyle({
                 position: 'fixed',
                 top: `${rect.bottom + 10}px`,
-                left: `${rect.right - 200}px`,
+                right: `${window.innerWidth - rect.right}px`,
                 width: '200px',
                 backgroundColor: '#ffffff',
                 borderRadius: '12px',
@@ -108,7 +117,6 @@ const DropdownMenu = ({ onClose, triggerRef }) => {
         display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1.25rem',
         color: '#525f7f', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500,
     };
-
     const dropdownIconStyle = { fontSize: '1rem', color: '#8898aa' };
 
     return ReactDOM.createPortal(
@@ -124,10 +132,74 @@ const DropdownMenu = ({ onClose, triggerRef }) => {
     );
 };
 
+const NotificationsDropdown = ({ onClose, triggerRef }) => {
+    const dropdownRef = useRef(null);
+    const [style, setStyle] = useState({});
 
-const AdminHeader = () => {
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const notifications = [
+        { id: 1, icon: <BsPersonPlusFill className="text-success" />, text: "มีสมาชิกใหม่รอการอนุมัติ 2 คน", time: "10 นาทีที่แล้ว" },
+        { id: 2, icon: <BsCalendarEvent className="text-primary" />, text: "กิจกรรม 'IoT Expo' จะเริ่มในอีก 3 วัน", time: "1 ชั่วโมงที่แล้ว" },
+        { id: 3, icon: <BsFillEnvelopeFill className="text-info" />, text: "คุณมีข้อความใหม่ 1 ข้อความ", time: "เมื่อวาน" },
+    ];
+
+    useEffect(() => {
+        if (triggerRef.current) {
+            const rect = triggerRef.current.getBoundingClientRect();
+            setStyle({
+                position: 'fixed',
+                top: `${rect.bottom + 10}px`,
+                right: `${window.innerWidth - rect.right - 100}px`,
+                width: '350px',
+                backgroundColor: '#ffffff',
+                borderRadius: '12px',
+                boxShadow: '0 8px 24px -4px rgba(50, 50, 93, 0.15), 0 5px 15px -5px rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f0f2f5',
+                zIndex: 1020,
+                animation: 'fadeIn 0.2s ease-out'
+            });
+        }
+    }, [triggerRef]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (triggerRef.current && !triggerRef.current.contains(event.target) && dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                onClose();
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [onClose, triggerRef]);
+
+    return ReactDOM.createPortal(
+        <div ref={dropdownRef} style={style}>
+            <div className="notification-header">
+                <h6>การแจ้งเตือน</h6>
+            </div>
+            <div className="notification-list">
+                {notifications.map(noti => (
+                    <div key={noti.id} className="notification-item dropdown-item-hover">
+                        <div className="notification-icon">{noti.icon}</div>
+                        <div className="notification-content">
+                            <p className="notification-text">{noti.text}</p>
+                            <p className="notification-time">{noti.time}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="notification-footer">
+                <Link to="/admin/notifications">ดูการแจ้งเตือนทั้งหมด</Link>
+            </div>
+        </div>,
+        document.body
+    );
+};
+
+const AdminHeader = ({ toggleSidebar }) => {
+    const [isProfileDropdownOpen, setProfileDropdownOpen] = useState(false);
+    const [isNotificationsOpen, setNotificationsOpen] = useState(false);
     const profileRef = useRef(null);
+    const bellRef = useRef(null);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -136,35 +208,66 @@ const AdminHeader = () => {
                 .dropdown-item-hover:hover { background-color: #f6f9fc; }
                 .dropdown-item-hover:hover span { color: #5e72e4; }
                 .dropdown-item-hover:hover svg { fill: #5e72e4; }
-                .search-input::placeholder { color: #adb5bd; } /* สไตล์สำหรับ placeholder */
+                .search-input::placeholder { color: #adb5bd; }
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(-10px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
+                .notification-header, .notification-footer { padding: 1rem; text-align: center; }
+                .notification-header { border-bottom: 1px solid #f0f2f5; }
+                .notification-header h6 { margin: 0; font-weight: 600; }
+                .notification-footer { border-top: 1px solid #f0f2f5; }
+                .notification-footer a { text-decoration: none; font-weight: 500; }
+                .notification-list { max-height: 400px; overflow-y: auto; }
+                .notification-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; cursor: pointer; }
+                .notification-icon { font-size: 1.2rem; }
+                .notification-content p { margin: 0; }
+                .notification-text { font-size: 0.9rem; color: #344767; }
+                .notification-time { font-size: 0.75rem; color: #8898aa; }
+                .hamburger-btn { display: none; font-size: 1.5rem; color: #344767; background: none; border: none; cursor: pointer; margin-right: 1rem; }
+                @media (max-width: 992px) {
+                    .hamburger-btn { display: block; }
+                    .header-left .search-input { display: none; }
+                    .header-profile .profile-name { display: none; }
+                    .main-header { padding: 1rem 1.5rem !important; }
+                }
+                @media (max-width: 576px) {
+                    .header-right .icon-button-group { display: none; }
+                }
                 `}
             </style>
-            <header style={headerStyle}>
-                <div className="header-left">
+            <header style={headerStyle} className="main-header">
+                <div className="header-left" style={{ display: 'flex', alignItems: 'center' }}>
+                    <button className="hamburger-btn" onClick={toggleSidebar}><BsList /></button>
                     <div style={searchBarStyle}>
                         <BsSearch style={searchIconStyle} />
                         <input type="text" placeholder="ค้นหา..." style={searchInputStyle} className="search-input" />
                     </div>
                 </div>
 
-                <div style={headerRightStyle}>
-                    <button style={iconButtonStyle}><BsFillEnvelopeFill /></button>
-                    <button style={iconButtonStyle}><BsFillBellFill /></button>
+                <div style={headerRightStyle} className="header-right">
+                    <div className="icon-button-group" style={{ display: 'flex', gap: '1.5rem' }}>
+                        <button style={iconButtonStyle} onClick={() => navigate('/admin/manage-inbox')} title="ข้อความติดต่อ">
+                            <BsFillEnvelopeFill />
+                        </button>
+                        <button style={iconButtonStyle} ref={bellRef} onClick={() => setNotificationsOpen(!isNotificationsOpen)} title="การแจ้งเตือน">
+                            <BsFillBellFill />
+                        </button>
+                    </div>
+                    
                     <div style={profileDropdownStyle}>
-                        <div ref={profileRef} style={headerProfileStyle} onClick={() => setDropdownOpen(!isDropdownOpen)}>
+                        <div ref={profileRef} style={headerProfileStyle} className="header-profile" onClick={() => setProfileDropdownOpen(!isProfileDropdownOpen)}>
                             <img src={user} alt="User" style={profileAvatarStyle} />
                             <span className="profile-name">ชื่อผู้ใช้ (Admin)</span>
-                            <BsChevronDown style={{ transition: 'transform 0.3s ease', transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+                            <BsChevronDown style={{ transition: 'transform 0.3s ease', transform: isProfileDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
                         </div>
                     </div>
                 </div>
             </header>
             
-            {isDropdownOpen && <DropdownMenu onClose={() => setDropdownOpen(false)} triggerRef={profileRef} />}
+            {isProfileDropdownOpen && <DropdownMenu onClose={() => setProfileDropdownOpen(false)} triggerRef={profileRef} />}
+            
+            {isNotificationsOpen && <NotificationsDropdown onClose={() => setNotificationsOpen(false)} triggerRef={bellRef} />}
         </>
     );
 };

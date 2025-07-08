@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Nav, Tab, Button, Table, Badge, Pagination, Image, Form } from 'react-bootstrap';
 import { BsPencilFill, BsEyeFill, BsTrashFill, BsPlusLg, BsDownload } from 'react-icons/bs';
-import './ManageEvents.css';
+import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
 import { rawEventsData } from '../../../data/mock-events';
 
 const ManageEventsPage = () => {
@@ -77,6 +77,8 @@ const ManageEventsPage = () => {
     };
 
     return (
+        <Container fluid className="manage-news-page p-0">
+            <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-events-page">
             <div className="page-header">
                 <h2 className="page-title">จัดการข่าว/กิจกรรม</h2>
@@ -175,6 +177,8 @@ const ManageEventsPage = () => {
                     )}
                 </div>
             </div>
+        </Container>
+        </div>
         </Container>
     );
 };

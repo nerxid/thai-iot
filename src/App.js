@@ -49,7 +49,7 @@ import ManageAdminsPage from './pages/admin/ManageAdmins/ManageAdminsPage';
 import UsageTrackingPage from './pages/admin/UsageTracking/UsageTrackingPage';
 import DataBackupPage from './pages/admin/DataBackup/DataBackupPage';
 import AdminProfilePage from './pages/admin/AdminProfile/AdminProfilePage';
-
+import AdminNotificationsPage from './pages/admin/NotificationsPage/NotificationsPage';
 
 
 
@@ -107,7 +107,9 @@ function App() {
           <Route path="/admin/system-settings" element={<AdminLayout><UsageTrackingPage /></AdminLayout>} />
           <Route path="/admin/data-backup" element={<AdminLayout><DataBackupPage /></AdminLayout>} />
           <Route path="/admin/profile" element={<AdminLayout><AdminProfilePage /></AdminLayout>} />
-
+          <Route path="/admin/notifications" element={<AdminLayout><NotificationsPage /></AdminLayout>} />
+          <Route path="/admin/notifications" element={<AdminLayout><AdminNotificationsPage /></AdminLayout>} />
+          {/* Logout Route */}
 
           <Route path="/logout" element={<Logout />} />
 

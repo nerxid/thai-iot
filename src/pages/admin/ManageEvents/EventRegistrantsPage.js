@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Breadcrumb, Button, Table, Pagination } from 'react-bootstrap';
 import { BsEyeFill, BsDownload } from 'react-icons/bs';
-import './ManageEvents.css'; 
+import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
 import { rawEventsData } from '../../../data/mock-events';
 import { mockRegistrants } from '../../../data/mock-registrants';
 
@@ -30,6 +30,8 @@ const EventRegistrantsPage = () => {
     }
 
     return (
+        <Container fluid className="manage-news-page p-0">
+            <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-events-page">
             <div className="page-header">
                 <Breadcrumb>
@@ -93,6 +95,8 @@ const EventRegistrantsPage = () => {
                     </div>
                 )}
             </div>
+        </Container>
+        </div>
         </Container>
     );
 };

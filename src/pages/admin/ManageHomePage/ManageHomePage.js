@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Tabs, Tab, Form, Button, Image, Col, Row, Carousel } from 'react-bootstrap';
+import { Container, Form, Button, Image, Col, Row, Carousel } from 'react-bootstrap';
 import { Plus, X } from 'react-bootstrap-icons';
 import './ManageHomePage.css';
 
@@ -8,14 +8,12 @@ const ManageHomePage = () => {
 
     const [bannerFile, setBannerFile] = useState(null);
     const [bannerPreview, setBannerPreview] = useState('');
-
     const [introData, setIntroData] = useState({
         file: null,
         preview: '',
         title: 'เกี่ยวกับสมาคม',
         description: 'สมาคมจดทะเบียนเมื่อเดือนกุมภาพันธ์ 2561 ก่อตั้งโดย กลุ่มผู้ประกอบการและผู้บริหารชมรม RFID Thailand...'
     });
-
     const [posterFiles, setPosterFiles] = useState([]);
     const [posterIndex, setPosterIndex] = useState(0);
 
@@ -29,10 +27,9 @@ const ManageHomePage = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // --- เพิ่มการตรวจสอบขนาดไฟล์ ---
         if (file.size > MAX_FILE_SIZE) {
             alert(`ขนาดไฟล์ต้องไม่เกิน 1 MB`);
-            return; // หยุดการทำงานถ้าไฟล์ใหญ่เกินไป
+            return;
         }
 
         const previewUrl = URL.createObjectURL(file);
@@ -49,7 +46,6 @@ const ManageHomePage = () => {
         const files = Array.from(e.target.files);
         if (files.length === 0) return;
         
-        // --- เพิ่มการตรวจสอบขนาดไฟล์สำหรับแต่ละไฟล์ ---
         const validFiles = files.filter(file => {
             if (file.size > MAX_FILE_SIZE) {
                 alert(`ไฟล์ "${file.name}" มีขนาดใหญ่เกิน 1 MB และจะไม่ถูกเพิ่ม`);
@@ -82,12 +78,8 @@ const ManageHomePage = () => {
 
     const handleSave = (section) => {
         console.log(`Saving data for section: ${section}`);
-        if (section === 'banner') console.log({ bannerFile });
-        if (section === 'intro') console.log({ introData });
-        if (section === 'posters') console.log({ posterFiles });
         alert(`บันทึกข้อมูลส่วน ${section} เรียบร้อย!`);
     };
-
 
     const BannerTab = () => (
         <div>
@@ -143,7 +135,6 @@ const ManageHomePage = () => {
     const PostersTab = () => (
         <div>
             <p className="text-muted mb-3">อัปโหลดรูปภาพ (ใช้รูปภาพสูงสุด 10 รูป, .jpg, .png, .jpeg, ขนาดไม่เกิน 1 MB)</p>
-
             <div className="poster-preview-main mb-3">
                 {posterFiles.length > 0 ? (
                     <Carousel
@@ -164,7 +155,6 @@ const ManageHomePage = () => {
                     </div>
                 )}
             </div>
-
             <div className="thumbnail-container">
                 {posterFiles.map((item, index) => (
                     <div key={index} className="thumbnail-item" onClick={() => setPosterIndex(index)}>
@@ -186,40 +176,35 @@ const ManageHomePage = () => {
         </div>
     );
 
+    const renderActiveTabContent = () => {
+        switch(activeTab) {
+            case 'banners': return <BannerTab />;
+            case 'intro':   return <IntroTab />;
+            case 'posters': return <PostersTab />;
+            default:        return null;
+        }
+    };
+
     return (
-        <Container className="my-4">
-            <h2 className="mb-4">จัดการหน้าแรก</h2>
-            <Tabs
-                id="manage-homepage-tabs"
-                activeKey={activeTab}
-                onSelect={(k) => setActiveTab(k)}
-                className="mb-4"
-            >
-                <Tab eventKey="banners" title="แบนเนอร์">
-                    <BannerTab />
-                    <hr className="my-4" />
-                    <div className="text-end">
-                        <Button variant="secondary" className="me-2">ยกเลิก</Button>
-                        <Button variant="primary" onClick={() => handleSave('banner')}>บันทึก</Button>
+        <Container fluid className="manage-homepage-container p-0">
+            <div className="content-wrapper p-3 p-md-4">
+                <h2 className="mb-4">จัดการหน้าแรก</h2>
+                <div className="custom-tabs-nav-container">
+                    <div className="custom-tabs-nav">
+                        <button className={`custom-tab-button ${activeTab === 'banners' ? 'active' : ''}`} onClick={() => setActiveTab('banners')}>แบนเนอร์</button>
+                        <button className={`custom-tab-button ${activeTab === 'intro' ? 'active' : ''}`} onClick={() => setActiveTab('intro')}>แนะนำเพิ่มเติม</button>
+                        <button className={`custom-tab-button ${activeTab === 'posters' ? 'active' : ''}`} onClick={() => setActiveTab('posters')}>บอร์ดประชาสัมพันธ์</button>
                     </div>
-                </Tab>
-                <Tab eventKey="intro" title="แนะนำเพิ่มเติม">
-                    <IntroTab />
+                </div>
+                <div className="custom-tab-content">
+                    {renderActiveTabContent()}
                     <hr className="my-4" />
-                    <div className="text-end">
-                        <Button variant="secondary" className="me-2">ยกเลิก</Button>
-                        <Button variant="primary" onClick={() => handleSave('intro')}>บันทึก</Button>
+                    <div className="form-actions">
+                        <Button variant="secondary">ยกเลิก</Button>
+                        <Button variant="primary" onClick={() => handleSave(activeTab)}>บันทึก</Button>
                     </div>
-                </Tab>
-                <Tab eventKey="posters" title="บอร์ดประชาสัมพันธ์">
-                    <PostersTab />
-                    <hr className="my-4" />
-                    <div className="text-end">
-                        <Button variant="secondary" className="me-2">ยกเลิก</Button>
-                        <Button variant="primary" onClick={() => handleSave('posters')}>บันทึก</Button>
-                    </div>
-                </Tab>
-            </Tabs>
+                </div>
+            </div>
         </Container>
     );
 };

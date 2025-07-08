@@ -1,4 +1,3 @@
-
 .manage-committee-page .list-container {
     background-color: #ffffff;
     border-radius: 12px;
@@ -19,6 +18,7 @@
     text-align: center;
     transition: box-shadow 0.2s ease;
     position: relative;
+    background-color: #ffffff;
 }
 .committee-member-card:hover {
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
@@ -88,8 +88,12 @@
     justify-content: flex-end;
     gap: 0.75rem;
     margin-top: 2rem;
-    padding-top: 1.5rem;
+    padding: 1.5rem 2rem; 
     border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa; 
+    position: sticky; 
+    bottom: 0;
+    z-index: 10;
 }
 
 
@@ -97,27 +101,20 @@
     margin-bottom: 2.5rem;
 }
 
+.tier-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 1.5rem;
+}
+
 .tier-title {
     font-size: 1.25rem;
     font-weight: 600;
     color: #344767;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.tier-input-group {
-    max-width: 150px;
-    margin: 0.5rem auto 0 auto;
-}
-
-
-.edit-icon-group .input-group-text {
-    background-color: transparent;
-    border-left: none;
-}
-.edit-icon-group .form-control {
-    border-right: none;
 }
 
 .image-upload-container {
@@ -153,11 +150,6 @@
     opacity: 1;
 }
 
-
-.committee-member-card {
-    position: relative; 
-}
-
 .drag-handle {
     position: absolute;
     top: 12px;
@@ -171,23 +163,56 @@
     cursor: grabbing;
 }
 
-
 .tier-management-section {
     max-width: 400px;
     margin-bottom: 1.5rem;
 }
 
 
-.tier-title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e9ecef;
-    margin-bottom: 1.5rem;
+@media (max-width: 768px) {
+    .manage-committee-page .list-container {
+        padding: 1.5rem;
+    }
+
+    .committee-grid {
+        gap: 1rem;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
 }
 
-.tier-title {
-    margin-bottom: 0;
-    padding-bottom: 0.75rem;
-    border-bottom: none; 
+@media (max-width: 576px) {
+    .manage-committee-page .list-container {
+        padding: 1rem;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .tier-management-section {
+        max-width: 100%;
+    }
+
+    .form-actions-footer {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+
+    .form-actions-footer .btn {
+        width: 100%;
+    }
+
+    .committee-member-card {
+        padding: 1rem;
+    }
+    .member-image {
+        width: 100px;
+        height: 100px;
+    }
+    .image-upload-container .overlay {
+        width: 100px;
+        height: 100px;
+    }
 }

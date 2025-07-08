@@ -1,26 +1,41 @@
-
-#manage-homepage-tabs .nav-tabs {
+.custom-tabs-nav-container {
     border-bottom: 2px solid #dee2e6;
+    margin-bottom: 1.5rem;
 }
 
-#manage-homepage-tabs .nav-link {
-    border: none !important;
-    color: #212529 !important;
+.custom-tabs-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.custom-tabs-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-tab-button {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: transparent;
     font-weight: 600;
-    background-color: #f8f9fa !important;
-    margin-right: 5px;
-    border-radius: 8px 8px 0 0 !important;
+    color: #6c757d;
+    flex-shrink: 0;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
     transition: all 0.2s ease-in-out;
 }
 
-#manage-homepage-tabs .nav-link:hover {
-    background-color: #e9ecef !important;
+.custom-tab-button:hover {
+    color: #212529;
 }
 
-#manage-homepage-tabs .nav-link.active {
-    color: #0d6efd !important;
-    border-bottom: 2px solid #0d6efd !important;
+.custom-tab-button.active {
+    color: #0d6efd;
+    border-color: #0d6efd;
 }
+
 .upload-box-large,
 .upload-box-square,
 .upload-box-rect {
@@ -136,4 +151,23 @@
     cursor: pointer;
     background-color: #e5e7eb;
     color: #6b7280;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .upload-box-large { min-height: 200px; }
+    .upload-box-square { max-width: 250px; margin: 0 auto 1.5rem auto; }
+    .poster-preview-main { min-height: 300px; }
+}
+
+@media (max-width: 576px) {
+    .manage-homepage-container h2 { font-size: 1.5rem; }
+    .custom-tab-button { padding: 0.75rem 1rem; }
+    .form-actions { flex-direction: column-reverse; gap: 0.5rem; }
+    .form-actions .btn { width: 100%; }
 }

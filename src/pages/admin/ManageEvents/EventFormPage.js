@@ -5,7 +5,7 @@ import { Plus, X } from 'react-bootstrap-icons';
 import TiptapEditor from '../../../components/admin/from/TiptapEditor';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './ManageEvents.css';
+import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
 import { rawEventsData } from '../../../data/mock-events';
 
 const EventFormPage = () => {
@@ -118,6 +118,8 @@ const EventFormPage = () => {
     };
 
     return (
+        <Container fluid className="manage-news-page p-0">
+            <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-events-page">
             <div className="page-header">
                 <h2 className="page-title">{isEditMode ? 'แก้ไขกิจกรรม' : 'เพิ่มกิจกรรม'}</h2>
@@ -221,6 +223,8 @@ const EventFormPage = () => {
                     <Button variant="primary" type="submit">ถัดไป</Button>
                 </div>
             </Form>
+        </Container>
+        </div>
         </Container>
     );
 };

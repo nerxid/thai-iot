@@ -1,15 +1,14 @@
-
 .stat-card-item {
-  border-radius: 16px;
-  padding: 1.5rem;
-  color: #2c3e50;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 170px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    color: #2c3e50;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 170px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .stat-card-item.theme-blue { background: linear-gradient(135deg, #a0c4ff 0%, #89b2f5 100%); }
@@ -19,48 +18,74 @@
 
 
 .stat-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .stat-card-title {
-  font-weight: 600; 
-  font-size: 0.9rem;
-  opacity: 0.8;
+    font-weight: 600; 
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 .stat-card-icon-bg {
-  font-size: 4rem;
-  position: absolute;
-  right: -15px;
-  bottom: -20px;
-  opacity: 0.1;
-  transform: rotate(-15deg);
+    font-size: 4rem;
+    position: absolute;
+    right: -15px;
+    bottom: -20px;
+    opacity: 0.1;
+    transform: rotate(-15deg);
 }
 
 .stat-card-body {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .stat-card-value {
-  font-size: 2.25rem;
-  font-weight: 700;
-  line-height: 1.1;
-  margin-bottom: 0.75rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
 }
 
 .stat-card-trend {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  background-color: rgba(44, 62, 80, 0.08); 
-  padding: 4px 8px;
-  border-radius: 20px;
-  width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background-color: rgba(44, 62, 80, 0.08); 
+    padding: 4px 8px;
+    border-radius: 20px;
+    width: fit-content;
 }
 
 .stat-card-trend.up .icon { color: #276749; }
 .stat-card-trend.down .icon { color: #9b2c2c; }
+
+
+
+@media (max-width: 768px) {
+    .stat-card-item {
+        padding: 1rem; 
+        min-height: 140px;
+    }
+
+    .stat-card-value {
+        font-size: 1.75rem;
+    }
+
+    .stat-card-title {
+        font-size: 0.8rem;
+    }
+
+    .stat-card-trend {
+        font-size: 0.8rem;
+    }
+
+    .stat-card-icon-bg {
+        font-size: 3.5rem;
+        bottom: -15px;
+    }
+}

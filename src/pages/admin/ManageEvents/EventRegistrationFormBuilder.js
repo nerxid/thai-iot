@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Row, Col, Card, InputGroup } from 'react-bootstrap';
 import { BsPlusLg, BsTrashFill, BsGripVertical, BsCalendarDate, BsClock, BsCloudUpload } from 'react-icons/bs';
 import DatePicker from 'react-datepicker'; 
-import './ManageEvents.css';
+import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
 
 
 
@@ -125,6 +125,8 @@ const EventRegistrationFormBuilder = () => {
     };
 
     return (
+        <Container fluid className="manage-news-page p-0">
+            <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-events-page">
             <div className="page-header">
                 <h2 className="page-title">สร้างฟอร์มกิจกรรม</h2>
@@ -206,6 +208,8 @@ const EventRegistrationFormBuilder = () => {
                 <Button variant="secondary" type="button" onClick={() => navigate('/admin/manage-events/add', { state: { step1Data: step1Data } })}>ย้อนกลับ</Button>
                 <Button variant="primary" onClick={handleFinalSubmit}>บันทึก</Button>
             </div>
+        </Container>
+        </div>
         </Container>
     );
 };

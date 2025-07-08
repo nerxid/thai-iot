@@ -2,21 +2,35 @@
     background-color: #ffffff;
     border-radius: 12px;
     padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
 .manage-inbox-page .list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; 
+    gap: 1.5rem; 
+}
+
+.manage-inbox-page .filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .inbox-table .message-row {
     cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.inbox-table .message-row:hover {
+    background-color: #f8f9fa;
 }
 
 .expanded-row td {
     background-color: #f8f9fa;
     padding: 1.5rem !important;
+    border-top: 2px solid #dee2e6 !important;
 }
 
 .expanded-content {
@@ -43,4 +57,39 @@
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+@media (max-width: 768px) {
+    .manage-inbox-page {
+        padding: 1rem;
+    }
+    .list-container {
+        padding: 1.5rem;
+    }
+    .page-title {
+        font-size: 1.5rem;
+    }
+    .list-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 576px) {
+    .manage-inbox-page {
+        padding: 0;
+    }
+    .list-container {
+        padding: 1rem;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .expanded-row td {
+        padding: 1rem !important;
+    }
+    .reply-modal-body {
+        padding: 1rem;
+    }
 }

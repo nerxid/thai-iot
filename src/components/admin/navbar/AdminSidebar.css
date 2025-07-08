@@ -1,8 +1,8 @@
-
 .admin-sidebar {
     width: 260px;
     background-color: #ffffff;
-    height: 100vh;
+    top: 0;
+    bottom: 0;
     position: fixed;
     left: 0;
     top: 0;
@@ -11,6 +11,8 @@
     flex-direction: column;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     padding: 1rem;
+    z-index: 1050; /* เพิ่ม z-index */
+    transition: transform 0.3s ease-in-out; /* เพิ่ม transition */
 }
 
 .sidebar-header {
@@ -18,6 +20,7 @@
     border-bottom: 1px solid #f0f2f5;
     display: flex;
     align-items: center;
+    justify-content: space-between; /* ปรับ layout */
 }
 
 .logo {
@@ -49,6 +52,7 @@
     padding: 1rem 0;
     margin: 0;
     flex-grow: 1;
+    overflow-y: auto; /* ทำให้เลื่อนได้ถ้าเมนูยาว */
 }
 
 .sidebar-item {
@@ -172,4 +176,48 @@
     color: #8898aa; 
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+
+/* --- ส่วนของ Responsive ที่เพิ่มเข้ามา --- */
+
+/* ค่าเริ่มต้น: ซ่อนปุ่มปิด และ backdrop บนจอใหญ่ */
+.sidebar-close-btn,
+.sidebar-backdrop {
+    display: none;
+}
+
+/* สำหรับหน้าจอที่เล็กกว่า 992px (Tablet และ Mobile) */
+@media (max-width: 992px) {
+    .admin-sidebar {
+        /* ซ่อน Sidebar ไปทางซ้าย */
+        transform: translateX(-100%);
+    }
+
+    .admin-sidebar.open {
+        /* แสดง Sidebar เมื่อมี class 'open' */
+        transform: translateX(0);
+    }
+
+    /* สไตล์สำหรับปุ่มปิด (ไอคอน X) */
+    .sidebar-close-btn {
+        display: block; /* แสดงปุ่ม */
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        color: #67748e;
+        cursor: pointer;
+    }
+
+    /* พื้นหลังสีดำโปร่งแสง */
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040; /* ให้อยู่หลัง sidebar แต่เหนือเนื้อหา */
+        display: block;
+    }
 }
