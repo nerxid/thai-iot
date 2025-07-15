@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Breadcrumb, Button, Table, Pagination } from 'react-bootstrap';
 import { BsEyeFill, BsDownload } from 'react-icons/bs';
-import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
+import '../ManageNews/ManageNewsAndEvents.css'
 import { rawEventsData } from '../../../data/mock-events';
 import { mockRegistrants } from '../../../data/mock-registrants';
 

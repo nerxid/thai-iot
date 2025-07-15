@@ -4,7 +4,7 @@ import { Container, Card, Button, Form, Breadcrumb } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import { rawEventsData } from '../../../data/mock-events';
 import { mockRegistrants } from '../../../data/mock-registrants';
-import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
+import '../ManageNews/ManageNewsAndEvents.css'
 
 const SubmissionFieldRenderer = ({ field, submissionData }) => {
     const answer = submissionData[field.label] || '';

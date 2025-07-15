@@ -5,7 +5,7 @@ import { Plus, X } from 'react-bootstrap-icons';
 import TiptapEditor from '../../../components/admin/from/TiptapEditor';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
+import '../ManageNews/ManageNewsAndEvents.css'
 import { rawEventsData } from '../../../data/mock-events';
 
 const EventFormPage = () => {

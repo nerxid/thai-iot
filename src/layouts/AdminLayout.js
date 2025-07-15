@@ -1,7 +1,7 @@
-// เพิ่มการ import 'useState'
 import React, { useState } from 'react';
 import AdminSidebar from '../components/admin/navbar/AdminSidebar';
 import AdminHeader from '../components/admin/navbar/AdminHeader';
+import ScrollToTopButton from '../components/ScrollToTopButton';
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {
@@ -20,7 +20,10 @@ const AdminLayout = ({ children }) => {
         <main className="admin-page-content">
           {children}
         </main>
+        <ScrollToTopButton /> 
+        
       </div>
+      
     </div>
   );
 };

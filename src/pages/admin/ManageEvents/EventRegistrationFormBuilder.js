@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Row, Col, Card, InputGroup } from 'react-bootstrap';
 import { BsPlusLg, BsTrashFill, BsGripVertical, BsCalendarDate, BsClock, BsCloudUpload } from 'react-icons/bs';
 import DatePicker from 'react-datepicker'; 
-import 'C:/inturn/new_thaiiot-1/src/pages/admin/ManageNews/ManageNewsAndEvents.css'
+import '../ManageNews/ManageNewsAndEvents.css'
 
 
 
