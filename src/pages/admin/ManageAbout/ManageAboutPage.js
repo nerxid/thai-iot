@@ -71,7 +71,7 @@ const ManageAboutPage = () => {
     const renderAboutForm = () => (
         <Form onSubmit={(e) => handleFormSubmit(e, 'เกี่ยวกับสมาคม')}>
             <Form.Group className="mb-4">
-                <Form.Label>อัปโหลดรูปภาพ (คลิกที่รูปเพื่อเปลี่ยน หรือกด + เพื่อเพิ่ม)</Form.Label>
+                <Form.Label>อัปโหลดรูปภาพ (คลิกที่รูปเพื่อเปลี่ยน)</Form.Label>
                 <div className="thumbnail-container">
                     {aboutImages.map((img, index) => (
                         <div key={index} className="thumbnail-item">

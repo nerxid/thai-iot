@@ -93,3 +93,24 @@
         padding: 1rem;
     }
 }
+
+
+
+
+.export-modal-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.export-modal-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.export-modal-section .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.75rem;
+}

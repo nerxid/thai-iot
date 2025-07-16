@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Container, Button, Table, Badge, Pagination } from 'react-bootstrap';
 import { BsDownload } from 'react-icons/bs';
 import { mockInboxMessages } from '../../../data/mock-inbox';
+import ExportInboxModal from './ExportInboxModal';
 import ReplyModal from './ReplyModal';
 import './ManageInbox.css';
 
@@ -12,6 +13,7 @@ const ManageInboxPage = () => {
     const [expandedRowId, setExpandedRowId] = useState(null);
     const [showReplyModal, setShowReplyModal] = useState(false);
     const [replyingTo, setReplyingTo] = useState(null);
+    const [showExportModal, setShowExportModal] = useState(false);
     const ITEMS_PER_PAGE = 10;
 
     const filteredMessages = useMemo(() => {
@@ -60,7 +62,9 @@ const ManageInboxPage = () => {
                                 <Button variant={activeFilter === 'อ่านแล้ว' ? 'primary' : 'outline-secondary'} onClick={() => setActiveFilter('อ่านแล้ว')}>อ่านแล้ว</Button>
                                 <Button variant={activeFilter === 'ตอบแล้ว' ? 'primary' : 'outline-secondary'} onClick={() => setActiveFilter('ตอบแล้ว')}>ตอบแล้ว</Button>
                             </div>
-                            <Button variant="outline-success"><BsDownload /> Export Excel</Button>
+                            <Button variant="outline-success" onClick={() => setShowExportModal(true)}>
+                                <BsDownload /> Export Excel
+                            </Button>
                         </div>
 
                         <Table responsive hover className="inbox-table mt-4">
@@ -119,6 +123,12 @@ const ManageInboxPage = () => {
                 onHide={() => setShowReplyModal(false)}
                 messageData={replyingTo}
                 onSend={handleSendReply}
+            />
+
+            <ExportInboxModal
+                show={showExportModal}
+                onHide={() => setShowExportModal(false)}
+                messages={messages}
             />
         </>
     );

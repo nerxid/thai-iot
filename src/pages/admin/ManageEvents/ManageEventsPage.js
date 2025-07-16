@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Nav, Tab, Button, Table, Badge, Pagination, Image, Form } from 'react-bootstrap';
 import { BsPencilFill, BsEyeFill, BsTrashFill, BsPlusLg, BsDownload } from 'react-icons/bs';
 import '../ManageNews/ManageNewsAndEvents.css';
+import ExportEventsModal from './ExportEventsModal';
 import { rawEventsData } from '../../../data/mock-events';
 
 const ManageEventsPage = () => {
     const navigate = useNavigate();
     const [activeEventStatusTab, setActiveEventStatusTab] = useState('all');
     const [activePublishStatusTab, setActivePublishStatusTab] = useState('all');
+    const [showExportModal, setShowExportModal] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 5;
 
@@ -77,6 +79,7 @@ const ManageEventsPage = () => {
     };
 
     return (
+        <>
         <Container fluid className="manage-news-page p-0">
             <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-events-page">
@@ -119,7 +122,9 @@ const ManageEventsPage = () => {
                     </div>
 
                     <div className="action-buttons">
-                        <Button variant="outline-success" className="me-2"><BsDownload /> Export Excel</Button>
+                         <Button variant="outline-success" className="me-2" onClick={() => setShowExportModal(true)}>
+                            <BsDownload /> Export Excel
+                        </Button>
                         <Button as={Link} to="/admin/manage-events/add"><BsPlusLg /> เพิ่มกิจกรรม</Button>
                     </div>
                 </div>
@@ -180,6 +185,13 @@ const ManageEventsPage = () => {
         </Container>
         </div>
         </Container>
+
+         <ExportEventsModal
+                show={showExportModal}
+                onHide={() => setShowExportModal(false)}
+                events={adminEventsData}
+            />
+        </>
     );
 };
 

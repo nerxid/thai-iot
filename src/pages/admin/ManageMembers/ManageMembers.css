@@ -138,3 +138,82 @@
         align-items: stretch;
     }
 }
+.react-datepicker-popper {
+    z-index: 1060 !important;
+}
+
+.export-modal-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef; 
+}
+
+.export-modal-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+}
+
+.export-modal-section .form-label {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 0.75rem !important; 
+    display: block;
+}
+
+.plan-checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem 1rem;
+}
+
+
+.import-modal-body {
+    padding: 1.5rem 2rem;
+}
+
+.upload-drop-zone {
+    border: 2px dashed #adb5bd;
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease-in-out;
+}
+
+.upload-drop-zone.is-active {
+    background-color: #e9ecef;
+    border-color: #0d6efd;
+}
+
+.upload-drop-zone .upload-icon {
+    font-size: 3rem;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1rem;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.template-download-link {
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.template-download-link:hover {
+    color: #0b5ed7;
+}
+
+.import-results {
+    margin-top: 1.5rem;
+}

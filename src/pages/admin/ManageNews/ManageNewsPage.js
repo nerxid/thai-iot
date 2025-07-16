@@ -4,11 +4,13 @@ import { Container, Nav, Tab, Button, Table, Badge, Pagination, Image } from 're
 import { BsPencilFill, BsTrashFill, BsPlusLg, BsDownload } from 'react-icons/bs';
 import './ManageNewsAndEvents.css';
 import { newsData } from '../../../data/mock-news'; 
+import ExportNewsModal from './ExportNewsModal';
 
 const ManageNewsPage = () => {
     const navigate = useNavigate();
     const [activeListTab, setActiveListTab] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
+    const [showExportModal, setShowExportModal] = useState(false);
     const ITEMS_PER_PAGE = 5; 
 
     const filteredNews = useMemo(() => {
@@ -42,6 +44,7 @@ const ManageNewsPage = () => {
     };
     
     return (
+        <>
         <Container fluid className="manage-news-page p-0">
         <div className="content-wrapper p-3 p-md-4">
         <Container fluid className="manage-news-page">
@@ -68,7 +71,9 @@ const ManageNewsPage = () => {
                         <Button variant={activeListTab === 'published' ? 'primary' : 'outline-secondary'} onClick={() => handleFilterChange('published')}>เผยแพร่</Button>
                     </div>
                     <div className="action-buttons">
-                        <Button variant="outline-success" className="me-2"><BsDownload /> Export Excel</Button>
+                         <Button variant="outline-success" className="me-2" onClick={() => setShowExportModal(true)}>
+                                        <BsDownload /> Export Excel
+                                    </Button>
                         <Button as={Link} to="/admin/manage-news/add"><BsPlusLg /> เพิ่มข่าว</Button>
                     </div>
                 </div>
@@ -116,6 +121,12 @@ const ManageNewsPage = () => {
         </Container>
         </div>
         </Container>
+        <ExportNewsModal 
+                show={showExportModal}
+                onHide={() => setShowExportModal(false)}
+                newsItems={newsData} 
+            />
+        </>
     );
 };
 

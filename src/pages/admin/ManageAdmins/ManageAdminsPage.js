@@ -3,6 +3,7 @@ import { Container, Button, Table, Badge, Form } from 'react-bootstrap';
 import { BsDownload, BsPencilFill, BsToggleOn, BsToggleOff, BsTrashFill } from 'react-icons/bs'; 
 import { mockAdminsData } from '../../../data/mock-admins';
 import AdminFormModal from './AdminFormModal';
+import ExportAdminsModal from './ExportAdminsModal';
 import './ManageAdmins.css';
 
 const ManageAdminsPage = () => {
@@ -11,6 +12,7 @@ const ManageAdminsPage = () => {
     const [editingAdmin, setEditingAdmin] = useState(null);
     const [roleFilter, setRoleFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [showExportModal, setShowExportModal] = useState(false);
 
     const filteredAdmins = useMemo(() => {
         return admins.filter(admin => 
@@ -83,7 +85,9 @@ const ManageAdminsPage = () => {
                             </Form.Group>
                         </div>
                         <div className="action-buttons">
-                            <Button variant="outline-success" className="me-2"><BsDownload /> Export Excel</Button>
+                            <Button variant="outline-success" className="me-2" onClick={() => setShowExportModal(true)}>
+                                <BsDownload /> Export Excel
+                            </Button>
                             <Button onClick={handleShowAddModal}>เพิ่ม Admin +</Button>
                         </div>
                     </div>
@@ -132,6 +136,12 @@ const ManageAdminsPage = () => {
                 onHide={() => setShowModal(false)}
                 onSave={handleSaveAdmin}
                 initialData={editingAdmin}
+            />
+
+             <ExportAdminsModal
+                show={showExportModal}
+                onHide={() => setShowExportModal(false)}
+                admins={admins}
             />
         </>
     );

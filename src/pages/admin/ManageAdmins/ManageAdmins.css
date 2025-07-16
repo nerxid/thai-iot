@@ -64,3 +64,17 @@
 .admin-actions .delete-icon:hover {
     color: #dc3545 !important; 
 }
+
+.export-modal-section {
+    margin-bottom: 1.5rem;
+}
+
+.export-modal-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.export-modal-section .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}

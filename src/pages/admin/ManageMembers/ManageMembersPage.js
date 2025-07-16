@@ -1,14 +1,18 @@
 import React, { useState, useMemo } from 'react';
 import { Container, Nav, Button } from 'react-bootstrap';
-import { BsDownload } from 'react-icons/bs';
+import { BsDownload, BsUpload } from 'react-icons/bs';
 import { membersData } from '../../../data/mock-members';
 import AllMembersList from './AllMembersList';
 import FreeMembersList from './FreeMembersList';
 import PaidMembersList from './PaidMembersList';
+import ExportMembersModal from './ExportMembersModal'
+import ImportMembersModal from './ImportMembersModal';
 import './ManageMembers.css';
 
 const ManageMembersPage = () => {
     const [activeTab, setActiveTab] = useState('all');
+    const [showExportModal, setShowExportModal] = useState(false);
+    const [showImportModal, setShowImportModal] = useState(false);
 
     const { allMembers, freeMembers, paidMembers } = useMemo(() => {
         const free = membersData.filter(m => m.type === 'free');
@@ -29,6 +33,7 @@ const ManageMembersPage = () => {
     };
 
     return (
+        <>
         <Container fluid className="manage-members-page">
             <div className="page-header">
                 <h2 className="page-title">จัดการสมาชิก</h2>
@@ -46,18 +51,35 @@ const ManageMembersPage = () => {
                 </Nav.Item>
             </Nav>
 
-            <div className="list-container">
-                <div className="list-header">
-                     <h4 className="mb-0">รายชื่อสมาชิก</h4>
-                     <Button variant="outline-success">
-                        <BsDownload /> Export Excel
-                    </Button>
+             <div className="list-container">
+                    <div className="list-header">
+                        <h4 className="mb-0">รายชื่อสมาชิก</h4>
+                        <div className="action-buttons">
+                            <Button variant="outline-primary" className="me-2" onClick={() => setShowImportModal(true)}>
+                                <BsUpload /> Import สมาชิก
+                            </Button>
+                            <Button variant="outline-success" onClick={() => setShowExportModal(true)}>
+                                <BsDownload /> Export Excel
+                            </Button>
+                        </div>
+                    </div>
+                    <div className="mt-4">
+                        {renderContent()}
+                    </div>
                 </div>
-                <div className="mt-4">
-                    {renderContent()}
-                </div>
-            </div>
-        </Container>
+            </Container>
+            
+            <ExportMembersModal 
+                show={showExportModal}
+                onHide={() => setShowExportModal(false)}
+                members={allMembers} 
+            />
+            <ImportMembersModal
+                show={showImportModal}
+                onHide={() => setShowImportModal(false)}
+            />
+
+        </>
     );
 };
 
