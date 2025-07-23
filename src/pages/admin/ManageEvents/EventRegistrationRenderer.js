@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
@@ -31,7 +30,7 @@ const EventRegistrationRenderer = ({ formFields }) => {
                 );
 
             case 'Checkboxes':
-                 return (
+                return (
                     <div className="mt-2">
                         {field.options.map(opt => (
                             <Form.Check type="checkbox" key={opt.id} id={`field-${field.id}-opt-${opt.id}`} label={opt.value} name={`field-${field.id}`} />
@@ -50,7 +49,7 @@ const EventRegistrationRenderer = ({ formFields }) => {
                 );
             
             case 'File upload':
-                return <Form.Control type="file" required={field.isRequired} />;
+                return <Form.Control type="file" required={field.isRequired} accept=".jpg,.png,.jpeg" />;
 
             case 'Date':
                 return (
@@ -61,11 +60,12 @@ const EventRegistrationRenderer = ({ formFields }) => {
                         placeholderText="กรุณาเลือกวันที่"
                         dateFormat="dd/MM/yyyy"
                         required={field.isRequired}
+                        portalId="datepicker-portal"
                     />
                 );
             
             case 'Time':
-                 return <Form.Control type="time" required={field.isRequired} />;
+                return <Form.Control type="time" required={field.isRequired} />;
 
             default:
                 return <Form.Control type="text" placeholder={field.placeholder || ''} required={field.isRequired} />;

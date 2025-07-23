@@ -1,5 +1,5 @@
-import React, { useState, useMemo, createRef, useRef } from 'react';
-import { Container, Form, Button, Image, InputGroup } from 'react-bootstrap';
+import React, { useState, useMemo, createRef, useRef, useEffect } from 'react';
+import { Container, Form, Button, Image, InputGroup, Alert } from 'react-bootstrap';
 import { BsPlusLg, BsTrashFill, BsCameraFill, BsGripVertical } from 'react-icons/bs';
 import { ReactSortable } from "react-sortablejs";
 import './ManageCommittee.css';
@@ -25,18 +25,131 @@ const ManageCommitteePage = () => {
     const [description, setDescription] = useState('วาระปี 2567 - 2569');
     const [availableTiers, setAvailableTiers] = useState([1, 2, 3, 4, 5]);
     const [newTierValue, setNewTierValue] = useState('');
+    
     const [newMemberName, setNewMemberName] = useState('');
     const [newMemberTitle, setNewMemberTitle] = useState('');
     const [newMemberTier, setNewMemberTier] = useState(5);
-    const [newMemberImagePreview, setNewMemberImagePreview] = useState('');
+    const [newMemberImage, setNewMemberImage] = useState({ file: null, preview: '' });
     const newMemberImageInputRef = useRef(null);
+    
+    const [formErrors, setFormErrors] = useState({});
+    const [isFormValid, setIsFormValid] = useState(true);
 
     const fileInputRefs = useMemo(() => committeeMembers.reduce((acc, member) => {
         acc[member.id] = createRef();
         return acc;
     }, {}), [committeeMembers]);
+    
+    const validateFile = (file) => {
+        const MAX_SIZE_MB = 1;
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
+        if (!file) return null;
+        if (!ALLOWED_TYPES.includes(file.type)) return 'ต้องเป็นไฟล์ .jpg หรือ .png เท่านั้น';
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) return `ขนาดไฟล์ต้องไม่เกิน ${MAX_SIZE_MB}MB`;
+        return null;
+    };
 
-     const handleDeleteTier = (tierToDelete) => {
+    useEffect(() => {
+        const errors = {};
+        let formIsValid = true;
+        committeeMembers.forEach(member => {
+            if (!member.name.trim()) {
+                errors[member.id] = { ...errors[member.id], name: 'กรุณากรอกชื่อ' };
+                formIsValid = false;
+            }
+            if (!member.title.trim()) {
+                errors[member.id] = { ...errors[member.id], title: 'กรุณากรอกตำแหน่ง' };
+                formIsValid = false;
+            }
+        });
+        setFormErrors(errors);
+        setIsFormValid(formIsValid);
+    }, [committeeMembers]);
+
+    const handleMemberChange = (id, field, value) => {
+        const newValue = (field === 'tier') ? Number(value) : value;
+        setCommitteeMembers(prev => prev.map(member => 
+            member.id === id ? { ...member, [field]: newValue } : member
+        ));
+    };
+
+    const handleMemberImageChange = (id, e) => {
+        const file = e.target.files[0];
+        const error = validateFile(file);
+        if (error) {
+            alert(error);
+            e.target.value = null;
+            return;
+        }
+        if (file) {
+            setCommitteeMembers(prev => prev.map(member => 
+                member.id === id ? { ...member, imageUrl: URL.createObjectURL(file), file: file } : member
+            ));
+        }
+    };
+    
+    const handleNewMemberImageChange = (e) => {
+        const file = e.target.files[0];
+        const error = validateFile(file);
+        if (error) {
+            alert(error);
+            e.target.value = null;
+            return;
+        }
+        if (file) {
+            setNewMemberImage({ file: file, preview: URL.createObjectURL(file) });
+        }
+    };
+
+    const handleAddMember = () => {
+        if (!newMemberName.trim() || !newMemberTitle.trim()) {
+            alert('กรุณากรอกชื่อและตำแหน่งสำหรับสมาชิกใหม่');
+            return;
+        }
+        const newMember = {
+            id: Date.now(),
+            name: newMemberName,
+            title: newMemberTitle,
+            imageUrl: newMemberImage.preview,
+            file: newMemberImage.file,
+            tier: newMemberTier,
+        };
+        setCommitteeMembers(prev => [...prev, newMember]);
+        setNewMemberName('');
+        setNewMemberTitle('');
+        setNewMemberTier(Math.max(...availableTiers, 0));
+        setNewMemberImage({ file: null, preview: '' });
+        if(newMemberImageInputRef.current) newMemberImageInputRef.current.value = "";
+    };
+
+    const handleSaveChanges = () => {
+        if (!isFormValid) {
+            alert('ข้อมูลไม่ถูกต้อง! กรุณากรอกชื่อและตำแหน่งของกรรมการทุกคนให้ครบถ้วน');
+            return;
+        }
+        console.log("Saving data:", { description, committeeMembers });
+        alert('บันทึกการเปลี่ยนแปลงสำเร็จ!');
+    };
+    
+    const groupedMembers = useMemo(() => {
+        return availableTiers.reduce((acc, tier) => {
+            acc[tier] = committeeMembers.filter(m => m.tier === tier);
+            return acc;
+        }, {});
+    }, [committeeMembers, availableTiers]);
+
+    const handleSortEnd = (sortedList, tier) => {
+        const otherTiersMembers = committeeMembers.filter(m => m.tier !== tier);
+        setCommitteeMembers([...otherTiersMembers, ...sortedList]);
+    };
+
+    const handleDeleteMember = (id) => {
+        if (window.confirm('คุณต้องการลบสมาชิกคนนี้ใช่หรือไม่?')) {
+            setCommitteeMembers(committeeMembers.filter(member => member.id !== id));
+        }
+    };
+    
+    const handleDeleteTier = (tierToDelete) => {
         if (groupedMembers[tierToDelete] && groupedMembers[tierToDelete].length > 0) {
             alert(`ไม่สามารถลบลำดับขั้นที่ ${tierToDelete} ได้ เนื่องจากยังมีสมาชิกอยู่`);
             return;
@@ -46,76 +159,7 @@ const ManageCommitteePage = () => {
         }
     };
 
-    const groupedMembers = useMemo(() => {
-        const grouped = availableTiers.reduce((acc, tier) => {
-            acc[tier] = committeeMembers.filter(m => m.tier === tier);
-            return acc;
-        }, {});
-        return grouped;
-    }, [committeeMembers, availableTiers]);
-
-    const handleSortEnd = (sortedList, tier) => {
-        const otherTiersMembers = committeeMembers.filter(m => m.tier !== tier);
-        setCommitteeMembers([...otherTiersMembers, ...sortedList]);
-    };
-
-    const handleMemberChange = (id, field, value) => {
-        const newValue = (field === 'tier') ? Number(value) : value;
-        setCommitteeMembers(committeeMembers.map(member => 
-            member.id === id ? { ...member, [field]: newValue } : member
-        ));
-    };
-
-    const handleDeleteMember = (id) => {
-        if (window.confirm('คุณต้องการลบสมาชิกคนนี้ใช่หรือไม่?')) {
-            setCommitteeMembers(committeeMembers.filter(member => member.id !== id));
-        }
-    };
-
-    const handleMemberImageChange = (id, e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setCommitteeMembers(committeeMembers.map(member => 
-                member.id === id ? { ...member, imageUrl: URL.createObjectURL(file) } : member
-            ));
-        }
-    };
-
-    const handleNewMemberImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setNewMemberImagePreview(URL.createObjectURL(file));
-        }
-    };
-    
-    const handleAddMember = () => {
-        if (!newMemberName || !newMemberTitle || !newMemberImagePreview) {
-            alert('กรุณากรอกข้อมูลและเลือกรูปภาพสำหรับสมาชิกใหม่');
-            return;
-        }
-        const newMember = {
-            id: Date.now(),
-            name: newMemberName,
-            title: newMemberTitle,
-            imageUrl: newMemberImagePreview,
-            tier: newMemberTier,
-        };
-        setCommitteeMembers([...committeeMembers, newMember]);
-        setNewMemberName('');
-        setNewMemberTitle('');
-        setNewMemberTier(Math.max(...availableTiers, 0));
-        setNewMemberImagePreview('');
-        if(newMemberImageInputRef.current) {
-            newMemberImageInputRef.current.value = "";
-        }
-    };
-    
-    const handleSaveChanges = () => {
-        console.log("Saving data (sorted):", { description, committeeMembers });
-        alert('บันทึกการเปลี่ยนแปลงสำเร็จ!');
-    };
-
-     const handleAddNewTier = () => {
+    const handleAddNewTier = () => {
         const tierNumber = Number(newTierValue);
         if (!tierNumber || tierNumber <= 0) {
             alert('กรุณาใส่ลำดับขั้นที่ต้องการเพิ่มเป็นตัวเลขที่มากกว่า 0');
@@ -128,7 +172,6 @@ const ManageCommitteePage = () => {
         setAvailableTiers([...availableTiers, tierNumber].sort((a,b) => a-b));
         setNewTierValue('');
     };
-    
 
     return (
         <Container fluid className="manage-events-page manage-committee-page">
@@ -138,7 +181,7 @@ const ManageCommitteePage = () => {
                     <Form.Label>คำอธิบาย</Form.Label>
                     <Form.Control type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </Form.Group>
-                 <div className="tier-management-section">
+                <div className="tier-management-section">
                     <Form.Label>จัดการลำดับขั้น</Form.Label>
                     <InputGroup>
                         <Form.Control 
@@ -147,15 +190,13 @@ const ManageCommitteePage = () => {
                             value={newTierValue}
                             onChange={(e) => setNewTierValue(e.target.value)}
                         />
-                        <Button variant="outline-secondary" onClick={handleAddNewTier}>
-                            + เพิ่มขั้น
-                        </Button>
+                        <Button variant="outline-secondary" onClick={handleAddNewTier}>+ เพิ่มขั้น</Button>
                     </InputGroup>
                     <Form.Text>ลำดับขั้นที่มีอยู่ตอนนี้: {availableTiers.join(', ')}</Form.Text>
                 </div>
                 <hr />
 
-                {Object.entries(groupedMembers).map(([tier, members]) => (
+                {groupedMembers && Object.entries(groupedMembers).map(([tier, members]) => (
                     <div key={tier} className="tier-group-container">
                         <div className="tier-title-container">
                             <h3 className="tier-title">ลำดับขั้นที่ {tier}</h3>
@@ -169,7 +210,6 @@ const ManageCommitteePage = () => {
                                 <BsTrashFill />
                             </Button>
                         </div>
-
                         <ReactSortable
                             list={members}
                             setList={(sortedList) => handleSortEnd(sortedList, Number(tier))}
@@ -179,15 +219,26 @@ const ManageCommitteePage = () => {
                         >
                             {members.map(member => (
                                 <div key={member.id} className="committee-member-card">
-                                     <span className="drag-handle"><BsGripVertical /></span>
+                                    <span className="drag-handle"><BsGripVertical /></span>
                                     <Button variant="light" size="sm" className="delete-member-btn" onClick={() => handleDeleteMember(member.id)}><BsTrashFill /></Button>
                                     <div className="image-upload-container" onClick={() => fileInputRefs[member.id]?.current?.click()}>
                                         <Image src={member.imageUrl} className="member-image" />
                                         <div className="overlay"><BsCameraFill /></div>
-                                        <Form.Control type="file" ref={fileInputRefs[member.id]} onChange={(e) => handleMemberImageChange(member.id, e)} accept="image/*" hidden />
+                                        <Form.Control type="file" ref={fileInputRefs[member.id]} onChange={(e) => handleMemberImageChange(member.id, e)} accept=".jpg,.png,.jpeg" hidden />
                                     </div>
-                                    <Form.Control className="name-input mb-2" value={member.name} onChange={(e) => handleMemberChange(member.id, 'name', e.target.value)} />
-                                    <Form.Control className="title-input mb-3" value={member.title} onChange={(e) => handleMemberChange(member.id, 'title', e.target.value)} />
+                                    <Form.Control 
+                                        className={`name-input mb-2 ${formErrors[member.id]?.name ? 'is-invalid' : ''}`}
+                                        value={member.name} 
+                                        onChange={(e) => handleMemberChange(member.id, 'name', e.target.value)} 
+                                        placeholder="ชื่อ-นามสกุล*"
+                                    />
+                                    <Form.Control 
+                                        className={`title-input mb-3 ${formErrors[member.id]?.title ? 'is-invalid' : ''}`}
+                                        value={member.title} 
+                                        onChange={(e) => handleMemberChange(member.id, 'title', e.target.value)}
+                                        placeholder="ตำแหน่ง*"
+                                    />
+                                    {formErrors[member.id] && <div className="invalid-feedback d-block mb-2">กรุณากรอกข้อมูลให้ครบ</div>}
                                     <Form.Select className="custom-form-select" value={member.tier} onChange={(e) => handleMemberChange(member.id, 'tier', e.target.value)}>
                                         {availableTiers.map(t => <option key={t} value={t}>Tier {t}</option>)}
                                     </Form.Select>
@@ -202,23 +253,25 @@ const ManageCommitteePage = () => {
                     <div className="committee-grid">
                         <div className="add-member-card">
                             <Form.Label htmlFor="new-member-upload" className="upload-box">
-                                {newMemberImagePreview ? <Image src={newMemberImagePreview} className="member-image" /> : <BsPlusLg size={40} />}
+                                {newMemberImage.preview ? <Image src={newMemberImage.preview} className="member-image" /> : <BsPlusLg size={40} />}
                             </Form.Label>
-                            <Form.Control id="new-member-upload" type="file" ref={newMemberImageInputRef} onChange={handleNewMemberImageChange} accept="image/*" hidden />
-                            <Form.Control type="text" placeholder="ชื่อ-นามสกุล" value={newMemberName} onChange={(e) => setNewMemberName(e.target.value)} />
-                            <Form.Control type="text" placeholder="ตำแหน่ง" value={newMemberTitle} onChange={(e) => setNewMemberTitle(e.target.value)} className="mt-2" />
+                            <Form.Control id="new-member-upload" type="file" ref={newMemberImageInputRef} onChange={handleNewMemberImageChange} accept=".jpg,.png,.jpeg" hidden />
+                            <Form.Control type="text" placeholder="ชื่อ-นามสกุล*" value={newMemberName} onChange={(e) => setNewMemberName(e.target.value)} />
+                            <Form.Control type="text" placeholder="ตำแหน่ง*" value={newMemberTitle} onChange={(e) => setNewMemberTitle(e.target.value)} className="mt-2" />
                             <Form.Select className="custom-form-select mt-2" value={newMemberTier} onChange={(e) => setNewMemberTier(Number(e.target.value))}>
                                 {availableTiers.map(t => <option key={t} value={t}>Tier {t}</option>)}
                             </Form.Select>
                             <Button variant="primary" className="w-100 mt-3" onClick={handleAddMember}>เพิ่มสมาชิก</Button>
                         </div>
                     </div>
-                 </div> 
+                </div> 
             </div>
             
             <div className="form-actions-footer">
                 <Button variant="secondary">ยกเลิก</Button>
-                <Button variant="primary" onClick={handleSaveChanges}>บันทึกการเปลี่ยนแปลง</Button>
+                <Button variant="primary" onClick={handleSaveChanges} disabled={!isFormValid}>
+                    บันทึกการเปลี่ยนแปลง
+                </Button>
             </div>
         </Container>
     );
