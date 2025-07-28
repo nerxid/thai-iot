@@ -41,6 +41,7 @@ const GeneralMemberForm = () => {
         e.preventDefault();
 
         const newErrors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!formData.prefix) newErrors.prefix = 'กรุณาเลือกคำนำหน้า';
         if (formData.prefix === 'อื่นๆ' && !customPrefix) newErrors.customPrefix = 'กรุณาระบุคำนำหน้า';
         if (!formData.firstName) newErrors.firstName = 'กรุณากรอกชื่อ';
@@ -48,6 +49,12 @@ const GeneralMemberForm = () => {
         if (!formData.address) newErrors.address = 'กรุณากรอกที่อยู่';
         if (!formData.email) newErrors.email = 'กรุณากรอกอีเมล';
         if (!formData.lineId) newErrors.lineId = 'กรุณากรอก Line ID';
+
+        if (!formData.email) {
+            newErrors.email = 'กรุณากรอกอีเมล';
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = 'รูปแบบอีเมลไม่ถูกต้อง';
+        }
 
         if (!formData.phone) newErrors.phone = 'กรุณากรอกหมายเลขโทรศัพท์';
         else if (formData.phone.length !== 10) newErrors.phone = 'หมายเลขโทรศัพท์ต้องมี 10 หลัก';

@@ -4,7 +4,7 @@ import { mockContactData } from '../../../data/mock-contact-info';
 import './ManageContact.css';
 
 const facebookUrlRegex = /^https:\/\/(www\.)?facebook\.com\/.+/;
-const lineUrlRegex = /^https:\/\/line\.me\/ti\/p\/~.+/;
+const lineUrlRegex = /^https:\/\/line\.me\/ti\/p\/~.+/; 
 const googleMapUrlRegex = /^https:\/\/(www\.)?google\.com\/maps\/embed\?pb=.+/;
 
 
@@ -29,6 +29,7 @@ const ManageContactPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const newErrors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex สำหรับ Email
 
         const requiredFields = ['address', 'phone', 'email', 'facebookName', 'facebookUrl', 'lineId', 'lineUrl', 'googleMapUrl'];
         requiredFields.forEach(field => {
@@ -37,9 +38,11 @@ const ManageContactPage = () => {
             }
         });
 
-        // --- ตรวจสอบเงื่อนไขพิเศษ ---
+       
+        if (contactInfo.email && !emailRegex.test(contactInfo.email)) {
+            newErrors.email = 'รูปแบบอีเมลไม่ถูกต้อง';
+        }
 
-        
         if (contactInfo.facebookUrl && !facebookUrlRegex.test(contactInfo.facebookUrl)) {
             newErrors.facebookUrl = 'รูปแบบ Link Facebook ไม่ถูกต้อง (ตัวอย่าง: https://www.facebook.com/username)';
         }

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Container, Button, Table, Badge, Form } from 'react-bootstrap';
+import { Container, Button, Table, Badge, Form, Pagination } from 'react-bootstrap';
 import { BsDownload, BsPencilFill, BsToggleOn, BsToggleOff, BsTrashFill } from 'react-icons/bs'; 
 import { mockAdminsData } from '../../../data/mock-admins';
 import AdminFormModal from './AdminFormModal';
@@ -13,6 +13,10 @@ const ManageAdminsPage = () => {
     const [roleFilter, setRoleFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
     const [showExportModal, setShowExportModal] = useState(false);
+    
+    // State สำหรับ Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10;
 
     const filteredAdmins = useMemo(() => {
         return admins.filter(admin => 
@@ -20,6 +24,11 @@ const ManageAdminsPage = () => {
             (statusFilter === 'all' || admin.status === statusFilter)
         );
     }, [admins, roleFilter, statusFilter]);
+
+    // Logic สำหรับแบ่งหน้า
+    const totalPages = Math.ceil(filteredAdmins.length / ITEMS_PER_PAGE);
+    const currentItems = filteredAdmins.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
     const handleShowAddModal = () => {
         setEditingAdmin(null);
@@ -35,7 +44,7 @@ const ManageAdminsPage = () => {
         if (formData.id) { 
             setAdmins(admins.map(admin => admin.id === formData.id ? { ...admin, ...formData } : admin));
         } else { // Add mode
-            const newId = Math.max(...admins.map(a => a.id)) + 1;
+            const newId = admins.length > 0 ? Math.max(...admins.map(a => a.id)) + 1 : 1;
             setAdmins([...admins, { ...formData, id: newId, status: 'ใช้งานอยู่' }]);
         }
         setShowModal(false);
@@ -49,7 +58,7 @@ const ManageAdminsPage = () => {
         ));
     };
 
-     const handleDeleteAdmin = (adminId, adminName) => {
+    const handleDeleteAdmin = (adminId, adminName) => {
         if (window.confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบ Admin "${adminName}"?`)) {
             setAdmins(admins.filter(admin => admin.id !== adminId));
             alert(`ลบ Admin "${adminName}" เรียบร้อยแล้ว`);
@@ -103,31 +112,43 @@ const ManageAdminsPage = () => {
                                 <th>การจัดการ</th>
                             </tr>
                         </thead>
-                            <tbody>
-                                {filteredAdmins.map((admin, index) => (
-                                    <tr key={admin.id}>
-                                        <td>{index + 1}</td>
-                                        <td>{`${admin.firstName} ${admin.lastName}`}</td>
-                                        <td>{admin.email}</td>
-                                        <td>{admin.role}</td>
-                                        <td><Badge bg={admin.status === 'ใช้งานอยู่' ? 'success' : 'danger'}>{admin.status}</Badge></td>
-                                        <td className="admin-actions">
-                                            <Button variant="link" className="p-0" onClick={() => toggleAdminStatus(admin.id)} title={admin.status === 'ใช้งานอยู่' ? 'ปิดใช้งาน' : 'เปิดใช้งาน'}>
-                                                {admin.status === 'ใช้งานอยู่' ? <BsToggleOn className="status-toggle-icon active" /> : <BsToggleOff className="status-toggle-icon inactive" />}
-                                            </Button>
-
-                                            <span onClick={() => handleShowEditModal(admin)} title="แก้ไข">
-                                                <BsPencilFill className="edit-icon" />
-                                            </span>
-
-                                            <span onClick={() => handleDeleteAdmin(admin.id, `${admin.firstName} ${admin.lastName}`)} title="ลบ">
-                                                <BsTrashFill className="delete-icon" />
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
+                        <tbody>
+                            {currentItems.map((admin, index) => (
+                                <tr key={admin.id}>
+                                    <td>{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}</td>
+                                    <td>{`${admin.firstName} ${admin.lastName}`}</td>
+                                    <td>{admin.email}</td>
+                                    <td>{admin.role}</td>
+                                    <td><Badge bg={admin.status === 'ใช้งานอยู่' ? 'success' : 'danger'}>{admin.status}</Badge></td>
+                                    <td className="admin-actions">
+                                        <Button variant="link" className="p-0" onClick={() => toggleAdminStatus(admin.id)} title={admin.status === 'ใช้งานอยู่' ? 'ปิดใช้งาน' : 'เปิดใช้งาน'}>
+                                            {admin.status === 'ใช้งานอยู่' ? <BsToggleOn className="status-toggle-icon active" /> : <BsToggleOff className="status-toggle-icon inactive" />}
+                                        </Button>
+                                        <span onClick={() => handleShowEditModal(admin)} title="แก้ไข" style={{cursor: 'pointer'}}>
+                                            <BsPencilFill className="edit-icon" />
+                                        </span>
+                                        <span onClick={() => handleDeleteAdmin(admin.id, `${admin.firstName} ${admin.lastName}`)} title="ลบ" style={{cursor: 'pointer'}}>
+                                            <BsTrashFill className="delete-icon" />
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </Table>
+                    
+                    {totalPages > 1 && (
+                        <div className="d-flex justify-content-center">
+                            <Pagination>
+                                <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+                                {[...Array(totalPages).keys()].map(n => (
+                                    <Pagination.Item key={n + 1} active={n + 1 === currentPage} onClick={() => handlePageChange(n + 1)}>
+                                        {n + 1}
+                                    </Pagination.Item>
+                                ))}
+                                <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+                            </Pagination>
+                        </div>
+                    )}
                 </div>
             </Container>
 
@@ -138,7 +159,7 @@ const ManageAdminsPage = () => {
                 initialData={editingAdmin}
             />
 
-             <ExportAdminsModal
+            <ExportAdminsModal
                 show={showExportModal}
                 onHide={() => setShowExportModal(false)}
                 admins={admins}

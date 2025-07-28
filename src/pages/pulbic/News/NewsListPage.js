@@ -27,7 +27,7 @@ const NewsListPage = () => {
         <div className="news-list-page">
             <Container>
                 <div className="news-list-header text-center">
-                    <h1 className="display-4 fw-bold">ข่าวสารและกิจกรรม</h1>
+                    <h1 className="display-4 fw-bold">ข่าวสาร</h1>
                     <p className="lead text-secondary">อัปเดตข้อมูลข่าวสารล่าสุดจากสมาคมไทยไอโอที</p>
                 </div>
                 

@@ -17,7 +17,6 @@ const ProfilePage = () => {
     const { user } = useAuth(); 
     const navigate = useNavigate();
 
-    
     const [profileData, setProfileData] = useState({
         prefix: 'นาย',
         firstName: 'user',
@@ -93,12 +92,10 @@ const ProfilePage = () => {
             newErrors.customPrefix = 'กรุณาระบุคำนำหน้า';
         }
 
-        // ตรวจสอบเบอร์โทร
         if (profileData.phone && profileData.phone.length !== 10) {
             newErrors.phone = 'หมายเลขโทรศัพท์ต้องมี 10 หลัก';
         }
         
-        // ตรวจสอบรูปภาพ
         if (!avatar.preview) {
             newErrors.avatar = 'กรุณาอัปโหลดรูปโปรไฟล์';
         }
@@ -187,13 +184,16 @@ const ProfilePage = () => {
                         <Col md={6}><Button variant="secondary" className="w-100" onClick={() => navigate('/change-password')}>เปลี่ยนรหัสผ่าน</Button></Col>
                     </Row>
                     <hr className="my-4" />
-                    <div className="profile-form-actions">
-                        <Button variant="outline-primary" onClick={() => navigate('/register', { state: { flow: 'changePlan' } })}>เปลี่ยนแผนสมาชิก</Button>
+                   <div className="profile-form-actions">
+                        <Button variant="outline-primary" onClick={() => navigate('/change-plan')}>
+                            เปลี่ยนแผนสมาชิก
+                        </Button>
                         <div>
                             <Button variant="secondary" as={Link} to="/" className="me-2">ยกเลิก</Button>
                             <Button variant="primary" type="submit">บันทึก</Button>
                         </div>
                     </div>
+
                 </Form>
             </Container>
         </div>

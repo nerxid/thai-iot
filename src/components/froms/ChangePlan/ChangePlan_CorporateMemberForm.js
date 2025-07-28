@@ -16,6 +16,7 @@ const ChangePlanCorporateMemberForm = () => {
         phone: '',
         email: '',
         lineId: '',
+        paymentType: 'initial', // เพิ่ม state ใหม่
         membershipDuration: 'yearly',
         companyCertificate: null,
         acceptNews: false,
@@ -47,7 +48,7 @@ const ChangePlanCorporateMemberForm = () => {
         const newErrors = {};
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        const requiredFields = ['prefix', 'firstName', 'lastName', 'companyName', 'position', 'address', 'phone', 'email', 'lineId', 'companyCertificate'];
+        const requiredFields = ['prefix', 'firstName', 'lastName', 'companyName', 'position', 'address', 'phone', 'email', 'lineId', 'companyCertificate', 'paymentType'];
         requiredFields.forEach(field => {
             if (!formData[field]) {
                 newErrors[field] = 'กรุณากรอกข้อมูล';
@@ -88,20 +89,9 @@ const ChangePlanCorporateMemberForm = () => {
                     <p className="card-subtitle text-center text-muted mb-5">กรุณากรอกข้อมูลให้ครบถ้วน</p>
                     <form noValidate onSubmit={handleSubmit}>
                         <div className="row g-4">
-                            <div className="col-md-4">
-                                <label htmlFor="prefix-corp-change" className="form-label">คำนำหน้า*</label>
-                                <select id="prefix-corp-change" name="prefix" className={`form-select ${formErrors.prefix ? 'is-invalid' : ''}`} value={formData.prefix} onChange={handleChange} required>
-                                    <option value="">เลือก...</option><option value="นาย">นาย</option><option value="นาง">นาง</option><option value="นางสาว">นางสาว</option><option value="อื่นๆ">อื่นๆ...</option>
-                                </select>
-                                <div className="invalid-feedback">{formErrors.prefix}</div>
-                            </div>
-                            {formData.prefix === 'อื่นๆ' && (
-                                <div className="col-md-4">
-                                    <label htmlFor="custom-prefix-corp-change" className="form-label">ระบุคำนำหน้า*</label>
-                                    <input type="text" id="custom-prefix-corp-change" className={`form-control ${formErrors.customPrefix ? 'is-invalid' : ''}`} value={customPrefix} onChange={(e) => setCustomPrefix(e.target.value)} placeholder="เช่น ดร., ผศ." required />
-                                    <div className="invalid-feedback">{formErrors.customPrefix}</div>
-                                </div>
-                            )}
+                            {/* ... Form fields for personal info ... */}
+                            <div className="col-md-4"><label htmlFor="prefix-corp-change" className="form-label">คำนำหน้า*</label><select id="prefix-corp-change" name="prefix" className={`form-select ${formErrors.prefix ? 'is-invalid' : ''}`} value={formData.prefix} onChange={handleChange} required><option value="">เลือก...</option><option value="นาย">นาย</option><option value="นาง">นาง</option><option value="นางสาว">นางสาว</option><option value="อื่นๆ">อื่นๆ...</option></select><div className="invalid-feedback">{formErrors.prefix}</div></div>
+                            {formData.prefix === 'อื่นๆ' && (<div className="col-md-4"><label htmlFor="custom-prefix-corp-change" className="form-label">ระบุคำนำหน้า*</label><input type="text" id="custom-prefix-corp-change" className={`form-control ${formErrors.customPrefix ? 'is-invalid' : ''}`} value={customPrefix} onChange={(e) => setCustomPrefix(e.target.value)} placeholder="เช่น ดร., ผศ." required /><div className="invalid-feedback">{formErrors.customPrefix}</div></div>)}
                             <div className="col-md-4"><label htmlFor="firstName-corp-change" className="form-label">ชื่อ*</label><input type="text" id="firstName-corp-change" name="firstName" className={`form-control ${formErrors.firstName ? 'is-invalid' : ''}`} value={formData.firstName} onChange={handleChange} required /><div className="invalid-feedback">{formErrors.firstName}</div></div>
                             <div className="col-md-4"><label htmlFor="lastName-corp-change" className="form-label">นามสกุล*</label><input type="text" id="lastName-corp-change" name="lastName" className={`form-control ${formErrors.lastName ? 'is-invalid' : ''}`} value={formData.lastName} onChange={handleChange} required /><div className="invalid-feedback">{formErrors.lastName}</div></div>
                             <div className="col-md-6"><label htmlFor="companyName-corp-change" className="form-label">ชื่อบริษัท*</label><input type="text" id="companyName-corp-change" name="companyName" className={`form-control ${formErrors.companyName ? 'is-invalid' : ''}`} value={formData.companyName} onChange={handleChange} required /><div className="invalid-feedback">{formErrors.companyName}</div></div>
@@ -110,7 +100,33 @@ const ChangePlanCorporateMemberForm = () => {
                             <div className="col-md-6"><label htmlFor="phone-corp-change" className="form-label">หมายเลขโทรศัพท์*</label><input type="tel" id="phone-corp-change" name="phone" className={`form-control ${formErrors.phone ? 'is-invalid' : ''}`} value={formData.phone} onChange={handleChange} maxLength="10" required /><div className="invalid-feedback">{formErrors.phone}</div></div>
                             <div className="col-md-6"><label htmlFor="email-corp-change" className="form-label">E-mail*</label><input type="email" id="email-corp-change" name="email" className={`form-control ${formErrors.email ? 'is-invalid' : ''}`} value={formData.email} onChange={handleChange} required /><div className="invalid-feedback">{formErrors.email}</div></div>
                             <div className="col-md-6"><label htmlFor="lineId-corp-change" className="form-label">Line-ID*</label><input type="text" id="lineId-corp-change" name="lineId" className={`form-control ${formErrors.lineId ? 'is-invalid' : ''}`} value={formData.lineId} onChange={handleChange} required /><div className="invalid-feedback">{formErrors.lineId}</div></div>
-                            <div className="col-12 mt-5"><h5 className="fw-bold mb-3">เลือกระยะเวลาการสมัครสมาชิก*</h5><div className="row gy-3"><div className="col-md-6"><div className="membership-duration-option"><input className="form-check-input" type="radio" name="membershipDuration" id="yearly-corp-change" value="yearly" checked={formData.membershipDuration === 'yearly'} onChange={handleChange} /><label className="form-check-label h-100" htmlFor="yearly-corp-change"><strong>สมาชิกรายปี</strong><br />6,420 บาท (รวม vat 7%)</label></div></div><div className="col-md-6"><div className="membership-duration-option"><input className="form-check-input" type="radio" name="membershipDuration" id="lifetime-corp-change" value="lifetime" checked={formData.membershipDuration === 'lifetime'} onChange={handleChange} /><label className="form-check-label h-100" htmlFor="lifetime-corp-change"><strong>สมาชิกตลอดชีพ</strong><br />54,570 บาท (รวม vat 7%)</label></div></div></div></div>
+                           
+                            <div className="col-12 mt-5">
+                                <h5 className="fw-bold mb-3">ประเภทการชำระเงิน*</h5>
+                                <div className="row gy-3">
+                                    <div className="col-md-6">
+                                        <div className="membership-duration-option">
+                                            <input className="form-check-input" type="radio" name="paymentType" id="initial-corp-change" value="initial" checked={formData.paymentType === 'initial'} onChange={handleChange} />
+                                            <label className="form-check-label h-100" htmlFor="initial-corp-change">
+                                                <strong>แรกเข้า</strong><br />
+                                                <small className="text-muted">(มีค่าแรกเข้า 1,000 บาท)</small>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="membership-duration-option">
+                                            <input className="form-check-input" type="radio" name="paymentType" id="renewal-corp-change" value="renewal" checked={formData.paymentType === 'renewal'} onChange={handleChange} />
+                                            <label className="form-check-label h-100" htmlFor="renewal-corp">
+                                                <strong>ต่ออายุ</strong><br />
+                                                <small className="text-muted">(ไม่มีค่าบริการ)</small>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {formErrors.paymentType && <div className="text-danger mt-2 small">{formErrors.paymentType}</div>}
+                            </div>
+                            
+                            <div className="col-12 mt-4"><h5 className="fw-bold mb-3">เลือกระยะเวลาการสมัครสมาชิก*</h5><div className="row gy-3"><div className="col-md-6"><div className="membership-duration-option"><input className="form-check-input" type="radio" name="membershipDuration" id="yearly-corp-change" value="yearly" checked={formData.membershipDuration === 'yearly'} onChange={handleChange} /><label className="form-check-label h-100" htmlFor="yearly-corp-change"><strong>สมาชิกรายปี</strong><br />6,420 บาท (รวม vat 7%)</label></div></div><div className="col-md-6"><div className="membership-duration-option"><input className="form-check-input" type="radio" name="membershipDuration" id="lifetime-corp-change" value="lifetime" checked={formData.membershipDuration === 'lifetime'} onChange={handleChange} /><label className="form-check-label h-100" htmlFor="lifetime-corp-change"><strong>สมาชิกตลอดชีพ</strong><br />54,570 บาท (รวม vat 7%)</label></div></div></div></div>
                             <div className="col-12 mt-4">
                                 <label htmlFor="companyCertificate-change" className="form-label">อัปโหลดใบหนังสือรับรอง* <small className="text-muted ms-2">(เฉพาะไฟล์ .pdf ขนาดไม่เกิน 5MB)</small></label>
                                 <input className={`form-control ${formErrors.companyCertificate ? 'is-invalid' : ''}`} type="file" id="companyCertificate-change" name="companyCertificate" onChange={handleChange} required accept="application/pdf" />

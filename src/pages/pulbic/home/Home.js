@@ -17,7 +17,7 @@ const AssociationHomePage = () => {
    
     const Banner = () => (
         <div id="home" className="banner" style={{ backgroundImage: `url(${bannerImage})` }}>
-            <h1 className="banner-title">THAIIOT<br />Association</h1>
+            <h1 className="banner-title">THAIIoT<br />Association</h1>
             <p className="lead my-4">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor<br />incididunt ut labore et dolore magna aliqua.
             </p>

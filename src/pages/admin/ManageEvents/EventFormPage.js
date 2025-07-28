@@ -13,11 +13,13 @@ import { rawEventsData } from '../../../data/mock-events';
 
 const SortableSecondaryImage = ({ image, index, onRemove }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: image.preview });
-    const style = { transform: CSS.Transform.toString(transform), transition };
+    const style = { transform: CSS.Transform.toString(transform), transition, cursor: 'grab' };
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="thumbnail-item">
             <Image src={image.preview} thumbnail />
-            <Button variant="danger" size="sm" className="thumbnail-delete-btn" onClick={() => onRemove(index)}><X size={16} /></Button>
+            <Button variant="danger" size="sm" className="thumbnail-delete-btn" onPointerDown={e => e.stopPropagation()} onClick={e => { e.stopPropagation(); onRemove(index); }}>
+                <X size={16} />
+            </Button>
         </div>
     );
 };
@@ -27,7 +29,6 @@ const EventFormPage = () => {
     const navigate = useNavigate();
     const isEditMode = Boolean(eventId);
 
-    // Form data states
     const [eventType, setEventType] = useState('');
     const [title, setTitle] = useState('');
     const [details, setDetails] = useState('');
@@ -51,6 +52,7 @@ const EventFormPage = () => {
                 setEndDate(new Date(event.end));
                 setPublishStatus(event.publishStatus || 'เผยแพร่');
                 setCoverImage({ file: null, preview: event.imageUrl });
+                setSecondaryImages(event.secondaryImages?.map(url => ({ file: null, preview: url })) || []);
             }
         }
     }, [eventId, isEditMode]);
@@ -94,7 +96,11 @@ const EventFormPage = () => {
         e.target.value = null;
     };
     
-    const removeSecondaryImage = (indexToRemove) => setSecondaryImages(prev => prev.filter((_, index) => index !== indexToRemove));
+    const removeSecondaryImage = (indexToRemove) => {
+        if(window.confirm('คุณต้องการลบรูปภาพนี้ใช่หรือไม่?')) {
+            setSecondaryImages(prev => prev.filter((_, index) => index !== indexToRemove));
+        }
+    };
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -116,9 +122,7 @@ const EventFormPage = () => {
         if (!details || details.replace(/<(.|\n)*?>/g, '').trim().length === 0) newErrors.details = 'กรุณากรอกรายละเอียด';
         if (!startDate) newErrors.startDate = 'กรุณาเลือกวันที่เริ่มกิจกรรม';
         if (!endDate) newErrors.endDate = 'กรุณาเลือกวันที่สิ้นสุดกิจกรรม';
-
         setFormErrors(newErrors);
-
         if (Object.keys(newErrors).length === 0) {
             const step1Data = { eventType, title, details, startDate, endDate, publishStatus, showOnCalendar, scheduledAt, coverImage, secondaryImages };
             navigate('/admin/manage-events/add/step2', { state: { step1Data: step1Data } });
@@ -154,7 +158,7 @@ const EventFormPage = () => {
                             <Form.Control id="cover-upload" type="file" onChange={handleCoverImageChange} hidden accept=".jpg,.png,.jpeg" />
                             {formErrors.coverImage && <Alert variant="danger" className="mt-2">{formErrors.coverImage}</Alert>}
                         </Form.Group>
-
+                        
                         <Form.Group className="mb-4">
                             <Form.Label>อัปโหลดรูปภาพรอง (สูงสุด 5 รูป, ลากเพื่อสลับตำแหน่ง)</Form.Label>
                             <p className="form-text">ใช้รูปภาพได้สูงสุด 5 รูป, .jpg, .png, .jpeg, ขนาดไม่เกิน 1 MB</p>
@@ -185,20 +189,8 @@ const EventFormPage = () => {
                         </Form.Group>
                         
                         <Row>
-                            <Col md={6}>
-                                <Form.Group className="mb-4">
-                                    <Form.Label>วันที่เริ่มกิจกรรม*</Form.Label>
-                                    <div><DatePicker selected={startDate} onChange={date => setStartDate(date)} className={`form-control ${formErrors.startDate ? 'is-invalid' : ''}`} /></div>
-                                    {formErrors.startDate && <div className="d-block invalid-feedback">{formErrors.startDate}</div>}
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group className="mb-4">
-                                    <Form.Label>วันที่สิ้นสุดกิจกรรม*</Form.Label>
-                                    <div><DatePicker selected={endDate} onChange={date => setEndDate(date)} className={`form-control ${formErrors.endDate ? 'is-invalid' : ''}`} /></div>
-                                    {formErrors.endDate && <div className="d-block invalid-feedback">{formErrors.endDate}</div>}
-                                </Form.Group>
-                            </Col>
+                            <Col md={6}><Form.Group className="mb-4"><Form.Label>วันที่เริ่มกิจกรรม*</Form.Label><div><DatePicker selected={startDate} onChange={date => setStartDate(date)} className={`form-control ${formErrors.startDate ? 'is-invalid' : ''}`} portalId="datepicker-portal" /></div>{formErrors.startDate && <div className="d-block invalid-feedback">{formErrors.startDate}</div>}</Form.Group></Col>
+                            <Col md={6}><Form.Group className="mb-4"><Form.Label>วันที่สิ้นสุดกิจกรรม*</Form.Label><div><DatePicker selected={endDate} onChange={date => setEndDate(date)} className={`form-control ${formErrors.endDate ? 'is-invalid' : ''}`} portalId="datepicker-portal" /></div>{formErrors.endDate && <div className="d-block invalid-feedback">{formErrors.endDate}</div>}</Form.Group></Col>
                         </Row>
                         <Row>
                             <Col md={6}><Form.Group className="mb-4"><Form.Label>สถานะการเผยแพร่*</Form.Label><div><Form.Check inline label="เผยแพร่" name="publishStatus" type="radio" value="เผยแพร่" checked={publishStatus === 'เผยแพร่'} onChange={(e) => setPublishStatus(e.target.value)} /><Form.Check inline label="แบบร่าง" name="publishStatus" type="radio" value="แบบร่าง" checked={publishStatus === 'แบบร่าง'} onChange={(e) => setPublishStatus(e.target.value)} /></div></Form.Group></Col>

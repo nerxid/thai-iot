@@ -15,6 +15,7 @@ const ManageInboxPage = () => {
     const [replyingTo, setReplyingTo] = useState(null);
     const [showExportModal, setShowExportModal] = useState(false);
     const ITEMS_PER_PAGE = 10;
+    
 
     const filteredMessages = useMemo(() => {
         if (activeFilter === 'all') return messages;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap'; // เอา Row, Col ออก
+import { Modal, Button, Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -9,7 +9,43 @@ const PaymentProofUploadModal = ({ show, onHide, onSave }) => {
     const [bank, setBank] = useState('');
     const [proofFile, setProofFile] = useState(null);
 
+    const [fileError, setFileError] = useState('');
+
+    const validateFile = (file) => {
+        const MAX_SIZE_MB = 1;
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
+        if (!file) return 'กรุณาเลือกไฟล์';
+        if (!ALLOWED_TYPES.includes(file.type)) return 'ต้องเป็นไฟล์ .jpg, .png, หรือ .jpeg เท่านั้น';
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) return `ขนาดไฟล์ต้องไม่เกิน ${MAX_SIZE_MB}MB`;
+        return null;
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setFileError(''); // เคลียร์ error เก่า
+
+        if (!file) {
+            setProofFile(null);
+            return;
+        }
+        
+        const error = validateFile(file);
+        if (error) {
+            setFileError(error);
+            e.target.value = null; // ล้างค่าใน input
+            setProofFile(null);
+            return;
+        }
+
+        // ถ้าไฟล์ถูกต้อง
+        setProofFile(file);
+    };
+
     const handleSave = () => {
+        if (!proofFile || fileError) {
+            setFileError('กรุณาอัปโหลดหลักฐานการชำระเงินให้ถูกต้อง');
+            return;
+        }
         onSave({
             details: paymentDetails,
             date: paymentDate,
@@ -32,7 +68,7 @@ const PaymentProofUploadModal = ({ show, onHide, onSave }) => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>วันที่และเวลาชำระเงิน</Form.Label>
-                        <DatePicker selected={paymentDate} onChange={date => setPaymentDate(date)} showTimeSelect dateFormat="Pp" className="form-control" />
+                        <DatePicker selected={paymentDate} onChange={date => setPaymentDate(date)} showTimeSelect dateFormat="Pp" className="form-control" portalId="datepicker-portal"/>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>ธนาคาร</Form.Label>
@@ -44,9 +80,18 @@ const PaymentProofUploadModal = ({ show, onHide, onSave }) => {
                             <option value="KTB">กรุงไทย</option>
                         </Form.Select>
                     </Form.Group>
+
                     <Form.Group className="mb-3">
-                        <Form.Label>อัปโหลดหลักฐาน (.jpg, .png)</Form.Label>
-                        <Form.Control type="file" onChange={e => setProofFile(e.target.files[0])} accept=".jpg,.png,.jpeg" />
+                        <Form.Label>อัปโหลดหลักฐาน (.jpg, .png, .jpeg, ขนาดไม่เกิน 1 MB)</Form.Label>
+                        <Form.Control 
+                            type="file" 
+                            onChange={handleFileChange} 
+                            accept=".jpg,.png,.jpeg"
+                            isInvalid={!!fileError}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {fileError}
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Form>
             </Modal.Body>

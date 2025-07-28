@@ -268,7 +268,7 @@ const ManageCommitteePage = () => {
             </div>
             
             <div className="form-actions-footer">
-                <Button variant="secondary">ยกเลิก</Button>
+                
                 <Button variant="primary" onClick={handleSaveChanges} disabled={!isFormValid}>
                     บันทึกการเปลี่ยนแปลง
                 </Button>

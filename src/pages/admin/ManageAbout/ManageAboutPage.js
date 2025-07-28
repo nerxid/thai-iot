@@ -9,7 +9,7 @@ import './ManageAbout.css';
 
 const SortableAboutImage = ({ item, index, onRemove, onImageChange }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.preview });
-    const style = { transform: CSS.Transform.toString(transform), transition };
+    const style = { transform: CSS.Transform.toString(transform), transition, cursor: 'grab' };
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="thumbnail-item">
@@ -23,12 +23,22 @@ const SortableAboutImage = ({ item, index, onRemove, onImageChange }) => {
                 accept=".jpg,.png,.jpeg"
                 onChange={(e) => onImageChange(e, index)}
             />
-            <Button variant="danger" size="sm" className="thumbnail-delete-btn" onClick={() => onRemove(index)}>
+            <Button 
+                variant="danger" 
+                size="sm" 
+                className="thumbnail-delete-btn" 
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onRemove(index);
+                }}
+            >
                 <X size={16} />
             </Button>
         </div>
     );
 };
+
 
 const ManageAboutPage = () => {
     const [activeTab, setActiveTab] = useState('about');
@@ -54,24 +64,16 @@ const ManageAboutPage = () => {
 
     const handleImageChange = (e, section, index = null) => {
         const file = e.target.files[0];
-        
-        const errorKey = section.startsWith('about') ? 'about' 
-                       : section === 'missions' ? `mission-${index}` 
-                       : section;
-
+        const errorKey = section.startsWith('about') ? 'about' : section === 'missions' ? `mission-${index}` : section;
         setFileErrors(prev => ({...prev, [errorKey]: null}));
-
         if (!file) return;
-
         const error = validateFile(file);
         if (error) {
             setFileErrors(prev => ({...prev, [errorKey]: error}));
             e.target.value = null;
             return;
         }
-
         const newImage = { file, preview: URL.createObjectURL(file) };
-
         if (section === 'about-add') {
             setAboutImages(prev => [...prev, newImage].slice(0, 4));
         } else if (section === 'about-update') {
@@ -93,8 +95,10 @@ const ManageAboutPage = () => {
 
     const handleFormSubmit = (e, section) => {
         e.preventDefault();
-        
-        
+        if (section === 'เกี่ยวกับสมาคม' && aboutImages.length !== 4) {
+            alert('กรุณาอัปโหลดรูปภาพในส่วน "เกี่ยวกับสมาคม" ให้ครบ 4 รูป');
+            return;
+        }
         alert(`บันทึกข้อมูลส่วน "${section}" เรียบร้อย!`);
     };
 

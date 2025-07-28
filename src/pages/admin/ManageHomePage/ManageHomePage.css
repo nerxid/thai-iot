@@ -119,7 +119,185 @@
 }
 .thumbnail-item .img-thumbnail {
     width: 100px;
+    height: 100px;.custom-tabs-nav-container {
+    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+.custom-tabs-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.custom-tabs-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-tab-button {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+    color: #6c757d;
+    flex-shrink: 0;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-tab-button:hover {
+    color: #212529;
+}
+
+.custom-tab-button.active {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.upload-box-large,
+.upload-box-square,
+.upload-box-rect {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f9fafb;
+    transition: background-color 0.2s ease;
+    text-align: center;
+    color: #6b7280;
+}
+.upload-box-large:hover,
+.upload-box-square:hover,
+.upload-box-rect:hover {
+    background-color: #f3f4f6;
+}
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+.upload-box-large {
+    width: 100%;
+    min-height: 300px;
+}
+.upload-box-square {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+}
+.upload-box-large img,
+.upload-box-square img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+.poster-preview-main {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.poster-preview-main .upload-placeholder-rect {
+    color: #9ca3af;
+    font-weight: 500;
+}
+.poster-preview-main .carousel, .poster-preview-main .carousel-inner, .poster-preview-main .carousel-item {
+    width: 100%;
+    height: 100%;
+}
+.poster-preview-main .carousel-item img {
+    width: 100%;
+    height: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+}
+.thumbnail-container {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+    overflow-x: auto;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+.thumbnail-item {
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer; 
+}
+.thumbnail-item .img-thumbnail {
+    width: 100px;
     height: 100px;
+    object-fit: cover;
+    padding: 0.2rem;
+    border: 2px solid transparent; 
+    transition: all 0.3s ease;
+}
+.thumbnail-item .img-thumbnail.active {
+    border-color: #0d6efd;
+}
+
+.thumbnail-upload-box {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.thumbnail-delete-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 10;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .upload-box-large { min-height: 200px; }
+    .upload-box-square { max-width: 250px; margin: 0 auto 1.5rem auto; }
+    .poster-preview-main { min-height: 300px; }
+}
+
+@media (max-width: 576px) {
+    .manage-homepage-container h2 { font-size: 1.5rem; }
+    .custom-tab-button { padding: 0.75rem 1rem; }
+    .form-actions { flex-direction: column-reverse; gap: 0.5rem; }
+    .form-actions .btn { width: 100%; }
+}
     object-fit: cover;
     padding: 0.2rem;
     border: 2px solid transparent; 
@@ -170,4 +348,19 @@
     .custom-tab-button { padding: 0.75rem 1rem; }
     .form-actions { flex-direction: column-reverse; gap: 0.5rem; }
     .form-actions .btn { width: 100%; }
+}
+.drag-handle {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    cursor: grab;
+    color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    z-index: 10;
+    touch-action: none; 
+}
+.drag-handle:active {
+    cursor: grabbing;
 }

@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext'; 
 
-
 import PublicLayout from './layouts/PublicLayout';
 import AdminLayout from './layouts/AdminLayout';
 import ScrollToTop from './components/ScrollToTop';
@@ -22,11 +21,12 @@ import AboutUsPage from './pages/pulbic/About/AboutUsPage';
 import CommitteePage from './pages/pulbic/CommitteePage/CommitteePage';
 import ContactPage from './pages/pulbic/Contact/ContactPage';
 import ProfilePage from './pages/pulbic/ProfilePage/ProfilePage';
-import ChangePlanPage from './pages/pulbic/ProfilePage/ChangePlanPage/ChangePlanPage';
 import MyEventsPage from './pages/pulbic/MyEventsPage/MyEventsPage'
 import EventRegistrationPage from './pages/pulbic/EventRegistrationPage/EventRegistrationPage';
 import ChangePasswordPage from './pages/pulbic/ProfilePage/ChangePasswordPage/ChangePasswordPage';
 import NotificationsPage from './pages/pulbic/NotificationsPage/NotificationsPage';
+import ChangePlanSelectionPage from './components/froms/ChangePlan/ChangePlanSelectionPage.js';
+import ChangePlanPage from './pages/pulbic/ProfilePage/ChangePlanPage/ChangePlanPage.js';
 
 
 // --- Admin Pages ---
@@ -50,11 +50,8 @@ import UsageTrackingPage from './pages/admin/UsageTracking/UsageTrackingPage';
 import DataBackupPage from './pages/admin/DataBackup/DataBackupPage';
 import AdminProfilePage from './pages/admin/AdminProfile/AdminProfilePage';
 import AdminNotificationsPage from './pages/admin/NotificationsPage/NotificationsPage';
-
-
-
 import Logout from './pages/pulbic/Login/Logout';
-
+import AdminSearchResultsPage from './pages/admin/SearchResults/AdminSearchResultsPage';
 
 function App() {
   return (
@@ -80,9 +77,10 @@ function App() {
           <Route path="/profile" element={<PublicLayout><ProtectedRoute><ProfilePage /></ProtectedRoute></PublicLayout>} />
           <Route path="/my-events" element={<PublicLayout><ProtectedRoute><MyEventsPage /></ProtectedRoute></PublicLayout>} />
           <Route path="/change-password" element={<PublicLayout><ProtectedRoute><ChangePasswordPage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/notifications" element={<PublicLayout><ProtectedRoute><NotificationsPage /></ProtectedRoute></PublicLayout>} />
+          <Route path="/change-plan" element={<PublicLayout><ProtectedRoute><ChangePlanSelectionPage /></ProtectedRoute></PublicLayout>} />
           <Route path="/change-plan/:memberType" element={<PublicLayout><ProtectedRoute><ChangePlanPage /></ProtectedRoute></PublicLayout>} />
-          <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
-
+          
 
           {/* Admin Routes with AdminLayout */}
           <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
@@ -107,10 +105,11 @@ function App() {
           <Route path="/admin/system-settings" element={<AdminLayout><UsageTrackingPage /></AdminLayout>} />
           <Route path="/admin/data-backup" element={<AdminLayout><DataBackupPage /></AdminLayout>} />
           <Route path="/admin/profile" element={<AdminLayout><AdminProfilePage /></AdminLayout>} />
-          <Route path="/admin/notifications" element={<AdminLayout><NotificationsPage /></AdminLayout>} />
           <Route path="/admin/notifications" element={<AdminLayout><AdminNotificationsPage /></AdminLayout>} />
-          {/* Logout Route */}
+          <Route path="/admin/search" element={<AdminLayout><AdminSearchResultsPage /></AdminLayout>} />
 
+
+          {/* Logout Route */}
           <Route path="/logout" element={<Logout />} />
 
         </Routes>

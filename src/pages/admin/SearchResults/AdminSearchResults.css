@@ -1,0 +1,7 @@
+.search-results-page {
+    padding: 2rem;
+}
+.result-card .card-header {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}

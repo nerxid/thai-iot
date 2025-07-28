@@ -31,7 +31,7 @@ const EventRegistrationPage = () => {
             const initialFormData = {};
             if (user) {
                 const nameField = currentEvent.formFields?.find(f => f.label.includes('ชื่อ-นามสกุล'));
-                const emailField = currentEvent.formFields?.find(f => f.label.includes('อีเมล'));
+                const emailField = currentEvent.formFields?.find(f => f.type === 'email');
                 if (nameField) initialFormData[nameField.id] = user.name || '';
                 if (emailField) initialFormData[emailField.id] = user.email || '';
             }
@@ -43,16 +43,13 @@ const EventRegistrationPage = () => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-
-        if (name === 'prefix' && value !== 'อื่นๆ...') {
-            setCustomPrefix('');
-        }
-        
         if (formErrors[name]) {
             setFormErrors(prev => ({ ...prev, [name]: undefined }));
         }
-
-        if (type === 'checkbox' && event.formFields.find(f => f.id === name)?.type === 'checkbox') {
+        if (name === 'prefix' && value !== 'อื่นๆ...') {
+            setCustomPrefix('');
+        }
+        if (type === 'checkbox' && event.formFields.find(f => f.id.toString() === name)?.type === 'checkbox') {
              setFormData(prev => {
                  const currentSelection = prev[name] || [];
                  if (checked) {
@@ -70,6 +67,7 @@ const EventRegistrationPage = () => {
         e.preventDefault();
 
         const newErrors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const isBoothEvent = event.type === 'booth';
         const optionalFields = isBoothEvent ? ['จำนวนเจ้าหน้าที่ในบูธ'] : ['อาหารที่แพ้'];
 
@@ -80,16 +78,18 @@ const EventRegistrationPage = () => {
                     newErrors[field.id] = `กรุณากรอกข้อมูล "${field.label}"`;
                 }
             }
-
             if (field.label.includes('เบอร์โทรศัพท์') && formData[field.id] && formData[field.id].length !== 10) {
                  newErrors[field.id] = 'กรุณากรอกหมายเลขโทรศัพท์ 10 หลัก';
             }
-
             if (field.label.includes('จำนวนเจ้าหน้าที่ในบูธ')) {
                 const value = formData[field.id];
                 if (value && (isNaN(value) || Number(value) <= 0)) {
                     newErrors[field.id] = 'จำนวนเจ้าหน้าที่ต้องเป็นตัวเลขที่มากกว่า 0';
                 }
+            }
+            
+            if (field.type === 'email' && formData[field.id] && !emailRegex.test(formData[field.id])) {
+                newErrors[field.id] = 'รูปแบบอีเมลไม่ถูกต้อง';
             }
         });
 
@@ -119,60 +119,24 @@ const EventRegistrationPage = () => {
     const renderFormField = (field) => {
         const isInvalid = !!formErrors[field.id];
         const errorMessage = formErrors[field.id];
-        
         let inputType = field.type;
-        if (field.label.includes('จำนวนเจ้าหน้าที่ในบูธ')) {
-            inputType = 'number';
-        }
+        if (field.label.includes('จำนวนเจ้าหน้าที่ในบูธ')) inputType = 'number';
 
         switch (field.type) {
             case 'select':
-                return (
-                    <>
-                        <Form.Select name={field.id} onChange={handleChange} value={formData[field.id] || ''} isInvalid={isInvalid}>
-                            <option value="">เลือก...</option>
-                            {field.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback>
-                    </>
-                );
+                return (<><Form.Select name={field.id} onChange={handleChange} value={formData[field.id] || ''} isInvalid={isInvalid}><option value="">เลือก...</option>{field.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}</Form.Select><Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback></>);
             case 'radio':
-                return (
-                    <div className={`d-flex flex-wrap gap-3 pt-2 ${isInvalid ? 'is-invalid' : ''}`}>
-                        {field.options.map(opt => <Form.Check inline key={opt} type="radio" id={`${field.id}-${opt}`} name={field.id} value={opt} label={opt} onChange={handleChange} checked={formData[field.id] === opt} />)}
-                        {isInvalid && <div className="invalid-feedback d-block">{errorMessage}</div>}
-                    </div>
-                );
+                return (<div className={`d-flex flex-wrap gap-3 pt-2 ${isInvalid ? 'is-invalid' : ''}`}>{field.options.map(opt => <Form.Check inline key={opt} type="radio" id={`${field.id}-${opt}`} name={field.id} value={opt} label={opt} onChange={handleChange} checked={formData[field.id] === opt} />)}{isInvalid && <div className="invalid-feedback d-block">{errorMessage}</div>}</div>);
             case 'checkbox':
-                return(
-                    <div className={`d-flex flex-wrap gap-3 pt-2 ${isInvalid ? 'is-invalid' : ''}`}>
-                        {field.options.map(opt => <Form.Check inline key={opt} type="checkbox" id={`${field.id}-${opt}`} name={field.id} value={opt} label={opt} onChange={handleChange} checked={Array.isArray(formData[field.id]) && formData[field.id].includes(opt)} />)}
-                        {isInvalid && <div className="invalid-feedback d-block">{errorMessage}</div>}
-                    </div>
-                );
+                return(<div className={`d-flex flex-wrap gap-3 pt-2 ${isInvalid ? 'is-invalid' : ''}`}>{field.options.map(opt => <Form.Check inline key={opt} type="checkbox" id={`${field.id}-${opt}`} name={field.id} value={opt} label={opt} onChange={handleChange} checked={Array.isArray(formData[field.id]) && formData[field.id].includes(opt)} />)}{isInvalid && <div className="invalid-feedback d-block">{errorMessage}</div>}</div>);
             case 'textarea':
-                return (
-                    <>
-                        <Form.Control as="textarea" rows={4} name={field.id} onChange={handleChange} value={formData[field.id] || ''} isInvalid={isInvalid} />
-                        <Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback>
-                    </>
-                );
+                return (<><Form.Control as="textarea" rows={4} name={field.id} onChange={handleChange} value={formData[field.id] || ''} isInvalid={isInvalid} /><Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback></>);
             default:
-                return (
-                    <>
-                        <Form.Control type={inputType} name={field.id} onChange={handleChange} value={formData[field.id] || ''} isInvalid={isInvalid} min={inputType === 'number' ? 1 : undefined} />
-                        <Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback>
-                    </>
-                );
+                return (<><Form.Control type={inputType} name={field.id} onChange={handleChange} value={formData[field.id] || ''} isInvalid={isInvalid} min={inputType === 'number' ? 1 : undefined} /><Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback></>);
         }
     };
     
-    if (!isAuthorized) {
-        return (
-            <Container className="my-5"><Alert variant="danger"><Alert.Heading>ไม่มีสิทธิ์เข้าถึง</Alert.Heading><p>กิจกรรมนี้สงวนสิทธิ์สำหรับสมาชิกประเภทนิติบุคคลเท่านั้น</p><Button onClick={() => navigate('/events')} variant="outline-danger">กลับสู่หน้ารวมกิจกรรม</Button></Alert></Container>
-        );
-    }
-
+    if (!isAuthorized) { return ( <Container className="my-5"><Alert variant="danger"><Alert.Heading>ไม่มีสิทธิ์เข้าถึง</Alert.Heading><p>กิจกรรมนี้สงวนสิทธิ์สำหรับสมาชิกประเภทนิติบุคคลเท่านั้น</p><Button onClick={() => navigate('/events')} variant="outline-danger">กลับสู่หน้ารวมกิจกรรม</Button></Alert></Container> ); }
     if (!event) return null;
 
     return (
@@ -181,12 +145,10 @@ const EventRegistrationPage = () => {
                 <Container>
                     <div className="event-reg-card">
                         <h1 className="event-reg-title">{event.type === 'booth' ? 'ฟอร์มลงทะเบียนออกบูธ' : 'ฟอร์มเข้าร่วมกิจกรรม'}</h1>
-                        
                         <div className="form-section">
                             <h3 className="form-section-title">รายละเอียดกิจกรรม</h3>
                             <div className="event-details-content" dangerouslySetInnerHTML={{ __html: event.details }} />
                         </div>
-                        
                         {event.posterImages && event.posterImages.length > 0 && (
                             <div className="form-section">
                                 <h3 className="form-section-title">กำหนดการเข้าร่วมกิจกรรม</h3>
@@ -199,7 +161,6 @@ const EventRegistrationPage = () => {
                                  </Carousel>
                             </div>
                         )}
-
                         <div className="form-section">
                             <h3 className="form-section-title">กรอกข้อมูลเพื่อเข้าร่วม</h3>
                             <Form noValidate onSubmit={handleSubmit} className="registration-form-fields">
@@ -216,12 +177,7 @@ const EventRegistrationPage = () => {
                                                 <Col xs={12} md={6}>
                                                     <Form.Group>
                                                         <Form.Label>ระบุคำนำหน้า*</Form.Label>
-                                                        <Form.Control
-                                                            type="text" value={customPrefix}
-                                                            onChange={(e) => setCustomPrefix(e.target.value)}
-                                                            placeholder="เช่น ดร., ผศ."
-                                                            isInvalid={!!formErrors.customPrefix}
-                                                        />
+                                                        <Form.Control type="text" value={customPrefix} onChange={(e) => setCustomPrefix(e.target.value)} placeholder="เช่น ดร., ผศ." isInvalid={!!formErrors.customPrefix} />
                                                         <Form.Control.Feedback type="invalid">{formErrors.customPrefix}</Form.Control.Feedback>
                                                     </Form.Group>
                                                 </Col>
@@ -243,14 +199,7 @@ const EventRegistrationPage = () => {
                     </div>
                 </Container>
             </div>
-
-            <ConfirmationModal
-                show={showModal}
-                onHide={handleModalClose}
-                title="ลงทะเบียนสำเร็จ!"
-                body={`ระบบได้บันทึกการลงทะเบียนสำหรับกิจกรรม "${event?.title}" ของคุณเรียบร้อยแล้ว`}
-                variant="success"
-            />
+            <ConfirmationModal show={showModal} onHide={handleModalClose} title="ลงทะเบียนสำเร็จ!" body={`ระบบได้บันทึกการลงทะเบียนสำหรับกิจกรรม "${event?.title}" ของคุณเรียบร้อยแล้ว`} variant="success" />
         </>
     );
 };

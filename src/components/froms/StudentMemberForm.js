@@ -39,6 +39,7 @@ const StudentMemberForm = () => {
         e.preventDefault();
         
         const newErrors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!formData.prefix) newErrors.prefix = 'กรุณาเลือกคำนำหน้า';
         if (!formData.firstName) newErrors.firstName = 'กรุณากรอกชื่อ';
@@ -46,6 +47,12 @@ const StudentMemberForm = () => {
         if (!formData.unitName) newErrors.unitName = 'กรุณากรอกชื่อสถาบัน';
         if (!formData.email) newErrors.email = 'กรุณากรอกอีเมล';
         if (!formData.lineId) newErrors.lineId = 'กรุณากรอก Line ID';
+
+        if (!formData.email) {
+            newErrors.email = 'กรุณากรอกอีเมล';
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = 'รูปแบบอีเมลไม่ถูกต้อง';
+        }
 
         if (!formData.phone) {
             newErrors.phone = 'กรุณากรอกหมายเลขโทรศัพท์';
