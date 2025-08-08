@@ -21,14 +21,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    // 1. เรียก API เพื่อรับ CSRF Token ก่อน (ถ้ายังไม่มี)
-    if (!document.cookie.includes('csrftoken')) {
-      await axios.get("http://localhost:8000/api/csrf/", {
-        withCredentials: true
-      });
-    }
-
-    // 2. ดึง CSRF Token จากคุกกี้ (ฟังก์ชันที่แก้ไขแล้ว)
+    
     const getCookie = (name) => {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -38,7 +31,7 @@ const handleSubmit = async (e) => {
 
     const csrfToken = getCookie('csrftoken');
 
-    // 3. ส่ง Request Login
+    
     const response = await axios.post(
       "http://localhost:8000/api/accounts/login/",
       { email, password },
@@ -52,7 +45,7 @@ const handleSubmit = async (e) => {
     );
 
     
-    // 4. เรียกฟังก์ชัน login
+   
     login(response.data.user, rememberMe);
     
     navigate("/", { replace: true });
