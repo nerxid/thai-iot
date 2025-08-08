@@ -1,36 +1,66 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Nav, Tab, Button, Table, Badge, Pagination, Image, Form } from 'react-bootstrap';
 import { BsPencilFill, BsEyeFill, BsTrashFill, BsPlusLg, BsDownload } from 'react-icons/bs';
 import '../ManageNews/ManageNewsAndEvents.css';
 import ExportEventsModal from './ExportEventsModal';
-import { rawEventsData } from '../../../data/mock-events';
+import axios from 'axios';
 
 const ManageEventsPage = () => {
     const navigate = useNavigate();
-    const [events, setEvents] = useState(rawEventsData); 
+    const [events, setEvents] = useState([]); 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [activeEventStatusTab, setActiveEventStatusTab] = useState('all');
     const [activePublishStatusTab, setActivePublishStatusTab] = useState('all');
     const [showExportModal, setShowExportModal] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 5;
 
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/content/posts/');
+                // กรองเฉพาะประเภท event
+                const eventPosts = response.data.filter(post => post.type === 'event');
+                setEvents(eventPosts);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+                console.error('Error fetching events:', err);
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
     const adminEventsData = useMemo(() => {
         const today = new Date(); 
         today.setHours(0, 0, 0, 0);
 
         return events.map((event, index) => {
-            const endDate = new Date(event.end);
+            // ตัวอย่างการแปลงข้อมูลจาก API ให้ตรงกับโครงสร้างที่ต้องการ
+            const endDate = new Date(event.published_at); // ควรใช้ฟิลด์วันที่สิ้นสุดจริงจาก API
             let eventStatus = 'ยังไม่สิ้นสุด';
             if (endDate < today) {
                 eventStatus = 'สิ้นสุด';
             }
+            
             return {
                 ...event, 
-                coverImage: event.imageUrl,
-                interestedCount: event.registrantCount, 
-                createdDate: `${20 + index} มิถุนายน 2568`, 
+                id: event.id,
+                title: event.title,
+                coverImage: event.cover_image,
+                interestedCount: 0, // ควรดึงจาก API จริง
+                createdDate: new Date(event.published_at).toLocaleDateString('th-TH', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }),
                 eventStatus: eventStatus,
+                publishStatus: event.is_published ? 'เผยแพร่' : 'แบบร่าง',
+                imageUrl: event.cover_image // สำหรับความเข้ากันได้กับโค้ดเดิม
             };
         });
     }, [events]);
@@ -56,10 +86,29 @@ const ManageEventsPage = () => {
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-    const handleDelete = (eventId, eventTitle) => {
+    const handleDelete = async (eventId, eventTitle) => {
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
         if (window.confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบกิจกรรม "${eventTitle}"?`)) {
-            setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
-            alert(`ลบกิจกรรม "${eventTitle}" เรียบร้อยแล้ว`);
+             const csrfToken = getCookie('csrftoken');
+            try {
+                await axios.delete(`http://localhost:8000/api/content/posts/${eventId}/`,{
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                });
+
+                setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+                alert(`ลบกิจกรรม "${eventTitle}" เรียบร้อยแล้ว`);
+            } catch (err) {
+                console.error('Error deleting event:', err);
+                alert('เกิดข้อผิดพลาดในการลบกิจกรรม');
+            }
         }
     };
 
@@ -79,6 +128,8 @@ const ManageEventsPage = () => {
             default: return 'secondary';
         }
     };
+
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <>

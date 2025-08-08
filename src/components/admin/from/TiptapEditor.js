@@ -3,7 +3,7 @@
 // อิพอร์ตสิ่งที่จำเป็นจากไลบรารี Tiptap และ React
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Tiptap.css'; // อิมพอร์ตไฟล์ CSS สำหรับจัดสไตล์ Editor (เราจะต้องสร้างไฟล์นี้เอง)
 
 // --- Component: MenuBar ---
@@ -78,7 +78,11 @@ const TiptapEditor = ({ content, setContent }) => {
         },
     },
   })
-
+    useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content)
+    }
+  }, [content, editor])
   // ส่งคืน JSX ที่ประกอบกันเป็น Editor ที่สมบูรณ์
   return (
     <div className="tiptap-container">

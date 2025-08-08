@@ -6,6 +6,7 @@ import { arrayMove, SortableContext, horizontalListSortingStrategy, useSortable 
 import { CSS } from '@dnd-kit/utilities';
 import { mockAboutContent } from '../../../data/mock-about-content';
 import './ManageAbout.css';
+import axios from 'axios';
 
 const SortableAboutImage = ({ item, index, onRemove, onImageChange }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.preview });
@@ -93,14 +94,58 @@ const ManageAboutPage = () => {
         e.target.value = null;
     };
 
-    const handleFormSubmit = (e, section) => {
-        e.preventDefault();
-        if (section === 'เกี่ยวกับสมาคม' && aboutImages.length !== 4) {
-            alert('กรุณาอัปโหลดรูปภาพในส่วน "เกี่ยวกับสมาคม" ให้ครบ 4 รูป');
+const handleFormSubmit = async (e, section) => {
+    e.preventDefault();
+    
+    if (section === 'เกี่ยวกับสมาคม' && aboutImages.length !== 4) {
+        alert('กรุณาอัปโหลดรูปภาพในส่วน "เกี่ยวกับสมาคม" ให้ครบ 4 รูป');
+        return;
+    }
+
+    if (section === 'วิสัยทัศน์') {
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const csrfToken = getCookie('csrftoken');
+
+        const formVisionData = new FormData();
+        formVisionData.append("title", visionData.title);
+        formVisionData.append("description", visionData.description);
+        
+        if (visionImage.file) {
+            formVisionData.append("image", visionImage.file);
+        } else if (visionImage.preview && !visionImage.preview.startsWith('blob:')) {
+            
+            formVisionData.append("image_url", visionImage.preview);
+        }
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8000/api/association/association/vision/",
+                formVisionData,
+                {
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    withCredentials: true,
+                }
+            );
+            console.log("Vision saved:", response.data);
+            alert(`บันทึกข้อมูลส่วน "${section}" เรียบร้อย!`);
+            return; // ออกหลังจากบันทึก vision
+        } catch (error) {
+            console.error("Error saving vision:", error);
+            alert(`เกิดข้อผิดพลาดในการบันทึกข้อมูลส่วน "${section}"`);
             return;
         }
-        alert(`บันทึกข้อมูลส่วน "${section}" เรียบร้อย!`);
-    };
+    }
+
+    // ส่วนอื่นๆ...
+    alert(`บันทึกข้อมูลส่วน "${section}" เรียบร้อย!`);
+};
 
     const removeAboutImage = (indexToRemove) => {
         if (window.confirm('คุณต้องการลบรูปภาพนี้ใช่หรือไม่?')) {

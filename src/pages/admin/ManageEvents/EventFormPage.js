@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import '../ManageNews/ManageNewsAndEvents.css';
 import { rawEventsData } from '../../../data/mock-events';
-
+import axios from 'axios';
 const SortableSecondaryImage = ({ image, index, onRemove }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: image.preview });
     const style = { transform: CSS.Transform.toString(transform), transition, cursor: 'grab' };
@@ -23,7 +23,11 @@ const SortableSecondaryImage = ({ image, index, onRemove }) => {
         </div>
     );
 };
-
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 const EventFormPage = () => {
     const { eventId } = useParams();
     const navigate = useNavigate();
@@ -41,21 +45,75 @@ const EventFormPage = () => {
     const [secondaryImages, setSecondaryImages] = useState([]);
     const [formErrors, setFormErrors] = useState({});
 
-    useEffect(() => {
-        if (isEditMode) {
-            const event = rawEventsData.find(item => item.id.toString() === eventId);
-            if (event) {
-                setEventType(event.type || 'อบรม/สัมมนา');
-                setTitle(event.title);
-                setDetails(event.details || event.content);
-                setStartDate(new Date(event.start));
-                setEndDate(new Date(event.end));
-                setPublishStatus(event.publishStatus || 'เผยแพร่');
-                setCoverImage({ file: null, preview: event.imageUrl });
-                setSecondaryImages(event.secondaryImages?.map(url => ({ file: null, preview: url })) || []);
+useEffect(() => {
+    const fetchEventData = async () => {
+        console.log('เริ่มโหลดข้อมูลกิจกรรม...');
+        try {
+            if (isEditMode && eventId) {
+                const apiUrl = `http://localhost:8000/api/content/posts/${eventId}/`;
+                console.log('API URL:', apiUrl);
+                
+                const response = await axios.get(apiUrl);
+                console.log('ข้อมูลที่ได้รับ:', response.data);
+                
+                const eventData = response.data;
+                console.log('====================================');
+                console.log(eventData.is_show_calendar);
+                console.log('====================================');
+                const EVENT_CATEGORIES = {
+                    GENERAL: 1,   // ทั่วไป
+                    BOOTH: 2      // ออกบูธ
+                };
+                console.log(eventData.category);
+                
+                if(eventData.category === EVENT_CATEGORIES.GENERAL) {
+                    setEventType("อบรม/สัมมนา");
+                } else {
+                    setEventType("ออกบูธ");
+                }
+                setTitle(eventData.title);
+                setDetails(eventData.content);
+                
+                // ตั้งค่าวันที่
+                if (eventData.published_at) {
+                    setPublishStatus(eventData.is_published ? 'เผยแพร่' : 'แบบร่าง');
+                    setScheduledAt(new Date(eventData.published_at));
+                }
+                
+                // รูปภาพหน้าปก
+                setCoverImage({ 
+                    file: null, 
+                    preview: eventData.cover_image || '' 
+                });
+                
+                // รูปภาพรอง - ดึงเฉพาะที่ caption เป็นค่าว่างเปล่า
+                if (eventData.images?.length > 0) {
+                    const filteredImages = eventData.images.filter(img => 
+                        !img.caption || img.caption.trim() === ''
+                    );
+                    
+                    const sortedImages = [...filteredImages].sort((a, b) => a.display_order - b.display_order);
+                    setSecondaryImages(sortedImages.map(img => ({
+                        file: null,
+                        preview: img.image,
+                        id: img.id,
+                        caption: img.caption || ''
+                    })));
+                }
             }
+        } catch (error) {
+            console.error('Error Details:', {
+                message: error.message,
+                url: error.config?.url,
+                status: error.response?.status,
+                data: error.response?.data
+            });
+            alert(`เกิดข้อผิดพลาด: ${error.message}\nEndpoint: ${error.config?.url}`);
         }
-    }, [eventId, isEditMode]);
+    };
+
+    fetchEventData();
+}, [eventId, isEditMode]);
     
     const validateFile = (file) => {
         const MAX_SIZE_MB = 1;
@@ -95,12 +153,36 @@ const EventFormPage = () => {
         setSecondaryImages(prev => [...prev, ...validFiles].slice(0, 5));
         e.target.value = null;
     };
-    
-    const removeSecondaryImage = (indexToRemove) => {
-        if(window.confirm('คุณต้องการลบรูปภาพนี้ใช่หรือไม่?')) {
-            setSecondaryImages(prev => prev.filter((_, index) => index !== indexToRemove));
+
+const removeSecondaryImage = async (indexToRemove) => {
+    if (window.confirm('คุณต้องการลบรูปภาพนี้ใช่หรือไม่?')) {
+        const imageToRemove = secondaryImages[indexToRemove]; // ✅ ใช้ตัวแปรที่ถูกต้อง
+        const imageId = imageToRemove?.id;
+
+        // เฉพาะรูปที่มาจาก backend (มี id) เท่านั้นที่ต้องเรียก API ลบ
+        if (imageId) {
+            const csrfToken = getCookie('csrftoken');
+
+            try {
+                await axios.delete(`http://localhost:8000/api/content/post-images/${imageId}/`, {
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                });
+            } catch (error) {
+                console.error('เกิดข้อผิดพลาดในการลบรูปภาพ:', error);
+                alert('ไม่สามารถลบรูปภาพได้');
+                return;
+            }
         }
-    };
+
+        // ลบออกจาก state ทันที
+        setSecondaryImages(prev => prev.filter((_, index) => index !== indexToRemove));
+    }
+};
+
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -114,20 +196,39 @@ const EventFormPage = () => {
     };
 
     const handleNextStep = (e) => {
-        e.preventDefault();
-        const newErrors = {};
-        if (!eventType) newErrors.eventType = 'กรุณาเลือกประเภทกิจกรรม';
-        if (!coverImage.preview) newErrors.coverImage = 'กรุณาอัปโหลดรูปภาพหน้าปก';
-        if (!title.trim()) newErrors.title = 'กรุณากรอกหัวข้อกิจกรรม';
-        if (!details || details.replace(/<(.|\n)*?>/g, '').trim().length === 0) newErrors.details = 'กรุณากรอกรายละเอียด';
-        if (!startDate) newErrors.startDate = 'กรุณาเลือกวันที่เริ่มกิจกรรม';
-        if (!endDate) newErrors.endDate = 'กรุณาเลือกวันที่สิ้นสุดกิจกรรม';
-        setFormErrors(newErrors);
-        if (Object.keys(newErrors).length === 0) {
-            const step1Data = { eventType, title, details, startDate, endDate, publishStatus, showOnCalendar, scheduledAt, coverImage, secondaryImages };
-            navigate('/admin/manage-events/add/step2', { state: { step1Data: step1Data } });
-        }
-    };
+    e.preventDefault();
+    const newErrors = {};
+    if (!eventType) newErrors.eventType = 'กรุณาเลือกประเภทกิจกรรม';
+    if (!coverImage.preview) newErrors.coverImage = 'กรุณาอัปโหลดรูปภาพหน้าปก';
+    if (!title.trim()) newErrors.title = 'กรุณากรอกหัวข้อกิจกรรม';
+    if (!details || details.replace(/<(.|\n)*?>/g, '').trim().length === 0) newErrors.details = 'กรุณากรอกรายละเอียด';
+    if (!startDate) newErrors.startDate = 'กรุณาเลือกวันที่เริ่มกิจกรรม';
+    if (!endDate) newErrors.endDate = 'กรุณาเลือกวันที่สิ้นสุดกิจกรรม';
+    setFormErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+        const step1Data = { 
+            eventType, 
+            title, 
+            details, 
+            startDate, 
+            endDate, 
+            publishStatus, 
+            showOnCalendar, 
+            scheduledAt, 
+            coverImage, 
+            secondaryImages,
+            eventId: isEditMode ? eventId : null // เพิ่ม eventId ในโหมดแก้ไข
+        };
+        navigate('/admin/manage-events/add/step2', { 
+            state: { 
+                step1Data: step1Data,
+                isEditMode: isEditMode, // ส่งสถานะโหมดแก้ไขไปด้วย
+                eventId: isEditMode ? eventId : null // ส่ง eventId ในโหมดแก้ไข
+            } 
+        });
+    }
+};
 
     return (
         <Container fluid className="manage-news-page p-0">

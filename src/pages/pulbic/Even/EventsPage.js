@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Pagination, Spinner } from 'react-bootstrap';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
+import axios from 'axios';
 import 'moment/locale/th';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { rawEventsData } from '../../../data/mock-events';
 import { useAuth } from '../../../context/AuthContext';
 import EventCard from '../../../components/EventCard';
 import './EventsPage.css';
@@ -15,17 +15,47 @@ const localizer = momentLocalizer(moment);
 
 const EventsPage = () => {
     const navigate = useNavigate();
-    const { user } = useAuth(); 
+    const { user } = useAuth();
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/content/posts/');
+                // Filter only published events and map to required format
+                const formattedEvents = response.data
+                    .filter(post => post.is_published && post.type === 'event')
+                    .map(post => ({
+                        id: post.id,
+                        title: post.title,
+                        summary: post.content.replace(/<[^>]*>/g, '').substring(0, 100) + '...', // Remove HTML tags and truncate
+                        start: new Date(post.published_at),
+                        end: new Date(new Date(post.published_at).getTime() + 2 * 60 * 60 * 1000), // Add 2 hours as default duration
+                        imageUrl: post.cover_image || (post.images.length > 0 ? post.images[0].image : ''),
+                        type: post.type
+                    }));
+                setEvents(formattedEvents);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+        
+        fetchEvents();
+    }, []);
 
     const filteredEvents = useMemo(() => {
-        return rawEventsData.filter(event => {
+        return events.filter(event => {
             if (event.type === 'booth') {
-                // ถ้าเป็นงาน Booth ต้อง login และเป็น corporate เท่านั้น
+                // If it's a Booth event, user must be logged in and corporate
                 return user && user.memberType === 'corporate';
             }
-            return true; // กิจกรรมอื่นแสดงทั้งหมด
+            return true; // Show all other events
         });
-    }, [user]);
+    }, [user, events]);
 
     const eventsForCalendar = filteredEvents.map(event => ({
         ...event,
@@ -88,6 +118,25 @@ const EventsPage = () => {
         noEventsInRange: "ไม่มีกิจกรรมในช่วงนี้"
     };
 
+    if (loading) {
+        return (
+            <Container className="text-center py-5">
+                <Spinner animation="border" variant="primary" />
+                <p className="mt-3">กำลังโหลดข้อมูลกิจกรรม...</p>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container className="py-5">
+                <div className="alert alert-danger">
+                    เกิดข้อผิดพลาดในการโหลดข้อมูล: {error}
+                </div>
+            </Container>
+        );
+    }
+
     return (
         <div className="events-page">
             <Container fluid="xl">
@@ -116,33 +165,41 @@ const EventsPage = () => {
                     <div className="events-page-header">
                         <h2>รายการกิจกรรมทั้งหมด</h2>
                     </div>
-                    <Row xs={1} md={2} lg={3} className="g-4 g-lg-5">
-                        {currentCardItems.map(event => ( 
-                            <Col key={event.id}>
-                                <EventCard
-                                    id={event.id}
-                                    title={event.title}
-                                    date={new Date(event.start).toLocaleDateString('th-TH', { dateStyle: 'long' })}
-                                    summary={event.summary}
-                                    src={event.imageUrl}
-                                />
-                            </Col>
-                        ))}
-                    </Row>
-
-                    <div className="d-flex justify-content-center mt-5 pt-3">
-                        {totalPages > 1 && (
-                            <Pagination className="custom-pagination">
-                                <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
-                                {[...Array(totalPages).keys()].map(n => (
-                                    <Pagination.Item key={n + 1} active={n + 1 === currentPage} onClick={() => handlePageChange(n + 1)}>
-                                        {n + 1}
-                                    </Pagination.Item>
+                    {filteredEvents.length === 0 ? (
+                        <div className="text-center py-5">
+                            <p>ไม่มีกิจกรรมในขณะนี้</p>
+                        </div>
+                    ) : (
+                        <>
+                            <Row xs={1} md={2} lg={3} className="g-4 g-lg-5">
+                                {currentCardItems.map(event => ( 
+                                    <Col key={event.id}>
+                                        <EventCard
+                                            id={event.id}
+                                            title={event.title}
+                                            date={new Date(event.start).toLocaleDateString('th-TH', { dateStyle: 'long' })}
+                                            summary={event.summary}
+                                            src={event.imageUrl}
+                                        />
+                                    </Col>
                                 ))}
-                                <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
-                            </Pagination>
-                        )}
-                    </div>
+                            </Row>
+
+                            <div className="d-flex justify-content-center mt-5 pt-3">
+                                {totalPages > 1 && (
+                                    <Pagination className="custom-pagination">
+                                        <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+                                        {[...Array(totalPages).keys()].map(n => (
+                                            <Pagination.Item key={n + 1} active={n + 1 === currentPage} onClick={() => handlePageChange(n + 1)}>
+                                                {n + 1}
+                                            </Pagination.Item>
+                                        ))}
+                                        <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+                                    </Pagination>
+                                )}
+                            </div>
+                        </>
+                    )}
                 </div>
             </Container>
         </div>

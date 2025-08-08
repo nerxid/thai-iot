@@ -5,7 +5,7 @@ import './MembershipForm.css';
 
 const ChangePlanCorporateMemberForm = () => {
     const navigate = useNavigate();
-
+    //ดึง member_type จาก context เอาเทียบกับ paymentType ในไฟล์ ถ้า ไม่ตรงกัน ก็ให้ เลือกเป็น เเรกเข้าเลย เเต่ถ้าตรงก็ให้ ล้อคเป็นต่ออายุเลย
     const [formData, setFormData] = useState({
         prefix: '',
         firstName: '',

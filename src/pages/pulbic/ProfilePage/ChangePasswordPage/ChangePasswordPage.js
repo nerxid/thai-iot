@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../../context/AuthContext'; // Adjust the path as needed
+import axios from 'axios'; // Make sure to install axios
 import './ChangePasswordPage.css';
 
 const ChangePasswordPage = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [passwords, setPasswords] = useState({
         currentPassword: '',
         newPassword: '',
@@ -13,6 +16,8 @@ const ChangePasswordPage = () => {
 
     const [formErrors, setFormErrors] = useState({});
     const [success, setSuccess] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,22 +25,24 @@ const ChangePasswordPage = () => {
         if (formErrors[name]) {
             setFormErrors(prev => ({ ...prev, [name]: null }));
         }
+        if (error) setError('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setFormErrors({}); 
         setSuccess('');
+        setError('');
+        setIsSubmitting(true);
 
         const newErrors = {};
         const { currentPassword, newPassword, confirmPassword } = passwords;
 
-        // ตรวจสอบช่องว่าง
+        // Validation checks (same as before)
         if (!currentPassword) newErrors.currentPassword = 'กรุณากรอกรหัสผ่านปัจจุบัน';
         if (!newPassword) newErrors.newPassword = 'กรุณากรอกรหัสผ่านใหม่';
         if (!confirmPassword) newErrors.confirmPassword = 'กรุณายืนยันรหัสผ่านใหม่';
 
-        // ตรวจสอบเงื่อนไขรหัสผ่านใหม่
         if (newPassword) {
             if (newPassword.length < 8) {
                 newErrors.newPassword = 'รหัสผ่านใหม่ต้องมีอย่างน้อย 8 ตัวอักษร';
@@ -50,22 +57,61 @@ const ChangePasswordPage = () => {
             }
         }
         
-        // ตรวจสอบการยืนยันรหัสผ่าน
         if (newPassword && newPassword !== confirmPassword) {
             newErrors.confirmPassword = 'รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน';
         }
 
-        setFormErrors(newErrors);
+        if (Object.keys(newErrors).length > 0) {
+            setFormErrors(newErrors);
+            setIsSubmitting(false);
+            return;
+        }
 
-        // ถ้าไม่มี Error เลย ให้ดำเนินการต่อ
-        if (Object.keys(newErrors).length === 0) {
-            console.log('Changing password for user:', passwords);
+        try {
+                function getCookie(name) {
+                    const value = `; ${document.cookie}`;
+                    const parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(';').shift();
+                }
+                const csrfToken = getCookie('csrftoken');
+            const response = await axios.patch(
+                `http://localhost:8000/api/accounts/users/${user.id}/`,
+                {
+                    current_password: currentPassword,
+                    new_password: newPassword
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "X-CSRFToken": csrfToken,
+                    }
+                }
+            );
+
             setSuccess('เปลี่ยนรหัสผ่านสำเร็จ! กำลังนำคุณกลับไปหน้าโปรไฟล์...');
             setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' });
 
             setTimeout(() => {
                 navigate('/profile');
             }, 3000);
+        } catch (err) {
+            if (err.response) {
+                if (err.response.status === 400) {
+                    if (err.response.data.current_password) {
+                        setError('รหัสผ่านปัจจุบันไม่ถูกต้อง');
+                    } else {
+                        setError('เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน');
+                    }
+                } else if (err.response.status === 401) {
+                    setError('กรุณาเข้าสู่ระบบอีกครั้ง');
+                } else {
+                    setError('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+                }
+            } else {
+                setError('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+            }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -79,6 +125,7 @@ const ChangePasswordPage = () => {
                                 <h2 className="text-center fw-bold mb-4">เปลี่ยนรหัสผ่าน</h2>
                                 <Form noValidate onSubmit={handleSubmit}>
                                     {success && <Alert variant="success">{success}</Alert>}
+                                    {error && <Alert variant="danger">{error}</Alert>}
 
                                     <Form.Group className="mb-4" controlId="currentPassword">
                                         <Form.Label>รหัสผ่านปัจจุบัน*</Form.Label>
@@ -123,11 +170,11 @@ const ChangePasswordPage = () => {
                                     </Form.Group>
 
                                     <div className="d-grid gap-3 d-sm-flex justify-content-sm-end mt-5">
-                                        <Button variant="outline-secondary" as={Link} to="/profile">
+                                        <Button variant="outline-secondary" as={Link} to="/profile" disabled={isSubmitting}>
                                             ยกเลิก
                                         </Button>
-                                        <Button variant="primary" type="submit">
-                                            ยืนยันการเปลี่ยนแปลง
+                                        <Button variant="primary" type="submit" disabled={isSubmitting}>
+                                            {isSubmitting ? 'กำลังดำเนินการ...' : 'ยืนยันการเปลี่ยนแปลง'}
                                         </Button>
                                     </div>
                                 </Form>

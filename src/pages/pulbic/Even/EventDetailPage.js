@@ -1,19 +1,95 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Container, Row, Col, Image, Breadcrumb, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Image, Breadcrumb, Card, Button, Spinner } from 'react-bootstrap';
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
 import { useAuth } from '../../../context/AuthContext';
-import { rawEventsData } from '../../../data/mock-events';
 import './EventDetailPage.css';
+import axios from 'axios';
 
 const EventDetailPage = () => {
     const { eventId } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
     const { user, isLoggedIn, isRegisteredForEvent, unregisterFromEvent } = useAuth();
-
-    const event = rawEventsData.find(item => item.id.toString() === eventId);
     
+    const [event, setEvent] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [otherEvents, setOtherEvents] = useState([]);
+
+    useEffect(() => {
+        const fetchEventData = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(`http://localhost:8000/api/content/posts/${eventId}/`);
+                const eventData = response.data;
+                
+                // แปลงข้อมูลจาก API ให้ตรงกับโครงสร้างที่ใช้ใน component
+                const formattedEvent = {
+                    id: eventData.id,
+                    title: eventData.title,
+                    type: eventData.type || 'event', // ใช้ค่าเริ่มต้นเป็น 'event' ถ้าไม่มี
+                    start: eventData.published_at, // ใช้ published_at เป็นวันที่เริ่ม
+                    end: eventData.published_at, // ใช้ published_at เป็นวันที่สิ้นสุด (อาจจะต้องปรับตาม API จริง)
+                    fullImageUrl: eventData.cover_image || '/default-event-image.jpg',
+                    content: eventData.content,
+                    details: eventData.content, // ใช้ content เป็น details ด้วย
+                    images: eventData.images || [] // เพิ่มข้อมูลรูปภาพ
+                };
+                
+                setEvent(formattedEvent);
+                
+                // ดึงข้อมูลกิจกรรมอื่นๆ
+                const otherEventsResponse = await axios.get('http://localhost:8000/api/content/posts/', {
+                    params: {
+                        exclude: eventId,
+                        per_page: 3,
+                        type: 'event' // ดึงเฉพาะประเภท event
+                    }
+                });
+                
+                const formattedOtherEvents = otherEventsResponse.data
+                    .filter(item => item.type === 'event') // กรองเฉพาะ type เป็น event อีกครั้งเพื่อความแน่ใจ
+                    .map(item => ({
+                        id: item.id,
+                        title: item.title,
+                        imageUrl: item.cover_image || '/default-event-image.jpg',
+                        type: item.type
+                    }));
+                
+                setOtherEvents(formattedOtherEvents);
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching event data:', err);
+                setError(err);
+                setLoading(false);
+            }
+        };
+        
+        fetchEventData();
+    }, [eventId, user]);
+
+    if (loading) {
+        return (
+            <Container className="my-5 text-center">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+                <p>กำลังโหลดข้อมูลกิจกรรม...</p>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container className="my-5 text-center">
+                <h2>เกิดข้อผิดพลาด</h2>
+                <p>ไม่สามารถโหลดข้อมูลกิจกรรมได้ในขณะนี้</p>
+                <Link to="/events" className="btn btn-primary">กลับสู่หน้ารวมกิจกรรม</Link>
+            </Container>
+        );
+    }
+
     if (event && event.type === 'booth' && (!user || user.memberType !== 'corporate')) {
         return (
             <Container className="my-5 text-center">
@@ -53,11 +129,6 @@ const EventDetailPage = () => {
         }
     };
 
-    const otherEvents = rawEventsData.filter(item => 
-        item.id.toString() !== eventId && 
-        (item.type !== 'booth' || (user && user.memberType === 'corporate'))
-    ).slice(0, 3);
-    
     const eventStartDate = new Date(event.start);
 
     const renderActionButton = () => {
@@ -119,8 +190,30 @@ const EventDetailPage = () => {
                                 </p>
                             </header>
 
+                            {/* แสดง cover image */}
                             <Image src={event.fullImageUrl} fluid rounded className="mb-4 shadow-sm event-image" />
-                            <div className="event-content-body" dangerouslySetInnerHTML={{ __html: event.content || event.details }} />
+                            
+                            {/* แสดงรูปภาพอื่นๆ ถ้ามี */}
+                            {event.images.length > 0 && (
+                                <div className="event-gallery mb-4">
+                                    <Row>
+                                        {event.images.map((img, index) => (
+                                            <Col md={4} key={img.id || index}>
+                                                <Image 
+                                                    src={img.image} 
+                                                    fluid 
+                                                    rounded 
+                                                    className="mb-3 shadow-sm"
+                                                    alt={img.caption || `Event image ${index + 1}`}
+                                                />
+                                                {img.caption && <p className="text-center text-muted">{img.caption}</p>}
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </div>
+                            )}
+
+                            <div className="event-content-body" dangerouslySetInnerHTML={{ __html: event.content }} />
 
                             <div className="action-button-container">
                                 {renderActionButton()}
