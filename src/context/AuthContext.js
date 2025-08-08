@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   const [registeredEvents, setRegisteredEvents] = useState([]);
 
-  const login = (userData, remember = false) => {
+const login = (userData, remember = false, csrfToken = null) => {
   const fullUserData = {
     id: userData.id,
     first_name: userData.first_name,
@@ -29,8 +29,14 @@ export const AuthProvider = ({ children }) => {
     // ถ้ามีข้อมูลอื่นๆ จาก API ก็เพิ่มที่นี่
   };
 
+  // เก็บข้อมูลผู้ใช้และสถานะ Remember me
   localStorage.setItem("user", JSON.stringify(fullUserData));
   localStorage.setItem("rememberMe", remember.toString());
+  
+  // เก็บ CSRF Token ถ้ามี
+  if (csrfToken) {
+    localStorage.setItem("csrfToken", csrfToken);
+  }
 
   setUser(fullUserData);
   setIsLoggedIn(true);

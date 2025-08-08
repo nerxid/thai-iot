@@ -21,26 +21,48 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
+    // 1. เรียก API เพื่อรับ CSRF Token ก่อน (ถ้ายังไม่มี)
+    if (!document.cookie.includes('csrftoken')) {
+      await axios.get("http://localhost:8000/api/csrf/", {
+        withCredentials: true
+      });
+    }
+
+    // 2. ดึง CSRF Token จากคุกกี้ (ฟังก์ชันที่แก้ไขแล้ว)
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return null;
+    };
+
+    const csrfToken = getCookie('csrftoken');
+
+    // 3. ส่ง Request Login
     const response = await axios.post(
       "http://localhost:8000/api/accounts/login/",
       { email, password },
       {
-        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
         },
+        withCredentials: true,
       }
     );
 
-    console.log("Login response:", response.data);
     
-    // เรียกใช้ฟังก์ชัน login จาก context พร้อมข้อมูลผู้ใช้และ rememberMe
+    // 4. เรียกฟังก์ชัน login
     login(response.data.user, rememberMe);
     
     navigate("/", { replace: true });
   } catch (error) {
-    console.error("Login failed:", error.response?.data || error.message);
-    alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+    console.error("Login failed:", error);
+    if (error.response?.status === 403) {
+      alert("CSRF Token ไม่ถูกต้องหรือหมดอายุ");
+    } else {
+      alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+    }
   }
 };
 

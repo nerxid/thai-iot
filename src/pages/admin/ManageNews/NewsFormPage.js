@@ -30,7 +30,7 @@ import axios from "axios";
       if (parts.length === 2) return parts.pop().split(";").shift();
     }
     const csrfToken = getCookie("csrftoken");
-const SortableSecondaryImage = ({ image, index, onRemove }) => {
+  const SortableSecondaryImage = ({ image, index, onRemove }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: image.preview });
   const style = {
